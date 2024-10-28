@@ -34,7 +34,7 @@ services:
       - planner-db:/var/lib/postgresql/data
 
   backend:
-    container_name: student-planner-backend
+    container_name: student_planner_backend
     depends_on:
       db:
         condition: service_healthy
@@ -45,4 +45,4 @@ services:
 
 volumes:
   planner-db:
-    driver: localx
+    driver: local
