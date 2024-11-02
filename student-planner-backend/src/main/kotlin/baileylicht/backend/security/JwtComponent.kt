@@ -59,7 +59,7 @@ class JwtComponent {
      * @return An empty cookie
      */
     fun clearJwtCookie(): ResponseCookie {
-        return ResponseCookie.from(cookieName).path("/").build()
+        return ResponseCookie.from(cookieName).path("/").maxAge(0).build()
     }
 
     /**
