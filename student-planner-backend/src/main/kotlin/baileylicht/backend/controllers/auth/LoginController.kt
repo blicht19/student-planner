@@ -10,12 +10,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -52,11 +54,29 @@ class LoginController(
     }
 
     @PostMapping("login", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @Operation(summary = "Log in", description = "Logs a user into the application")
+    @ApiResponses(
+        value = [ApiResponse(responseCode = "200", description = "Successfully logged in")]
+    )
     fun login(@RequestBody userDto: UserDto): ResponseEntity<AuthResponseDto> {
         val authentication =
             authenticationManager.authenticate(UsernamePasswordAuthenticationToken(userDto.username, userDto.password))
         SecurityContextHolder.getContext().authentication = authentication
-        val token = tokenGenerator.generateToken(authentication)
-        return ResponseEntity(AuthResponseDto(token), HttpStatus.OK)
+        val userDetails = authentication.principal as UserDetails
+        val jwtCookie = tokenGenerator.generateJwtCookie(userDetails)
+
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+            .body(AuthResponseDto(userDetails.username))
+    }
+
+    @PostMapping("logout", produces = [MediaType.TEXT_PLAIN_VALUE])
+    @Operation(summary = "Log out", description = "Logs a user out of the application")
+    @ApiResponses(
+        value = [ApiResponse(responseCode = "200", description = "Successfully logged out")]
+    )
+    fun logout(): ResponseEntity<String> {
+        val responseCookie = tokenGenerator.clearJwtCookie()
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, responseCookie.toString())
+            .body("Successfully logged out")
     }
 }

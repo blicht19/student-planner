@@ -1,5 +1,3 @@
 package baileylicht.backend.dtos
 
-data class AuthResponseDto(val accessToken: String) {
-    val tokenType = "Bearer "
-}
+data class AuthResponseDto(val username: String)
