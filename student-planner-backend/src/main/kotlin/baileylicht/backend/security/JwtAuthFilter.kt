@@ -11,7 +11,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 class JwtAuthFilter : OncePerRequestFilter() {
     @Autowired
-    lateinit var tokenGenerator: JwtGenerator
+    lateinit var tokenGenerator: JwtComponent
 
     @Autowired
     lateinit var userDetailsService: PlannerUserDetailsService
@@ -37,13 +37,4 @@ class JwtAuthFilter : OncePerRequestFilter() {
     private fun parseJwt(request: HttpServletRequest): String? {
         return tokenGenerator.getJwtFromCookies(request)
     }
-
-//    private fun getJwtFromRequest(request: HttpServletRequest): String? {
-//        val bearerToken = request.getHeader("Authorization")
-//        if (!StringUtils.hasText(bearerToken) || !bearerToken.startsWith("Bearer ")) {
-//            return null
-//        }
-//
-//        return bearerToken.substring(7, bearerToken.length)
-//    }
 }
