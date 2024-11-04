@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
+import { useAuthContext } from '../../components/index.js';
+import { useNavigate } from 'react-router-dom';
 
 const BASE_URL = '/backend/auth';
 
@@ -28,25 +30,41 @@ const logout = async () => {
 };
 
 export const useRegister = () => {
+  const navigate = useNavigate();
   return useMutation({
     mutationFn: ({ username, password }) => {
       return register(username, password);
+    },
+    onSuccess() {
+      navigate('/login');
     },
   });
 };
 
 export const useLogin = () => {
+  const { setUsername } = useAuthContext();
+  const navigate = useNavigate();
   return useMutation({
-    mutationFn: ({ username, password }) => {
-      return login(username, password);
+    mutationFn: async ({ username, password }) => {
+      return await login(username, password);
+    },
+    onSuccess(data) {
+      setUsername(data.username);
+      navigate('/');
     },
   });
 };
 
 export const useLogout = () => {
+  const { setUsername } = useAuthContext();
+  const navigate = useNavigate();
   return useMutation({
-    mutationFn: () => {
-      return logout();
+    mutationFn: async () => {
+      return await logout();
+    },
+    onSettled() {
+      setUsername('');
+      navigate('/login');
     },
   });
 };
