@@ -3,8 +3,6 @@ services:
     container_name: student_planner_db
     image: postgres:16.4-alpine
     hostname: postgreshost
-    ports:
-      - '5432:5432'
     user: postgres
     environment:
       - POSTGRES_USER=postgres
@@ -18,21 +16,6 @@ services:
       timeout: 5s
       retries: 3
 
-  pgadmin:
-    container_name: student_planner_pgadmin
-    depends_on:
-      db:
-        condition: service_healthy
-    image: dpage/pgadmin4
-    ports:
-      - '3001:80'
-    environment:
-      - PGADMIN_DEFAULT_EMAIL=your@email.com
-      - PGADMIN_DEFAULT_PASSWORD=hunter2
-    user: root
-    volumes:
-      - planner-db:/var/lib/postgresql/data
-
   backend:
     container_name: student_planner_backend
     depends_on:
@@ -40,14 +23,23 @@ services:
         condition: service_healthy
     build:
       context: student-planner-backend
-    ports:
-      - '8080:8080'
     healthcheck:
       test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1"
       interval: 10s
       timeout: 5s
       retries: 3
       start_period: 40s
+
+  frontend:
+    container_name: student_planner_frontend
+    depends_on:
+      backend:
+        condition: service_healthy
+    build:
+      context: student-planner-frontend
+    ports:
+      - '3000:3000'
+
 
 volumes:
   planner-db:
