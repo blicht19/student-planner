@@ -2,8 +2,7 @@
 
 ---
 
-As a **student**, I want to **create a list of agenda items**, so I can **keep track of the work that I need to complete
-**.
+As a **student**, I want to **create a list of agenda items**, so I can **keep track of the work that I need to complete**.
 
 ### Acceptance Criteria
 
