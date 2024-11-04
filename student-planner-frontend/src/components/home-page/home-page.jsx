@@ -1,4 +1,4 @@
-import { useAuthContext } from '../auth';
+import { useAuthContext } from '../../hooks';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLogout } from '../../hooks';

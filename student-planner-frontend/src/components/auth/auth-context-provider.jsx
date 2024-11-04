@@ -1,12 +1,10 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { authContext } from '../../hooks';
 
-const authContext = createContext('');
 const getStoredUsername = () => {
   const username = localStorage.getItem('username');
   return username ?? '';
 };
-
-export const useAuthContext = () => useContext(authContext);
 
 export const AuthContextProvider = ({ children }) => {
   const [username, setUsername] = useState(getStoredUsername);

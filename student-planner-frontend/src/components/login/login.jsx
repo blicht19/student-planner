@@ -1,4 +1,4 @@
-import { useLogin } from '../../hooks/index.js';
+import { useLogin } from '../../hooks';
 import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 

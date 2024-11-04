@@ -1,9 +1,11 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Login } from './components/login/login.jsx';
-import { AuthContextProvider } from './components';
-import { CreateAccount } from './components/create-account/create-account.jsx';
-import { HomePage } from './components/home-page/home-page.jsx';
+import {
+  AuthContextProvider,
+  Login,
+  CreateAccount,
+  HomePage,
+} from './components';
 
 const queryClient = new QueryClient();
 

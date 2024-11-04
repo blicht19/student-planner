@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
-import { useAuthContext } from '../../components/index.js';
 import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from './auth-context.jsx';
 
 const BASE_URL = '/backend/auth';
 
