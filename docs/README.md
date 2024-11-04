@@ -2,7 +2,8 @@
 
 ---
 
-As a student, I want to create a list of agenda items, so I can keep track of the work that I need to complete.
+As a **student**, I want to **create a list of agenda items**, so I can **keep track of the work that I need to complete
+**.
 
 ### Acceptance Criteria
 
@@ -12,8 +13,9 @@ As a student, I want to create a list of agenda items, so I can keep track of th
 
 ---
 
-As a student, I want to set a due date on agenda items, so I can prioritize work based on how soon it needs to be
-completed.
+As a **student**, I want to **set a due date on agenda items**, so I can **prioritize work based on how soon it needs to
+be
+completed**.
 
 ### Acceptance Criteria
 
@@ -22,7 +24,7 @@ completed.
 
 ---
 
-As a student, I want to track the time and location of my classes, so I can plan my daily schedule.
+As a **student**, I want to **track the time and location of my classes**, so I can **plan my daily schedule**.
 
 ### Acceptance Criteria
 
@@ -33,7 +35,8 @@ As a student, I want to track the time and location of my classes, so I can plan
 
 ---
 
-As a student, I want to track the time and location of upcoming events, such as exams, so I can plan my daily schedule.
+As a **student**, I want to **track the time and location of upcoming events, such as exams**, so I can **plan my daily
+schedule**.
 
 ### Acceptance Criteria
 
@@ -42,8 +45,9 @@ As a student, I want to track the time and location of upcoming events, such as 
 - Users can view events on their hourly schedule for each day of the week.
 
 --- 
-As a student, I want to see what days on the calendar have classes, events, and due dates for agenda items, so I can
-plan my schedule far in advance.
+As a **student**, I want to **see what days on the calendar have classes, events, and due dates for agenda items**, so I
+can
+**plan my schedule far in advance**.
 
 ### Acceptance Criteria
 
@@ -56,7 +60,7 @@ plan my schedule far in advance.
 The ID number of related techniques or mitigations from the MITRE ATT&CK framework are listed in parentheses where
 applicable.
 
-As an attacker, I want to access the data of other users, so I can acquire sensitive user information.
+As an **attacker**, I want to **access the data of other users**, so I can **acquire sensitive user information**.
 
 ### Mitigation Criteria
 
@@ -66,8 +70,9 @@ As an attacker, I want to access the data of other users, so I can acquire sensi
 
 ---
 
-As an attacker, I want to use cross-site scripting to acquire access tokens stored in local storage, session storage, or
-cookies, so I can access another user’s account (T1189).
+As an **attacker**, I want to **use cross-site scripting to acquire access tokens stored in local storage, session
+storage, or
+cookies**, so I can **access another user’s account** (T1189).
 
 ### Mitigation Criteria
 
@@ -75,7 +80,7 @@ cookies, so I can access another user’s account (T1189).
 
 ---
 
-As an attacker, I want to perform SQL injection, so I can infiltrate the database (T1190).
+As an **attacker**, I want to **perform SQL injection**, so I can **infiltrate the database** (T1190).
 
 ### Mitigation Criteria
 
@@ -83,7 +88,8 @@ As an attacker, I want to perform SQL injection, so I can infiltrate the databas
 
 ---
 
-As an attacker, I want to guess a user’s password via brute force, so I can access another user’s account (T1110.001)
+As an **attacker**, I want to **guess a user’s password via brute force**, so I can **access another user’s account** (
+T1110.001)
 
 ### Mitigation Criteria
 
@@ -91,7 +97,7 @@ As an attacker, I want to guess a user’s password via brute force, so I can ac
 - Set lockout policies after too many failed login attempts (M1036).
 
 ---
-As an unknowing user, I want to use a weak password, so I can easily remember my password.
+As an **unknowing user**, I want to **use a weak password**, so I can **easily remember my password**.
 
 ### Mitigation Criteria
 
@@ -100,8 +106,9 @@ As an unknowing user, I want to use a weak password, so I can easily remember my
 
 ---
 
-As an abusive user, I want to use the fields of agenda items and events to store large amounts of data, so I can use the
-application for personal cloud storage.
+As an **abusive user**, I want to **use the fields of agenda items and events to store large amounts of data**, so I can
+**use the
+application for personal cloud storage**.
 
 ### Mitigation Criteria
 
