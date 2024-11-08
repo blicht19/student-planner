@@ -18,5 +18,10 @@ export default defineConfig(({mode}) => {
       port: 3000,
       proxy
     },
+    css: {
+      modules: {
+        localsConvention: 'camelCaseOnly'
+      }
+    }
   }
 })

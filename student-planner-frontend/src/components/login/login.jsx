@@ -1,6 +1,7 @@
 import { useLogin } from '../../hooks';
 import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { TextInput } from '../text-input';
 
 export const Login = () => {
   const loginMutation = useLogin();
@@ -8,14 +9,14 @@ export const Login = () => {
   const [password, setPassword] = useState('');
 
   const onChangeUsername = useCallback(
-    e => {
-      setUsername(e.target.value);
+    username => {
+      setUsername(username);
     },
     [setUsername],
   );
   const onChangePassword = useCallback(
-    e => {
-      setPassword(e.target.value);
+    password => {
+      setPassword(password);
     },
     [setPassword],
   );
@@ -31,14 +32,18 @@ export const Login = () => {
     <div>
       <h1>Student Planner</h1>
       <div>
-        <div>
-          <label>Username</label>
-          <input type='text' value={username} onChange={onChangeUsername} />
-        </div>
-        <div>
-          <label>Password</label>
-          <input type='password' value={password} onChange={onChangePassword} />
-        </div>
+        <TextInput
+          value={username}
+          onChange={onChangeUsername}
+          label='Username'
+          errorText='test'
+        />
+        <TextInput
+          value={password}
+          onChange={onChangePassword}
+          isPassword
+          label='Password'
+        />
         <button onClick={onSubmit}>Log In</button>
       </div>
       <div>
