@@ -24,28 +24,64 @@ class LoginController(@Autowired private val loginService: LoginService) {
     @PostMapping("register", produces = [MediaType.TEXT_PLAIN_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     @Operation(summary = "Register a user", description = "Creates a new user account")
     @ApiResponses(
-        value = [ApiResponse(
-            responseCode = "201",
-            description = "Account created"
-        ), ApiResponse(responseCode = "409", description = "User with this username already exists")]
+        value = [
+            ApiResponse(
+                responseCode = "201",
+                description = "Account created"
+            ),
+            ApiResponse(responseCode = "409", description = "User with this username already exists"),
+            ApiResponse(responseCode = "400", description = "Bad request"),
+        ]
     )
     fun register(@RequestBody userDto: UserDto): ResponseEntity<String> {
-        if (loginService.userExists(userDto.username)) {
-            return ResponseEntity("User with this username already exists", HttpStatus.CONFLICT)
+        val username = userDto.username.trim()
+        val password = userDto.password.trim()
+
+        if (loginService.userExists(username)) {
+            return ResponseEntity("User with this username already exists.", HttpStatus.CONFLICT)
         }
 
-        loginService.createUser(userDto)
+        if (loginService.passwordHasBeenCompromised(password)) {
+            return ResponseEntity(
+                "This password has been compromised. Please use a different password.",
+                HttpStatus.BAD_REQUEST
+            )
+        }
+
+        if (!loginService.isPasswordValid(password)) {
+            return ResponseEntity(
+                "Password does not meet length requirements. Password must be at least ${loginService.minimumPasswordLength} characters and at most ${loginService.maximumPasswordLength} characters.",
+                HttpStatus.BAD_REQUEST
+            )
+        }
+
+        loginService.createUser(username, password)
         return ResponseEntity("User registered successfully", HttpStatus.CREATED)
     }
 
     @PostMapping("login", consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
     @Operation(summary = "Log in", description = "Logs a user into the application")
     @ApiResponses(
-        value = [ApiResponse(responseCode = "200", description = "Successfully logged in")]
+        value = [
+            ApiResponse(
+                responseCode = "200",
+                description = "Successfully logged in"
+            ),
+            ApiResponse(responseCode = "401", description = "Unauthorized"),
+        ]
     )
     fun login(@RequestBody userDto: UserDto): ResponseEntity<AuthResponseDto> {
-        val (username, cookie) = loginService.login(userDto)
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie).body(AuthResponseDto(username))
+        val username = userDto.username.trim()
+        val password = userDto.password.trim()
+
+        var warning: String? = null
+        if (loginService.passwordHasBeenCompromised(password)) {
+            warning = "This password has been compromised. Please change your password immediately"
+        }
+
+        val (userDetails, cookie) = loginService.login(username, password)
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie)
+            .body(AuthResponseDto(userDetails.username, userDetails.id, warning))
     }
 
     @PostMapping("logout", produces = [MediaType.TEXT_PLAIN_VALUE])
@@ -55,6 +91,6 @@ class LoginController(@Autowired private val loginService: LoginService) {
     )
     fun logout(): ResponseEntity<String> {
         val responseCookie = loginService.logout()
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, responseCookie).body("Successfully logged out")
+        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, responseCookie).body("Successfully logged out.")
     }
 }

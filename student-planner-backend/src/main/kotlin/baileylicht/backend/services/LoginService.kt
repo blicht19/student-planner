@@ -1,14 +1,14 @@
 package baileylicht.backend.services
 
-import baileylicht.backend.dtos.UserDto
 import baileylicht.backend.models.UserEntity
 import baileylicht.backend.repositories.UserRepository
 import baileylicht.backend.security.JwtComponent
+import baileylicht.backend.security.PlannerUserDetails
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.authentication.password.CompromisedPasswordChecker
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -17,8 +17,12 @@ class LoginService(
     @Autowired private val authenticationManager: AuthenticationManager,
     @Autowired private val userRepository: UserRepository,
     @Autowired private val passwordEncoder: PasswordEncoder,
-    @Autowired private val jwtComponent: JwtComponent
+    @Autowired private val jwtComponent: JwtComponent,
+    @Autowired private val compromisedPasswordChecker: CompromisedPasswordChecker
 ) {
+    val minimumPasswordLength = 12
+    val maximumPasswordLength = 100
+
     /**
      * Checks if a user with the same username as user already exists
      *
@@ -30,28 +34,50 @@ class LoginService(
     }
 
     /**
-     * Adds a new user to the database
-     * @param userDto The DTO containing the new user's information
+     * Checks a password against the Have I Been Pwned API to see if it has been compromised
+     * @param password A password to check against the Have I Been Pwned API
+     * @return true if the password has been compromised
      */
-    fun createUser(userDto: UserDto) {
-        val password = passwordEncoder.encode(userDto.password)
-        val user = UserEntity(userDto.username, password)
+    fun passwordHasBeenCompromised(password: String): Boolean {
+        val decision = compromisedPasswordChecker.check(password)
+        return decision.isCompromised
+    }
+
+    /**
+     * Checks if password meets length requirements. The NIST does not recommend requiring any special characters.
+     * See https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-63b.pdf
+     * @param password The password to validate
+     * @return true if the password is at least MINIMUM_PASSWORD_LENGTH and at most MAXIMUM_PASSWORD_LENGTH
+     */
+    fun isPasswordValid(password: String): Boolean {
+        return password.length in minimumPasswordLength..maximumPasswordLength
+    }
+
+    /**
+     * Adds a new user to the database
+     * @param username The new user's username
+     * @param password The new user's password
+     */
+    fun createUser(username: String, password: String) {
+        val encodedPassword = passwordEncoder.encode(password)
+        val user = UserEntity(username, encodedPassword)
         userRepository.save(user)
     }
 
     /**
      * Sets the user details in the security context and generates a cookie for the user
-     * @param userDto The DTO containing the user's information
+     * @param username The user's username
+     * @param password The user's password
      * @return A pair containing the newly logged-in user's username and the string representation of the cookie
      */
-    fun login(userDto: UserDto): Pair<String, String> {
+    fun login(username: String, password: String): Pair<PlannerUserDetails, String> {
         val authentication =
-            authenticationManager.authenticate(UsernamePasswordAuthenticationToken(userDto.username, userDto.password))
+            authenticationManager.authenticate(UsernamePasswordAuthenticationToken(username, password))
         SecurityContextHolder.getContext().authentication = authentication
-        val userDetails = authentication.principal as UserDetails
+        val userDetails = authentication.principal as PlannerUserDetails
         val cookie = jwtComponent.generateJwtCookie(userDetails)
 
-        return Pair(userDetails.username, cookie.toString())
+        return Pair(userDetails, cookie.toString())
     }
 
     /**
