@@ -5,19 +5,20 @@ import { useLogout } from '../../hooks';
 import styles from './home-page.module.css';
 
 export const HomePage = () => {
-  const { username } = useAuthContext();
+  const { username, userId } = useAuthContext();
   const navigate = useNavigate();
   const logoutMutation = useLogout();
 
   useEffect(() => {
-    if (!username || username.trim() === '') {
+    if (!username || username.trim() === '' || userId == null) {
       navigate('/login');
     }
-  }, [username, navigate]);
+  }, [username, navigate, userId]);
 
   return (
     <div className={styles.homePage}>
       <h1>Welcome, {username}</h1>
+      <p>Your user ID is {userId}</p>
       <button onClick={() => logoutMutation.mutate()}>Log Out</button>
     </div>
   );

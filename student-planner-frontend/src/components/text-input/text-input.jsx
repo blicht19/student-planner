@@ -20,14 +20,12 @@ export const TextInput = props => {
     setVisible(previous => !previous);
   }, [setVisible]);
 
-  const showText = !isPassword || visible;
-
   return (
     <div className={`${styles.textInput} ${className}`}>
       <label className={styles.textInputLabel}>{label}</label>
       <div className={styles.inputWrapper}>
         <input
-          type={showText ? 'text' : 'password'}
+          type={!isPassword || visible ? 'text' : 'password'}
           value={value}
           onChange={e => onChange(e.target.value)}
           className={`${styles.input} ${isError && styles.inputError}`}
