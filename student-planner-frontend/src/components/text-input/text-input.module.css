@@ -21,13 +21,34 @@
     color: var(--error-color);
 }
 
-.input {
+.input-wrapper {
+    display: flex;
+    border: 1px solid var(--text-color);
     border-radius: 3px;
-    border-style: solid;
     background-color: var(--medium-dark-color);
+    align-items: center;
+}
+
+.input {
     color: var(--text-color);
+    border: none;
+    background-color: inherit;
+    width: 100%;
+}
+
+.icon-wrapper {
+    padding-right: 0.25em;
+    cursor: pointer;
+}
+
+.icon-wrapper:hover {
+    color: var(--light-color);
 }
 
 .input-error {
     border-color: var(--error-color) !important;
+}
+
+.hidden {
+    visibility: hidden;
 }
