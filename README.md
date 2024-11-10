@@ -58,8 +58,8 @@ just 1.36.0
 $ just start-dev
 
 # Without just
-# Start containers for the database, backend, and pgadmin. Recreates the containers every time the command is run.
-$ docker compose -f dev.yml up --build --no-deps --force-recreate -d
+# Start containers for the database, backend, and pgadmin.
+$ docker compose -f dev.yml up --build -d
 # Start the frontend
 $ cd student-planner-frontend
 $ npm i

@@ -1,6 +1,6 @@
 # Starts the database, backend, and pgadmin containers for development.
 start-dev-containers:
-    docker compose -f dev.yml up --build --no-deps --force-recreate -d
+    docker compose -f dev.yml up --build -d
 
 # Installs the npm dependencies and starts the frontend development server
 start-frontend-dev:
