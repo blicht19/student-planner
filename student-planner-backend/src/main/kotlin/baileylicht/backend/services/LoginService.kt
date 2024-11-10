@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.authentication.password.CompromisedPasswordChecker
+import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import kotlin.jvm.Throws
 
 @Service
 class LoginService(
@@ -59,6 +61,7 @@ class LoginService(
      * @param password The user's password
      * @return A pair containing the newly logged-in user's username and the string representation of the cookie
      */
+    @Throws(AuthenticationException::class)
     fun login(username: String, password: String): Pair<PlannerUserDetails, String> {
         val authentication =
             authenticationManager.authenticate(UsernamePasswordAuthenticationToken(username, password))
