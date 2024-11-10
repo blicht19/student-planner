@@ -8,10 +8,11 @@ export const TextInput = props => {
     isError = false,
     errorText,
     isPassword = false,
+    className,
   } = props;
 
   return (
-    <div className={styles.textInput}>
+    <div className={`${styles.textInput} ${className}`}>
       <label className={styles.textInputLabel}>{label}</label>
       <input
         type={isPassword ? 'password' : 'text'}

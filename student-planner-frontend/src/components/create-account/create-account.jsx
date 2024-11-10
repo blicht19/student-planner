@@ -1,6 +1,9 @@
 import { useRegister } from '../../hooks';
 import { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
+import styles from './create-account.module.css';
+import { TextInput } from '../text-input';
+import { Button } from '../button';
+import { Link } from '../link';
 
 export const CreateAccount = () => {
   const registerMutation = useRegister();
@@ -9,20 +12,20 @@ export const CreateAccount = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const onChangeUsername = useCallback(
-    e => {
-      setUsername(e.target.value);
+    username => {
+      setUsername(username);
     },
     [setUsername],
   );
   const onChangePassword = useCallback(
-    e => {
-      setPassword(e.target.value);
+    password => {
+      setPassword(password);
     },
     [setPassword],
   );
   const onChangeConfirmPassword = useCallback(
-    e => {
-      setConfirmPassword(e.target.value);
+    confirmPassword => {
+      setConfirmPassword(confirmPassword);
     },
     [setConfirmPassword],
   );
@@ -35,31 +38,34 @@ export const CreateAccount = () => {
   );
 
   return (
-    <div>
+    <div className={styles.createAccount}>
       <h1>Student Planner</h1>
-      <div>
-        <div>
-          <label>Username</label>
-          <input type='text' value={username} onChange={onChangeUsername} />
-        </div>
-        <div>
-          <label>Password</label>
-          <input type='password' value={password} onChange={onChangePassword} />
-        </div>
-        <div>
-          <label>Confirm Password</label>
-          <input
-            type='password'
-            value={confirmPassword}
-            onChange={onChangeConfirmPassword}
-          />
-        </div>
-        <button onClick={onSubmit}>Create Account</button>
+      <div className={styles.inputs}>
+        <TextInput
+          label='Username'
+          value={username}
+          onChange={onChangeUsername}
+        />
+        <TextInput
+          label='Password'
+          value={password}
+          onChange={onChangePassword}
+          isPassword
+        />
+        <TextInput
+          label='Confirm Password'
+          value={confirmPassword}
+          onChange={onChangeConfirmPassword}
+          className={styles.lastTextInput}
+          isPassword
+        />
+        <Button
+          onClick={onSubmit}
+          text='Create Account'
+          className={styles.button}
+        />
       </div>
-      <div>
-        <p>Already have an account?</p>
-        <Link to='/login'>Log in</Link>
-      </div>
+      <Link to='/login' text='Already have an account?' />
     </div>
   );
 };

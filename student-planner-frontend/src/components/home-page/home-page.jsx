@@ -2,6 +2,7 @@ import { useAuthContext } from '../../hooks';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLogout } from '../../hooks';
+import styles from './home-page.module.css';
 
 export const HomePage = () => {
   const { username } = useAuthContext();
@@ -15,7 +16,7 @@ export const HomePage = () => {
   }, [username, navigate]);
 
   return (
-    <div>
+    <div className={styles.homePage}>
       <h1>Welcome, {username}</h1>
       <button onClick={() => logoutMutation.mutate()}>Log Out</button>
     </div>

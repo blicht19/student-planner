@@ -47,4 +47,10 @@ h1, h2, h3, h4, h5, h6 {
     --error-color: #D12E42;
 
     --font-family: Roboto;
+    --text-color: white;
+}
+
+body, html, #root {
+    height: 100%;
+    overflow: hidden;
 }

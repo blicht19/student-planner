@@ -1,0 +1,15 @@
+.button {
+    background-color: var(--medium-color);
+    border: none;
+    border-radius: 3px;
+    color: var(--text-color);
+    min-height: 35px;
+}
+
+.button:hover {
+    background-color: var(--medium-dark-color);
+}
+
+.button:active {
+    background-color: var(--medium-color);
+}

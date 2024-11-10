@@ -1,7 +1,6 @@
 .text-input {
     display: grid;
     grid-template-rows: repeat(3, 1fr);
-    max-width: 250px;
     min-width: 200px;
     font-family: var(--font-family), sans-serif;
     height: 75px;
@@ -25,12 +24,10 @@
 .input {
     border-radius: 3px;
     border-style: solid;
+    background-color: var(--medium-dark-color);
+    color: var(--text-color);
 }
 
 .input-error {
     border-color: var(--error-color) !important;
-}
-
-.hidden {
-    visibility: hidden;
 }

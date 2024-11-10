@@ -1,10 +1,16 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  Navigate,
+  Route,
+  RouterProvider,
+} from 'react-router-dom';
 import {
   AuthContextProvider,
   Login,
   CreateAccount,
   HomePage,
+  Root,
 } from './components';
 
 const queryClient = new QueryClient();
@@ -12,15 +18,19 @@ const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <HomePage />,
-  },
-  {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/register',
-    element: <CreateAccount />,
+    element: <Root />,
+    children: [
+      {
+        index: true,
+        element: <Navigate replace to='/home' />,
+      },
+      {
+        path: '/home',
+        element: <HomePage />,
+      },
+      { path: 'login', element: <Login /> },
+      { path: 'register', element: <CreateAccount /> },
+    ],
   },
 ]);
 

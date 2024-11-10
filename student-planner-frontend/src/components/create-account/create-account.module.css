@@ -1,0 +1,20 @@
+.create-account {
+    margin-top: 15%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 250px;
+    gap: 1rem;
+}
+
+.inputs {
+    width: 100%;
+}
+
+.last-text-input {
+    margin-bottom: 0.5rem;
+}
+
+.button {
+    width: 100%;
+}
