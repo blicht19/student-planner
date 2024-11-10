@@ -1,9 +1,11 @@
 package baileylicht.backend.security
 
+import baileylicht.backend.services.RevokedTokenService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
@@ -11,19 +13,26 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 class JwtAuthFilter : OncePerRequestFilter() {
     @Autowired
-    lateinit var tokenGenerator: JwtComponent
+    lateinit var jwtComponent: JwtComponent
 
     @Autowired
     lateinit var userDetailsService: PlannerUserDetailsService
+
+    @Autowired
+    lateinit var revokedTokenService: RevokedTokenService
 
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val jwt = parseJwt(request)
-        if (jwt != null && tokenGenerator.validateToken(jwt)) {
-            val username = tokenGenerator.getUsernameFromToken(jwt)
+        val jwt = jwtComponent.getJwtFromCookies(request)
+        if (jwt != null && jwtComponent.validateToken(jwt)) {
+            if (revokedTokenService.isRevoked(jwt)) {
+                throw AuthenticationCredentialsNotFoundException("JWT was invalid")
+            }
+
+            val username = jwtComponent.getUsernameFromToken(jwt)
             val userDetails = userDetailsService.loadUserByUsername(username)
             val authentication = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
             authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
@@ -32,9 +41,5 @@ class JwtAuthFilter : OncePerRequestFilter() {
         }
 
         filterChain.doFilter(request, response)
-    }
-
-    private fun parseJwt(request: HttpServletRequest): String? {
-        return tokenGenerator.getJwtFromCookies(request)
     }
 }

@@ -2,6 +2,7 @@ package baileylicht.backend.controllers.auth
 
 import baileylicht.backend.dtos.AuthResponseDto
 import baileylicht.backend.dtos.UserDto
+import baileylicht.backend.security.JwtComponent
 import baileylicht.backend.services.LoginService
 import baileylicht.backend.services.UserLockoutService
 import baileylicht.backend.services.UserService
@@ -10,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
@@ -131,8 +133,8 @@ class LoginController(
     @ApiResponses(
         value = [ApiResponse(responseCode = "200", description = "Successfully logged out")]
     )
-    fun logout(): ResponseEntity<String> {
-        val responseCookie = loginService.logout()
+    fun logout(request: HttpServletRequest): ResponseEntity<String> {
+        val responseCookie = loginService.logout(request)
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, responseCookie).body("Successfully logged out.")
     }
 }

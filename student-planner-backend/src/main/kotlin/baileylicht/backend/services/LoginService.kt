@@ -1,8 +1,10 @@
 package baileylicht.backend.services
 
+import baileylicht.backend.models.RevokedToken
 import baileylicht.backend.models.UserEntity
 import baileylicht.backend.security.JwtComponent
 import baileylicht.backend.security.PlannerUserDetails
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -19,7 +21,8 @@ class LoginService(
     @Autowired private val userService: UserService,
     @Autowired private val passwordEncoder: PasswordEncoder,
     @Autowired private val jwtComponent: JwtComponent,
-    @Autowired private val compromisedPasswordChecker: CompromisedPasswordChecker
+    @Autowired private val compromisedPasswordChecker: CompromisedPasswordChecker,
+    @Autowired private val revokedTokenService: RevokedTokenService
 ) {
     val minimumPasswordLength = 12
     val maximumPasswordLength = 100
@@ -74,10 +77,16 @@ class LoginService(
 
     /**
      * Logs the user out
-     * TODO: Set up a JWT blacklist, make this method add the user's old token and clear this security context
      * @return The string representation of an empty cookie to be returned to the user
      */
-    fun logout(): String {
+    fun logout(request: HttpServletRequest): String {
+        val jwt = jwtComponent.getJwtFromCookies(request)
+        if (jwt != null) {
+            val expirationDate = jwtComponent.getExpirationDateFromToken(jwt)
+            revokedTokenService.revokeToken(jwt, expirationDate)
+        }
+
+        SecurityContextHolder.clearContext()
         return jwtComponent.clearJwtCookie().toString()
     }
 }

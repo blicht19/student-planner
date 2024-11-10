@@ -64,11 +64,22 @@ class JwtComponent {
 
     /**
      * Parses the username from JWT
+     * @param token A JWT
      * @return The username stored in a JWT
      */
     fun getUsernameFromToken(token: String): String {
         val claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).payload
         return claims.subject
+    }
+
+    /**
+     * Get the expiration date for a JWT
+     * @param token A JWT
+     * @return The expiration date for the token
+     */
+    fun getExpirationDateFromToken(token: String): Date {
+        val claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).payload
+        return claims.expiration
     }
 
     /**
