@@ -3,6 +3,7 @@ package baileylicht.backend.controllers.auth
 import baileylicht.backend.dtos.AuthResponseDto
 import baileylicht.backend.dtos.UserDto
 import baileylicht.backend.services.LoginService
+import baileylicht.backend.services.UserService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -20,7 +21,10 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/auth")
 @Tag(name = "Authorization")
-class LoginController(@Autowired private val loginService: LoginService) {
+class LoginController(
+    @Autowired private val loginService: LoginService,
+    @Autowired private val userService: UserService
+) {
     @PostMapping("register", produces = [MediaType.TEXT_PLAIN_VALUE], consumes = [MediaType.APPLICATION_JSON_VALUE])
     @Operation(summary = "Register a user", description = "Creates a new user account")
     @ApiResponses(
@@ -37,7 +41,7 @@ class LoginController(@Autowired private val loginService: LoginService) {
         val username = userDto.username.trim()
         val password = userDto.password.trim()
 
-        if (loginService.userExists(username)) {
+        if (userService.userExists(username)) {
             return ResponseEntity("User with this username already exists.", HttpStatus.CONFLICT)
         }
 
@@ -81,7 +85,7 @@ class LoginController(@Autowired private val loginService: LoginService) {
 
         val (userDetails, cookie) = loginService.login(username, password)
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie)
-            .body(AuthResponseDto(userDetails.username, userDetails.id, warning))
+            .body(AuthResponseDto(userDetails.username, userDetails.user.id!!, warning))
     }
 
     @PostMapping("logout", produces = [MediaType.TEXT_PLAIN_VALUE])

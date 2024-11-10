@@ -1,18 +1,16 @@
 package baileylicht.backend.security
 
-import com.fasterxml.jackson.annotation.JsonIgnore
+import baileylicht.backend.models.UserEntity
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
-data class PlannerUserDetails(
-    val id: Long,
-    private val username: String,
-    @JsonIgnore private val password: String,
-    private val authorities: Collection<GrantedAuthority>
-) : UserDetails {
-    override fun getAuthorities(): Collection<GrantedAuthority> = authorities
+data class PlannerUserDetails(val user: UserEntity) : UserDetails {
+    override fun getAuthorities(): Collection<GrantedAuthority> = listOf(SimpleGrantedAuthority("USER"))
 
-    override fun getPassword(): String = password
+    override fun getPassword(): String = user.password
 
-    override fun getUsername(): String = username
+    override fun getUsername(): String = user.username
+
+    override fun isAccountNonLocked(): Boolean = !user.accountLocked
 }

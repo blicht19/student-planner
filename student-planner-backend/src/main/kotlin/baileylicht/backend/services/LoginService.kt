@@ -1,7 +1,6 @@
 package baileylicht.backend.services
 
 import baileylicht.backend.models.UserEntity
-import baileylicht.backend.repositories.UserRepository
 import baileylicht.backend.security.JwtComponent
 import baileylicht.backend.security.PlannerUserDetails
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,23 +14,13 @@ import org.springframework.stereotype.Service
 @Service
 class LoginService(
     @Autowired private val authenticationManager: AuthenticationManager,
-    @Autowired private val userRepository: UserRepository,
+    @Autowired private val userService: UserService,
     @Autowired private val passwordEncoder: PasswordEncoder,
     @Autowired private val jwtComponent: JwtComponent,
     @Autowired private val compromisedPasswordChecker: CompromisedPasswordChecker
 ) {
     val minimumPasswordLength = 12
     val maximumPasswordLength = 100
-
-    /**
-     * Checks if a user with the same username as user already exists
-     *
-     * @param username The username to be checked
-     * @return true if a user with this username already exists
-     */
-    fun userExists(username: String): Boolean {
-        return userRepository.existsByUsername(username)
-    }
 
     /**
      * Checks a password against the Have I Been Pwned API to see if it has been compromised
@@ -61,7 +50,7 @@ class LoginService(
     fun createUser(username: String, password: String) {
         val encodedPassword = passwordEncoder.encode(password)
         val user = UserEntity(username, encodedPassword)
-        userRepository.save(user)
+        userService.saveUser(user)
     }
 
     /**

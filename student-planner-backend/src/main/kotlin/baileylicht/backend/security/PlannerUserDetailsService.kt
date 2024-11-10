@@ -2,7 +2,6 @@ package baileylicht.backend.security
 
 import baileylicht.backend.repositories.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
@@ -12,6 +11,6 @@ class PlannerUserDetailsService(@Autowired private val userRepository: UserRepos
     override fun loadUserByUsername(username: String): PlannerUserDetails {
         val user = userRepository.findByUsername(username) ?: throw UsernameNotFoundException(username)
 
-        return PlannerUserDetails(user.id!!, user.username, user.password, listOf(SimpleGrantedAuthority("USER")))
+        return PlannerUserDetails(user)
     }
 }

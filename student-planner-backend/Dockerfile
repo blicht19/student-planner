@@ -6,4 +6,4 @@ RUN gradle assemble
 FROM amazoncorretto:21.0.5-al2023
 EXPOSE 8080
 COPY --from=build /home/gradle/src/build/libs/backend.jar /app/
-ENTRYPOINT ["java", "-jar", "/app/backend.jar"]
+ENTRYPOINT ["java", "-jar", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "/app/backend.jar"]
