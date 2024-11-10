@@ -47,7 +47,12 @@ export const Login = () => {
           label='Password'
           className={styles.lastTextInput}
         />
-        <Button onClick={onSubmit} text='Log In' className={styles.button} />
+        <Button
+          onClick={onSubmit}
+          text='Log In'
+          className={styles.button}
+          isLoading={loginMutation.isPending}
+        />
       </div>
       <Link to='/register' text='New User?' />
     </div>

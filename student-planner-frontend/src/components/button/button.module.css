@@ -4,10 +4,14 @@
     border-radius: 3px;
     color: var(--text-color);
     min-height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.button:hover {
+.button:hover:enabled {
     background-color: var(--medium-dark-color);
+    cursor: pointer;
 }
 
 .button:active {

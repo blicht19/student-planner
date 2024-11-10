@@ -63,6 +63,7 @@ export const CreateAccount = () => {
           onClick={onSubmit}
           text='Create Account'
           className={styles.button}
+          isLoading={registerMutation.isPending}
         />
       </div>
       <Link to='/login' text='Already have an account?' />
