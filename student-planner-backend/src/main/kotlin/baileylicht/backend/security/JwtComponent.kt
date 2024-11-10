@@ -92,7 +92,7 @@ class JwtComponent {
             Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token)
             return true
         } catch (exception: Exception) {
-            throw AuthenticationCredentialsNotFoundException("JWT was invalid or expired")
+            return false
         }
     }
 

@@ -1,6 +1,5 @@
-package baileylicht.backend.security
+package baileylicht.backend.models
 
-import baileylicht.backend.models.UserEntity
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails

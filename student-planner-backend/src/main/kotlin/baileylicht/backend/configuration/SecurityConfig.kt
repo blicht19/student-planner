@@ -1,5 +1,8 @@
-package baileylicht.backend.security
+package baileylicht.backend.configuration
 
+import baileylicht.backend.security.JwtAuthEntryPoint
+import baileylicht.backend.security.JwtAuthFilter
+import baileylicht.backend.services.PlannerUserDetailsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

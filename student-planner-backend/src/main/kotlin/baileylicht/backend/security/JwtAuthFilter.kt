@@ -1,11 +1,13 @@
 package baileylicht.backend.security
 
+import baileylicht.backend.services.PlannerUserDetailsService
 import baileylicht.backend.services.RevokedTokenService
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
@@ -29,7 +31,10 @@ class JwtAuthFilter : OncePerRequestFilter() {
         val jwt = jwtComponent.getJwtFromCookies(request)
         if (jwt != null && jwtComponent.validateToken(jwt)) {
             if (revokedTokenService.isRevoked(jwt)) {
-                throw AuthenticationCredentialsNotFoundException("JWT was invalid")
+                val cookie = jwtComponent.clearJwtCookie().toString()
+                response.status = HttpStatus.UNAUTHORIZED.value()
+                response.writer.print("JWT is expired or invalid")
+                response.addHeader(HttpHeaders.SET_COOKIE, cookie)
             }
 
             val username = jwtComponent.getUsernameFromToken(jwt)

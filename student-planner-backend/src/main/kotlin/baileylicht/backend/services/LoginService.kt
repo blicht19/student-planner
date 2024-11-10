@@ -1,9 +1,8 @@
 package baileylicht.backend.services
 
-import baileylicht.backend.models.RevokedToken
 import baileylicht.backend.models.UserEntity
 import baileylicht.backend.security.JwtComponent
-import baileylicht.backend.security.PlannerUserDetails
+import baileylicht.backend.models.PlannerUserDetails
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
