@@ -5,4 +5,5 @@
     background-color: var(--dark-color);
     font-family: var(--font-family), sans-serif;
     color: var(--text-color);
+    overflow: scroll;
 }

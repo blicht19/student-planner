@@ -5,6 +5,10 @@
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+
+    @media (max-height: 475px) {
+        margin-top: 0;
+    }
 }
 
 .last-text-input {
