@@ -1,6 +1,7 @@
 export * from './auth';
 export * from './button';
 export * from './create-account';
+export * from './error-text';
 export * from './home-page';
 export * from './link';
 export * from './login';

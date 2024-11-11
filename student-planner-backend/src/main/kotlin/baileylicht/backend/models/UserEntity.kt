@@ -8,8 +8,8 @@ import java.sql.Timestamp
 @Entity
 @Table(name = "users")
 class UserEntity(
-    @Column(nullable = false) @NotBlank @Size(max = 20) val username: String,
-    @Column(nullable = false) @NotBlank @Size(max = 100) val password: String,
+    @Column(nullable = false) @NotBlank @Size(min = 5, max = 40) val username: String,
+    @Column(nullable = false) @NotBlank @Size(min = 12, max = 100) val password: String,
     @Column var accountLocked: Boolean = false,
     @Column var failedLoginAttempts: Int = 0,
     @Column var lockTime: Timestamp? = null,

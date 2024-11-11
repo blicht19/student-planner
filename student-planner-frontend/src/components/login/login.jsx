@@ -38,7 +38,6 @@ export const Login = () => {
           value={username}
           onChange={onChangeUsername}
           label='Username'
-          errorText='test'
         />
         <TextInput
           value={password}

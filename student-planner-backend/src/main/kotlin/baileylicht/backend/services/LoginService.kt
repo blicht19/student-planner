@@ -25,6 +25,8 @@ class LoginService(
 ) {
     val minimumPasswordLength = 12
     val maximumPasswordLength = 100
+    val minimumUsernameLength = 5
+    val maximumUsernameLength = 40
 
     /**
      * Checks a password against the Have I Been Pwned API to see if it has been compromised
@@ -37,10 +39,19 @@ class LoginService(
     }
 
     /**
+     * Checks if a username meets length requirements.
+     * @param username The username to validate
+     * @return true if the username is at least minimumUsernameLength and at most maximumUsernameLength
+     */
+    fun isUsernameValid(username: String): Boolean {
+        return username.length in minimumUsernameLength..maximumUsernameLength;
+    }
+
+    /**
      * Checks if password meets length requirements. The NIST does not recommend requiring any special characters.
      * See https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-63b.pdf
      * @param password The password to validate
-     * @return true if the password is at least MINIMUM_PASSWORD_LENGTH and at most MAXIMUM_PASSWORD_LENGTH
+     * @return true if the password is at least minimumPasswordLength and at most maximumPasswordLength
      */
     fun isPasswordValid(password: String): Boolean {
         return password.length in minimumPasswordLength..maximumPasswordLength

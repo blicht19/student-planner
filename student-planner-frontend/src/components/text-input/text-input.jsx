@@ -3,7 +3,7 @@ import {
   MdOutlineVisibility as Visible,
   MdOutlineVisibilityOff as Hidden,
 } from 'react-icons/md';
-import { useCallback, useState } from 'react';
+import { useToggle } from '../../hooks';
 
 export const TextInput = props => {
   const {
@@ -14,21 +14,20 @@ export const TextInput = props => {
     errorText,
     isPassword = false,
     className,
+    maxLength,
   } = props;
-  const [visible, setVisible] = useState(false);
-  const toggleVisibility = useCallback(() => {
-    setVisible(previous => !previous);
-  }, [setVisible]);
+  const [visible, toggleVisibility] = useToggle(false);
 
   return (
     <div className={`${styles.textInput} ${className}`}>
       <label className={styles.textInputLabel}>{label}</label>
-      <div className={styles.inputWrapper}>
+      <div className={`${styles.inputWrapper} ${isError && styles.inputError}`}>
         <input
           type={!isPassword || visible ? 'text' : 'password'}
           value={value}
           onChange={e => onChange(e.target.value)}
-          className={`${styles.input} ${isError && styles.inputError}`}
+          className={styles.input}
+          maxLength={maxLength}
         />
         <div
           className={`${styles.iconWrapper} ${!isPassword && styles.hidden}`}

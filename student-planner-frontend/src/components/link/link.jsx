@@ -5,11 +5,7 @@ export const Link = props => {
   const { to, text, className } = props;
 
   return (
-    <ReactRouterLink
-      to={to}
-      className={`${styles.link} ${className}`}
-      {...props}
-    >
+    <ReactRouterLink to={to} className={`${styles.link} ${className}`}>
       {text}
     </ReactRouterLink>
   );

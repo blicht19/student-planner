@@ -6,7 +6,6 @@
     height: 75px;
 
     :focus-visible {
-        border-color: var(--light-color);
         outline: none;
     }
 }
@@ -17,7 +16,7 @@
 
 .error-label {
     font-size: 12px;
-    text-align: right;
+    text-align: center;
     color: var(--error-color);
 }
 
@@ -27,6 +26,10 @@
     border-radius: 3px;
     background-color: var(--medium-dark-color);
     align-items: center;
+}
+
+.input-wrapper:has(>:focus-visible) {
+    border-color: var(--light-color)
 }
 
 .input {

@@ -49,6 +49,17 @@ class LoginController(
         val username = userDto.username.trim()
         val password = userDto.password.trim()
 
+        if (username.isEmpty() || password.isEmpty()) {
+            return ResponseEntity("Username and password are required", HttpStatus.BAD_REQUEST);
+        }
+
+        if (!loginService.isUsernameValid(username)) {
+            return ResponseEntity(
+                "Username must be at least ${loginService.minimumUsernameLength} characters and at most ${loginService.maximumUsernameLength} characters",
+                HttpStatus.BAD_REQUEST
+            );
+        }
+
         if (userService.userExists(username)) {
             return ResponseEntity("User with this username already exists.", HttpStatus.CONFLICT)
         }
