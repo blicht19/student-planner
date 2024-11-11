@@ -1,14 +1,27 @@
 import { useLogin } from '../../hooks';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { TextInput } from '../text-input';
 import styles from './login.module.css';
 import { Button } from '../button';
 import { Link } from '../link';
+import { ErrorText } from '../error-text/index.js';
 
 export const Login = () => {
   const loginMutation = useLogin();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errorText, setErrorText] = useState('');
+
+  useEffect(() => {
+    if (loginMutation.isError) {
+      setErrorText(
+        loginMutation.error.response?.data ??
+          'An error occurred while logging in.',
+      );
+    } else {
+      setErrorText('');
+    }
+  }, [loginMutation.error, loginMutation.isError]);
 
   const onChangeUsername = useCallback(
     username => {
@@ -16,12 +29,14 @@ export const Login = () => {
     },
     [setUsername],
   );
+
   const onChangePassword = useCallback(
     password => {
       setPassword(password);
     },
     [setPassword],
   );
+
   const onSubmit = useCallback(
     e => {
       e.preventDefault();
@@ -38,6 +53,7 @@ export const Login = () => {
           value={username}
           onChange={onChangeUsername}
           label='Username'
+          maxLength={40}
         />
         <TextInput
           value={password}
@@ -45,6 +61,7 @@ export const Login = () => {
           isPassword
           label='Password'
           className={styles.lastTextInput}
+          maxLength={100}
         />
         <Button
           onClick={onSubmit}
@@ -54,6 +71,7 @@ export const Login = () => {
         />
       </div>
       <Link to='/register' text='New User?' />
+      {errorText !== '' && <ErrorText text={errorText} />}
     </div>
   );
 };

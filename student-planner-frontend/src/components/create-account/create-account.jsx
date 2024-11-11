@@ -25,7 +25,6 @@ export const CreateAccount = () => {
 
   useEffect(() => {
     if (registerMutation.isError) {
-      console.log(registerMutation.error.response.data);
       setErrorText(
         registerMutation.error.response?.data ??
           'An error occurred while creating account.',
