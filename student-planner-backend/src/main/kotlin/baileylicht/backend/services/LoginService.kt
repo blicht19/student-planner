@@ -44,7 +44,7 @@ class LoginService(
      * @return true if the username is at least minimumUsernameLength and at most maximumUsernameLength
      */
     fun isUsernameValid(username: String): Boolean {
-        return username.length in minimumUsernameLength..maximumUsernameLength;
+        return username.length in minimumUsernameLength..maximumUsernameLength
     }
 
     /**
@@ -98,5 +98,22 @@ class LoginService(
 
         SecurityContextHolder.clearContext()
         return jwtComponent.clearJwtCookie().toString()
+    }
+
+    /**
+     * Returns the User entity for the user that is logged in
+     * @return The User that is logged in
+     */
+    fun getLoggedInUser(): UserEntity? {
+        val userDetails = SecurityContextHolder.getContext()?.authentication?.principal as PlannerUserDetails?
+        return userDetails?.user
+    }
+
+    /**
+     * Returns the ID number of the logged-in User
+     * @return The ID number of the logged-in User
+     */
+    fun getLoggedInUserId(): Long? {
+        return getLoggedInUser()?.id
     }
 }

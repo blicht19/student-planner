@@ -1,8 +1,7 @@
-package baileylicht.backend.controllers.auth
+package baileylicht.backend.controllers
 
 import baileylicht.backend.dtos.AuthResponseDto
 import baileylicht.backend.dtos.UserDto
-import baileylicht.backend.security.JwtComponent
 import baileylicht.backend.services.LoginService
 import baileylicht.backend.services.UserLockoutService
 import baileylicht.backend.services.UserService
@@ -50,14 +49,14 @@ class LoginController(
         val password = userDto.password.trim()
 
         if (username.isEmpty() || password.isEmpty()) {
-            return ResponseEntity("Username and password are required", HttpStatus.BAD_REQUEST);
+            return ResponseEntity("Username and password are required", HttpStatus.BAD_REQUEST)
         }
 
         if (!loginService.isUsernameValid(username)) {
             return ResponseEntity(
                 "Username must be at least ${loginService.minimumUsernameLength} characters and at most ${loginService.maximumUsernameLength} characters",
                 HttpStatus.BAD_REQUEST
-            );
+            )
         }
 
         if (userService.userExists(username)) {
