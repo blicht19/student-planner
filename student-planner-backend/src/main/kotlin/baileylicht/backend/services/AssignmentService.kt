@@ -15,6 +15,11 @@ class AssignmentService(@Autowired private val assignmentRepository: AssignmentR
         return assignmentListToAssignmentResponseDtoList(assignments)
     }
 
+    fun getAllFiltered(userId: Long, completed: Boolean): List<AssignmentResponseDto> {
+        val assignments = assignmentRepository.findAllFiltered(userId, completed)
+        return assignmentListToAssignmentResponseDtoList(assignments)
+    }
+
     fun getAssignment(userId: Long, assignmentId: Long): Assignment? {
         return assignmentRepository.findByUserIdAndId(userId, assignmentId)
     }

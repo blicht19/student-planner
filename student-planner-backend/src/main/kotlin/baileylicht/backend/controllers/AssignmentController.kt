@@ -1,6 +1,7 @@
 package baileylicht.backend.controllers
 
 import baileylicht.backend.dtos.AssignmentCreateUpdateDto
+import baileylicht.backend.dtos.AssignmentFilterDto
 import baileylicht.backend.models.Assignment
 import baileylicht.backend.services.AssignmentService
 import baileylicht.backend.services.LoginService
@@ -44,6 +45,29 @@ class AssignmentController(
             loginService.getLoggedInUserId() ?: return ResponseEntity("User is not logged in", HttpStatus.UNAUTHORIZED)
 
         val assignments = assignmentService.getAll(userId)
+        return ResponseEntity.ok(assignments)
+    }
+
+    @PostMapping(
+        produces = [MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE],
+        consumes = [MediaType.APPLICATION_JSON_VALUE],
+        path = ["filter"]
+    )
+    @Operation(summary = "Gets all assignments filtered by completion state and due date")
+    @ApiResponses(
+        value = [ApiResponse(
+            responseCode = "200",
+            description = "Successfully retrieved assignments"
+        ), ApiResponse(responseCode = "401", description = "Unauthorized"), ApiResponse(
+            responseCode = "400",
+            description = "Bad request"
+        )]
+    )
+    fun getAllAssignmentsFiltered(@RequestBody filter: AssignmentFilterDto): ResponseEntity<Any> {
+        val userId =
+            loginService.getLoggedInUserId() ?: return ResponseEntity("User is not logged in", HttpStatus.UNAUTHORIZED)
+
+        val assignments = assignmentService.getAllFiltered(userId, filter.completed)
         return ResponseEntity.ok(assignments)
     }
 
