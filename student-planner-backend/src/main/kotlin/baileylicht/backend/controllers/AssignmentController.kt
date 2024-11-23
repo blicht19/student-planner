@@ -80,8 +80,15 @@ class AssignmentController(
         val user =
             loginService.getLoggedInUser() ?: return ResponseEntity("User is not logged in", HttpStatus.UNAUTHORIZED)
         val name = assignment.name ?: return ResponseEntity("Assignment name is required", HttpStatus.BAD_REQUEST)
+        if (assignment.dueDate == null) {
+            return ResponseEntity("Assignment due date is required", HttpStatus.BAD_REQUEST)
+        }
+        val dueDate = stringToLocalDate(assignment.dueDate) ?: return ResponseEntity(
+            "Invalid date: ${assignment.dueDate}",
+            HttpStatus.BAD_REQUEST
+        )
 
-        val assignmentEntity = Assignment(name, user = user)
+        val assignmentEntity = Assignment(name, dueDate, user = user)
         assignment.complete?.let {
             assignmentEntity.complete = it
         }
@@ -92,10 +99,6 @@ class AssignmentController(
         }
         assignment.note?.let {
             assignmentEntity.note = it
-        }
-        assignment.dueDate?.let {
-            val dueDate = stringToLocalDate(it) ?: return ResponseEntity("Invalid date: $it", HttpStatus.BAD_REQUEST)
-            assignmentEntity.dueDate = dueDate
         }
 
         assignmentService.saveAssignment(assignmentEntity)
@@ -146,13 +149,9 @@ class AssignmentController(
             }
         }
         assignment.dueDate?.let {
-            if (it.isBlank()) {
-                assignmentEntity.dueDate = null
-            } else {
-                val dueDate =
-                    stringToLocalDate(it) ?: return ResponseEntity("Invalid date: $it", HttpStatus.BAD_REQUEST)
-                assignmentEntity.dueDate = dueDate
-            }
+            val dueDate =
+                stringToLocalDate(it) ?: return ResponseEntity("Invalid date: $it", HttpStatus.BAD_REQUEST)
+            assignmentEntity.dueDate = dueDate
         }
 
         assignmentService.saveAssignment(assignmentEntity)

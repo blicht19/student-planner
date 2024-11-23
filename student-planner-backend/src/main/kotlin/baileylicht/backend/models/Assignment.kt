@@ -8,6 +8,7 @@ import java.time.LocalDate
 @Table(name = "assignments")
 class Assignment(
     @Column(nullable = false) @Size(min = 1, max = 100) var name: String,
+    @Column var dueDate: LocalDate,
     @Column(nullable = false) var complete: Boolean = false,
     @ManyToOne @JoinColumn(
         name = "user_id",
@@ -16,6 +17,5 @@ class Assignment(
     ) val user: UserEntity,
     @ManyToOne @JoinColumn(name = "subject_id", referencedColumnName = "id") var subject: Subject? = null,
     @Column @Size(max = 500) var note: String? = null,
-    @Column var dueDate: LocalDate? = null,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long? = null
 )
