@@ -1,7 +1,7 @@
 package baileylicht.backend.controllers
 
 import baileylicht.backend.dtos.AssignmentCreateUpdateDto
-import baileylicht.backend.dtos.AssignmentFilterDto
+import baileylicht.backend.dtos.DueDateFilterDto
 import baileylicht.backend.models.Assignment
 import baileylicht.backend.services.AssignmentService
 import baileylicht.backend.services.LoginService
@@ -56,7 +56,7 @@ class AssignmentController(
             description = "Bad request"
         )]
     )
-    fun getAllAssignmentsFiltered(@RequestBody filter: AssignmentFilterDto): ResponseEntity<Any> {
+    fun getAllAssignmentsFiltered(@RequestBody filter: DueDateFilterDto): ResponseEntity<Any> {
         val userId =
             loginService.getLoggedInUserId() ?: return ResponseEntity("User is not logged in", HttpStatus.UNAUTHORIZED)
         val startDate =

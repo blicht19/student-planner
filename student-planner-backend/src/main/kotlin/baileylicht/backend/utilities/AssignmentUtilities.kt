@@ -13,17 +13,17 @@ fun assignmentToAssignmentResponseDto(assignment: Assignment): AssignmentRespons
     return AssignmentResponseDto(
         assignment.name,
         assignment.complete,
+        localDateToString(assignment.dueDate),
         subject,
         assignment.note,
-        localDateToString(assignment.dueDate),
         assignment.id
     )
 }
 
 /**
- * Converts a list of assignment entities to a List of assignment DTOs
+ * Converts a list of assignment entities to a list of assignment DTOs
  * @param assignments A List of assignment entities
- * @return A List of assignment DTOs
+ * @return A list of assignment DTOs
  */
 fun assignmentListToAssignmentResponseDtoList(assignments: List<Assignment>): List<AssignmentResponseDto> {
     return assignments.map { assignmentToAssignmentResponseDto(it) }

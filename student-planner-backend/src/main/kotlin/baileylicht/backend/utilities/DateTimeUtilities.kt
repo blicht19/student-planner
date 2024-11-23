@@ -13,11 +13,20 @@ private val timeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
  * @param localTime A LocalTime
  * @return The String representation of localTime. Returns null if localTime is null
  */
-fun localTimeToString(localTime: LocalTime?): String? {
+fun nullableLocalTimeToString(localTime: LocalTime?): String? {
     if (localTime == null) {
         return null
     }
 
+    return timeFormatter.format(localTime)
+}
+
+/**
+ * Formats a LocalTime as a String in the format HH:MM AM|PM
+ * @param localTime A LocalTime
+ * @return The String representation of localTime
+ */
+fun localTimeToString(localTime: LocalTime): String {
     return timeFormatter.format(localTime)
 }
 
@@ -39,9 +48,18 @@ fun stringToLocalTime(value: String): LocalTime? {
  * @param date A LocalDate
  * @return The String representation of date. Returns null if date is null
  */
-fun localDateToString(date: LocalDate?): String? {
+fun nullableLocalDateToString(date: LocalDate?): String? {
     if (date == null) return null
 
+    return dateFormatter.format(date)
+}
+
+/**
+ * Formats a LocalDate as a String in the format MM/DD/YYYY
+ * @param date A LocalDate
+ * @return The String representation of date
+ */
+fun localDateToString(date: LocalDate): String {
     return dateFormatter.format(date)
 }
 

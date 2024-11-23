@@ -11,7 +11,8 @@ class Subject(
     @ManyToOne @JoinColumn(
         name = "user_id",
         referencedColumnName = "id",
-        updatable = false
+        updatable = false,
+        nullable = false
     ) val user: UserEntity,
     @Column @Size(max = 100) var location: String? = null,
     @Column var sunday: Boolean = false,

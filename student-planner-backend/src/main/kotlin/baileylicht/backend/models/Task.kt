@@ -5,8 +5,8 @@ import jakarta.validation.constraints.Size
 import java.time.LocalDate
 
 @Entity
-@Table(name = "assignments")
-class Assignment(
+@Table(name = "tasks")
+data class Task(
     @Column(nullable = false) @Size(min = 1, max = 100) var name: String,
     @Column(nullable = false) var dueDate: LocalDate,
     @Column(nullable = false) var complete: Boolean = false,
@@ -16,7 +16,6 @@ class Assignment(
         updatable = false,
         nullable = false
     ) val user: UserEntity,
-    @ManyToOne @JoinColumn(name = "subject_id", referencedColumnName = "id") var subject: Subject? = null,
     @Column @Size(max = 500) var note: String? = null,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long? = null
 )

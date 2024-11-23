@@ -19,8 +19,8 @@ fun subjectEntityToDto(subject: Subject): SubjectDto {
         subject.friday,
         subject.saturday,
         subject.sunday,
-        localTimeToString(subject.startTime),
-        localTimeToString(subject.endTime),
+        nullableLocalTimeToString(subject.startTime),
+        nullableLocalTimeToString(subject.endTime),
         subject.id
     )
 }

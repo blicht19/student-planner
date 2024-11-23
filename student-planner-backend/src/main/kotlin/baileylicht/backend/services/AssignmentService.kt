@@ -63,7 +63,7 @@ class AssignmentService(@Autowired private val assignmentRepository: AssignmentR
     }
 
     /**
-     * Deletes an assignment with the matching ID for a user
+     * Deletes an assignment with the matching user ID and assignment ID
      * @param userId The ID number of the user
      * @param assignmentId The ID number of the assignment to delete
      * @return The number of assignments deleted
