@@ -15,15 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
-import java.time.LocalDate
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/assignments")
@@ -72,7 +64,7 @@ class AssignmentController(
         val endDate =
             stringToLocalDate(filter.endDate) ?: return ResponseEntity("Invalid end date", HttpStatus.BAD_REQUEST)
 
-        val assignments = assignmentService.getAllFiltered(userId, filter.completed, startDate, endDate)
+        val assignments = assignmentService.getAllFiltered(userId, filter.showCompleted, startDate, endDate)
         return ResponseEntity.ok(assignments)
     }
 
@@ -168,7 +160,7 @@ class AssignmentController(
     }
 
     @DeleteMapping(produces = [MediaType.TEXT_PLAIN_VALUE])
-    @Operation(description = "Deletes an assignment")
+    @Operation(summary = "Deletes an assignment")
     @ApiResponses(
         value = [ApiResponse(
             responseCode = "200",

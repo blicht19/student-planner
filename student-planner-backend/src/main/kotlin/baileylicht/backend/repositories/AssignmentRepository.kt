@@ -10,6 +10,9 @@ interface AssignmentRepository : JpaRepository<Assignment, Long> {
     fun findByUserIdAndId(userId: Long, id: Long): Assignment?
     fun deleteByUserIdAndId(userId: Long, id: Long): Long
 
-    @Query("select a from Assignment a where a.user.id = :userId and a.complete = :complete and a.dueDate >= :startDate and a.dueDate <= :endDate")
-    fun findAllFiltered(userId: Long, complete: Boolean, startDate: LocalDate, endDate: LocalDate): List<Assignment>
+    @Query("select a from Assignment a where a.user.id = :userId and a.dueDate >= :startDate and a.dueDate <= :endDate")
+    fun findAllInDateRange(userId: Long, startDate: LocalDate, endDate: LocalDate): List<Assignment>
+
+    @Query("select a from Assignment a where a.user.id = :userId and not a.complete and a.dueDate >= :startDate and a.dueDate <= :endDate")
+    fun findAllIncompleteInDateRange(userId: Long, startDate: LocalDate, endDate: LocalDate): List<Assignment>
 }

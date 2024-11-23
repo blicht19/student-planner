@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service
 @Service
 class SubjectService(@Autowired private val subjectRepository: SubjectRepository) {
     /**
-     * Returns DTOs for all Subjects for a User
-     * @param userId The ID number of the User
-     * @return A list of Subjects for this User
+     * Returns all subjects for a user
+     * @param userId The ID number of the user
+     * @return A list of subjects for this user
      */
     fun getAll(userId: Long): List<SubjectDto> {
         val subjects = subjectRepository.findAllByUserId(userId)
@@ -21,20 +21,20 @@ class SubjectService(@Autowired private val subjectRepository: SubjectRepository
     }
 
     /**
-     * Retrieves a Subject entity for the given User ID and Subject ID
-     * @param userId The ID number of a User
-     * @param id The ID number of a Subject
-     * @return The Subject with the matching User ID and ID. null if none could be found
+     * Retrieves a subject entity for the given user ID and subject ID
+     * @param userId The ID number of a user
+     * @param id The ID number of a subject
+     * @return The subject with the matching user ID and ID, null if none could be found
      */
     fun getSubject(userId: Long, id: Long): Subject? {
         return subjectRepository.findByUserIdAndId(userId, id)
     }
 
     /**
-     * Returns DTOs for all Subjects on a day of the week for a User
-     * @param userId The ID number of the User
+     * Returns DTOs for all subjects on a day of the week for a user
+     * @param userId The ID number of the user
      * @param dayOfWeek The index of the day of the week, 0 being Sunday, 6 being Saturday
-     * @return A list of DTOs for Subjects on the given day of the week for the User
+     * @return A list of subjects on the given day of the week for the user
      */
     fun getAllOnDay(userId: Long, dayOfWeek: Int): List<SubjectDto> {
         return when (dayOfWeek) {
@@ -50,18 +50,18 @@ class SubjectService(@Autowired private val subjectRepository: SubjectRepository
     }
 
     /**
-     * Saves a Subject to the database
-     * @param subject A Subject entity
+     * Saves a subject to the database
+     * @param subject A subject entity
      */
     fun saveSubject(subject: Subject) {
         subjectRepository.save(subject)
     }
 
     /**
-     * Deletes a subject with the matching id for a User
-     * @param userId The ID number of the User
-     * @param id The ID number of the Subject to delete
-     * @return The number of Subjects deleted
+     * Deletes a subject with the matching ID for a user
+     * @param userId The ID number of the user
+     * @param id The ID number of the subject to delete
+     * @return The number of subjects deleted
      */
     @Transactional
     fun deleteSubject(userId: Long, id: Long): Long {

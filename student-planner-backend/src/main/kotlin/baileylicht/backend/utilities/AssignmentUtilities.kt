@@ -2,26 +2,12 @@ package baileylicht.backend.utilities
 
 import baileylicht.backend.dtos.AssignmentResponseDto
 import baileylicht.backend.models.Assignment
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeParseException
 
-private val dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
-
-fun localDateToString(date: LocalDate?): String? {
-    if (date == null) return null
-
-    return dateFormatter.format(date)
-}
-
-fun stringToLocalDate(value: String): LocalDate? {
-    return try {
-        LocalDate.parse(value, dateFormatter)
-    } catch (e: DateTimeParseException) {
-        null
-    }
-}
-
+/**
+ * Converts an assignment entity to a DTO to be returned to the client
+ * @param assignment The JPA entity representation of an assignment
+ * @return The DTO representation of an assignment
+ */
 fun assignmentToAssignmentResponseDto(assignment: Assignment): AssignmentResponseDto {
     val subject = if (assignment.subject != null) subjectEntityToDto(assignment.subject!!) else null
     return AssignmentResponseDto(
@@ -34,6 +20,11 @@ fun assignmentToAssignmentResponseDto(assignment: Assignment): AssignmentRespons
     )
 }
 
+/**
+ * Converts a list of assignment entities to a List of assignment DTOs
+ * @param assignments A List of assignment entities
+ * @return A List of assignment DTOs
+ */
 fun assignmentListToAssignmentResponseDtoList(assignments: List<Assignment>): List<AssignmentResponseDto> {
     return assignments.map { assignmentToAssignmentResponseDto(it) }
 }
