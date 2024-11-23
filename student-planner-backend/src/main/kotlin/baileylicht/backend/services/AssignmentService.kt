@@ -7,6 +7,7 @@ import baileylicht.backend.utilities.assignmentListToAssignmentResponseDtoList
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 @Service
 class AssignmentService(@Autowired private val assignmentRepository: AssignmentRepository) {
@@ -15,8 +16,13 @@ class AssignmentService(@Autowired private val assignmentRepository: AssignmentR
         return assignmentListToAssignmentResponseDtoList(assignments)
     }
 
-    fun getAllFiltered(userId: Long, completed: Boolean): List<AssignmentResponseDto> {
-        val assignments = assignmentRepository.findAllFiltered(userId, completed)
+    fun getAllFiltered(
+        userId: Long,
+        completed: Boolean,
+        startDate: LocalDate,
+        endDate: LocalDate
+    ): List<AssignmentResponseDto> {
+        val assignments = assignmentRepository.findAllFiltered(userId, completed, startDate, endDate)
         return assignmentListToAssignmentResponseDtoList(assignments)
     }
 

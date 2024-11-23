@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDate
 
 @RestController
 @RequestMapping("/assignments")
@@ -66,8 +67,12 @@ class AssignmentController(
     fun getAllAssignmentsFiltered(@RequestBody filter: AssignmentFilterDto): ResponseEntity<Any> {
         val userId =
             loginService.getLoggedInUserId() ?: return ResponseEntity("User is not logged in", HttpStatus.UNAUTHORIZED)
+        val startDate =
+            stringToLocalDate(filter.startDate) ?: return ResponseEntity("Invalid start date", HttpStatus.BAD_REQUEST)
+        val endDate =
+            stringToLocalDate(filter.endDate) ?: return ResponseEntity("Invalid end date", HttpStatus.BAD_REQUEST)
 
-        val assignments = assignmentService.getAllFiltered(userId, filter.completed)
+        val assignments = assignmentService.getAllFiltered(userId, filter.completed, startDate, endDate)
         return ResponseEntity.ok(assignments)
     }
 
