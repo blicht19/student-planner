@@ -22,7 +22,7 @@ class SubjectController(
     @Autowired private val subjectService: SubjectService,
     @Autowired private val loginService: LoginService
 ) {
-    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE])
     @Operation(summary = "Retrieves all subjects for this user")
     @ApiResponses(
         value = [ApiResponse(
@@ -123,7 +123,7 @@ class SubjectController(
         value = [ApiResponse(responseCode = "200", description = "Successfully deleted a subject"), ApiResponse(
             responseCode = "401",
             description = "Unauthorized"
-        ), ApiResponse(responseCode = "404", description = "Entity not found")]
+        ), ApiResponse(responseCode = "404", description = "Subject not found")]
     )
     fun deleteSubject(@RequestParam("id") subjectId: Long): ResponseEntity<String> {
         val userId =
@@ -131,7 +131,7 @@ class SubjectController(
 
         val deletedCount = subjectService.deleteSubject(userId, subjectId)
         if (deletedCount > 0) {
-            return ResponseEntity.ok().body("Successfully deleted a Subject")
+            return ResponseEntity.ok().body("Successfully deleted a subject")
         }
 
         return ResponseEntity("Could not find a subject matching id $subjectId", HttpStatus.NOT_FOUND)

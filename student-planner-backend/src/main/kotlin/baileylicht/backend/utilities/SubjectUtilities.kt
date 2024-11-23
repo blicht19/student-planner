@@ -96,13 +96,27 @@ fun updateSubjectEntityFromDto(entity: Subject, dto: SubjectDto): String? {
         }
     }
 
-    entity.sunday = dto.sunday ?: false
-    entity.monday = dto.monday ?: false
-    entity.tuesday = dto.tuesday ?: false
-    entity.wednesday = dto.wednesday ?: false
-    entity.thursday = dto.thursday ?: false
-    entity.friday = dto.friday ?: false
-    entity.saturday = dto.saturday ?: false
+    dto.sunday?.let {
+        entity.sunday = it
+    }
+    dto.monday?.let {
+        entity.monday = it
+    }
+    dto.tuesday?.let {
+        entity.tuesday = it
+    }
+    dto.wednesday?.let {
+        entity.wednesday = it
+    }
+    dto.thursday?.let {
+        entity.thursday = it
+    }
+    dto.friday?.let {
+        entity.friday = it
+    }
+    dto.saturday?.let {
+        entity.saturday = it
+    }
 
     return null
 }
