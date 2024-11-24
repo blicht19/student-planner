@@ -7,6 +7,7 @@ import baileylicht.backend.utilities.examListToExamResponseDtoList
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 
 @Service
 class ExamService(@Autowired private val examRepository: ExamRepository) {
@@ -18,6 +19,28 @@ class ExamService(@Autowired private val examRepository: ExamRepository) {
     fun getAll(userId: Long): List<ExamResponseDto> {
         val exams = examRepository.findAllByUserId(userId)
         return examListToExamResponseDtoList(exams)
+    }
+
+    /**
+     * Returns all exams for this user from startDate to endDate, inclusive
+     * @param userId The ID number for a user
+     * @param startDate The start of the range of assignment dates to return
+     * @param endDate The end of the range of assignment dates to return
+     * @return All assignments for this user on dates between startDate and endDate, inclusive
+     */
+    fun getAllInDateRange(userId: Long, startDate: LocalDate, endDate: LocalDate): List<ExamResponseDto> {
+        val exams = examRepository.findAllInDateRange(userId, startDate, endDate)
+        return examListToExamResponseDtoList(exams)
+    }
+
+    /**
+     * Returns all exams for this user on a date
+     * @param userId The ID number for a user
+     * @param date The date to check for exams
+     * @return All exams for the given user on the given date
+     */
+    fun getAllOnDate(userId: Long, date: LocalDate): List<ExamResponseDto> {
+        return getAllInDateRange(userId, date, date)
     }
 
     /**
