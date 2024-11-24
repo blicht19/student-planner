@@ -24,6 +24,8 @@ fun examToExamResponseDto(exam: Exam): ExamResponseDto {
 
 /**
  * Converts a list of exam entities to a list of exam DTOs
+ * @param exams A list of exam entities
+ * @return A list of exam DTOs
  */
 fun examListToExamResponseDtoList(exams: List<Exam>): List<ExamResponseDto> {
     return exams.map { examToExamResponseDto(it) }

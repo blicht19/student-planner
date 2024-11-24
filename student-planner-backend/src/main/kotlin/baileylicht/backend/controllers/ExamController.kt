@@ -120,7 +120,7 @@ class ExamController(
     @ApiResponses(
         value = [ApiResponse(
             responseCode = "200",
-            description = "Successfully updated assignment"
+            description = "Successfully updated exam"
         ), ApiResponse(responseCode = "401", description = "Unauthorized"), ApiResponse(
             responseCode = "400",
             description = "Bad request"
