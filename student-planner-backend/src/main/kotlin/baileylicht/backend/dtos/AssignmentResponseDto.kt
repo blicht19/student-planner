@@ -7,4 +7,4 @@ data class AssignmentResponseDto(
     val subject: SubjectDto?,
     val note: String?,
     val id: Long?
-)
+) : PlannerItemResponseDto

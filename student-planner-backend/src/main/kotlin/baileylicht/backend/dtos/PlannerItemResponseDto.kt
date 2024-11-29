@@ -1,0 +1,5 @@
+package baileylicht.backend.dtos
+
+interface PlannerItemResponseDto
+
+interface PlannerItemCreateUpdateDto

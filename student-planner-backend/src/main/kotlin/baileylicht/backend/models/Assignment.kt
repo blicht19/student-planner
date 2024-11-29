@@ -19,4 +19,4 @@ class Assignment(
     @ManyToOne @JoinColumn(name = "subject_id", referencedColumnName = "id") var subject: Subject? = null,
     @Column @Size(max = 500) var note: String? = null,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long? = null
-)
+) : FilterablePlannerItemEntity

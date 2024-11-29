@@ -3,38 +3,51 @@ package baileylicht.backend.services
 import baileylicht.backend.dtos.EventResponseDto
 import baileylicht.backend.models.Event
 import baileylicht.backend.repositories.EventRepository
-import baileylicht.backend.utilities.eventListToEventResponseDtoList
+import baileylicht.backend.utilities.localDateToString
+import baileylicht.backend.utilities.localTimeToString
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 
+/**
+ * Converts an event entity to a DTO to be returned to the client
+ * @param event The JPA entity representation of an event
+ * @return The DTO representation of an event
+ */
+private fun eventToEventResponseDto(event: Event): EventResponseDto {
+    return EventResponseDto(
+        event.name,
+        localDateToString(event.date),
+        localTimeToString(event.startTime),
+        localTimeToString(event.endTime),
+        event.location,
+        event.note,
+        event.id
+    )
+}
+
 @Service
-class EventService(@Autowired private val eventRepository: EventRepository) {
-    fun getAll(userId: Long): List<EventResponseDto> {
-        val events = eventRepository.findAllByUserId(userId)
-        return eventListToEventResponseDtoList(events)
+class EventService(@Autowired private val eventRepository: EventRepository) :
+    DateRangePlannerItemService<Event, EventRepository, EventResponseDto>(eventRepository) {
+    override fun convertEntitiesToResponseDtos(entities: List<Event>): List<EventResponseDto> {
+        return entities.map { eventToEventResponseDto(it) }
     }
 
-    fun getAllInDateRange(userId: Long, startDate: LocalDate, endDate: LocalDate): List<EventResponseDto> {
-        val events = eventRepository.findAllInDateRange(userId, startDate, endDate)
-        return eventListToEventResponseDtoList(events)
+    override fun findAllEntitiesByUserId(userId: Long): List<Event> {
+        return eventRepository.findAllByUserId(userId)
     }
 
-    fun getAllOnDate(userId: Long, date: LocalDate): List<EventResponseDto> {
-        return getAllInDateRange(userId, date, date)
-    }
-
-    fun getEvent(userId: Long, eventId: Long): Event? {
-        return eventRepository.findByUserIdAndId(userId, eventId)
-    }
-
-    fun saveEvent(event: Event) {
-        eventRepository.save(event)
+    override fun getItem(userId: Long, id: Long): Event? {
+        return eventRepository.findByUserIdAndId(userId, id)
     }
 
     @Transactional
-    fun deleteEvent(userId: Long, eventId: Long): Long {
-        return eventRepository.deleteByUserIdAndId(userId, eventId)
+    override fun deleteItem(userId: Long, id: Long): Long {
+        return eventRepository.deleteByUserIdAndId(userId, id)
+    }
+
+    override fun findAllEntitiesInDateRange(userId: Long, startDate: LocalDate, endDate: LocalDate): List<Event> {
+        return eventRepository.findAllInDateRange(userId, startDate, endDate)
     }
 }

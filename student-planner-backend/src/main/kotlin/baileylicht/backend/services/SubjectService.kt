@@ -3,31 +3,29 @@ package baileylicht.backend.services
 import baileylicht.backend.dtos.SubjectDto
 import baileylicht.backend.models.Subject
 import baileylicht.backend.repositories.SubjectRepository
-import baileylicht.backend.utilities.subjectEntityListToDtoList
+import baileylicht.backend.utilities.subjectEntityToDto
 import jakarta.transaction.Transactional
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class SubjectService(@Autowired private val subjectRepository: SubjectRepository) {
-    /**
-     * Returns all subjects for a user
-     * @param userId The ID number of the user
-     * @return A list of subjects for this user
-     */
-    fun getAll(userId: Long): List<SubjectDto> {
-        val subjects = subjectRepository.findAllByUserId(userId)
-        return subjectEntityListToDtoList(subjects)
+class SubjectService(@Autowired private val subjectRepository: SubjectRepository) :
+    PlannerItemService<Subject, SubjectRepository, SubjectDto>(subjectRepository) {
+    override fun convertEntitiesToResponseDtos(entities: List<Subject>): List<SubjectDto> {
+        return entities.map { subjectEntityToDto(it) }
     }
 
-    /**
-     * Retrieves a subject entity for the given user ID and subject ID
-     * @param userId The ID number of a user
-     * @param id The ID number of a subject
-     * @return The subject with the matching user ID and ID, null if none could be found
-     */
-    fun getSubject(userId: Long, id: Long): Subject? {
+    override fun findAllEntitiesByUserId(userId: Long): List<Subject> {
+        return subjectRepository.findAllByUserId(userId)
+    }
+
+    override fun getItem(userId: Long, id: Long): Subject? {
         return subjectRepository.findByUserIdAndId(userId, id)
+    }
+
+    @Transactional
+    override fun deleteItem(userId: Long, id: Long): Long {
+        return subjectRepository.deleteByUserIdAndId(userId, id)
     }
 
     /**
@@ -38,33 +36,14 @@ class SubjectService(@Autowired private val subjectRepository: SubjectRepository
      */
     fun getAllOnDay(userId: Long, dayOfWeek: Int): List<SubjectDto> {
         return when (dayOfWeek) {
-            0 -> subjectEntityListToDtoList(subjectRepository.findAllByUserIdAndSundayIsTrue(userId))
-            1 -> subjectEntityListToDtoList(subjectRepository.findAllByUserIdAndMondayIsTrue(userId))
-            2 -> subjectEntityListToDtoList(subjectRepository.findAllByUserIdAndTuesdayIsTrue(userId))
-            3 -> subjectEntityListToDtoList(subjectRepository.findAllByUserIdAndWednesdayIsTrue(userId))
-            4 -> subjectEntityListToDtoList(subjectRepository.findAllByUserIdAndThursdayIsTrue(userId))
-            5 -> subjectEntityListToDtoList(subjectRepository.findAllByUserIdAndFridayIsTrue(userId))
-            6 -> subjectEntityListToDtoList(subjectRepository.findAllByUserIdAndSaturdayIsTrue(userId))
+            0 -> convertEntitiesToResponseDtos(subjectRepository.findAllByUserIdAndSundayIsTrue(userId))
+            1 -> convertEntitiesToResponseDtos(subjectRepository.findAllByUserIdAndMondayIsTrue(userId))
+            2 -> convertEntitiesToResponseDtos(subjectRepository.findAllByUserIdAndTuesdayIsTrue(userId))
+            3 -> convertEntitiesToResponseDtos(subjectRepository.findAllByUserIdAndWednesdayIsTrue(userId))
+            4 -> convertEntitiesToResponseDtos(subjectRepository.findAllByUserIdAndThursdayIsTrue(userId))
+            5 -> convertEntitiesToResponseDtos(subjectRepository.findAllByUserIdAndFridayIsTrue(userId))
+            6 -> convertEntitiesToResponseDtos(subjectRepository.findAllByUserIdAndSaturdayIsTrue(userId))
             else -> emptyList()
         }
-    }
-
-    /**
-     * Saves a subject to the database
-     * @param subject A subject entity
-     */
-    fun saveSubject(subject: Subject) {
-        subjectRepository.save(subject)
-    }
-
-    /**
-     * Deletes a subject with the matching ID for a user
-     * @param userId The ID number of the user
-     * @param id The ID number of the subject to delete
-     * @return The number of subjects deleted
-     */
-    @Transactional
-    fun deleteSubject(userId: Long, id: Long): Long {
-        return subjectRepository.deleteByUserIdAndId(userId, id)
     }
 }

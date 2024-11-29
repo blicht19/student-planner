@@ -25,4 +25,4 @@ class Subject(
     @Column var startTime: LocalTime? = null,
     @Column var endTime: LocalTime? = null,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long? = null
-)
+) : PlannerItemEntity

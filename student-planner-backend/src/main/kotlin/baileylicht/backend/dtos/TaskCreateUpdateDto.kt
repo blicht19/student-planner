@@ -6,4 +6,4 @@ data class TaskCreateUpdateDto(
     val note: String?,
     val dueDate: String?,
     val id: Long?
-)
+) : PlannerItemCreateUpdateDto

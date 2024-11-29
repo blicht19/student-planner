@@ -18,4 +18,4 @@ data class Task(
     ) val user: UserEntity,
     @Column @Size(max = 500) var note: String? = null,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long? = null
-)
+) : FilterablePlannerItemEntity

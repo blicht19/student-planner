@@ -9,4 +9,4 @@ data class ExamResponseDto(
     val location: String?,
     val note: String?,
     val id: Long?
-)
+) : PlannerItemResponseDto

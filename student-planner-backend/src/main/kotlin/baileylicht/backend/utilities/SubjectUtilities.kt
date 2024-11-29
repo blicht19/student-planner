@@ -26,15 +26,6 @@ fun subjectEntityToDto(subject: Subject): SubjectDto {
 }
 
 /**
- * Converts a List of subject JPA entities to a List of subject DTOs
- * @param entities A list of subject JPA entities
- * @return A list of subject DTOs
- */
-fun subjectEntityListToDtoList(entities: List<Subject>): List<SubjectDto> {
-    return entities.map { subjectEntityToDto(it) }
-}
-
-/**
  * Updates a subject entity's values based on the values in a Subject DTO.
  * Does not update name, as there is separate error checking and handling needed there.
  * @param entity The subject JPA entity

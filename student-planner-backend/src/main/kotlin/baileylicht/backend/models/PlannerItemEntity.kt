@@ -1,0 +1,7 @@
+package baileylicht.backend.models
+
+interface PlannerItemEntity
+
+interface DateRangePlannerItemEntity : PlannerItemEntity
+
+interface FilterablePlannerItemEntity : DateRangePlannerItemEntity

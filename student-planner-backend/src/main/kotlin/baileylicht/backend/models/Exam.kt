@@ -22,4 +22,4 @@ class Exam(
     @Column @Size(max = 100) var location: String? = null,
     @Column @Size(max = 500) var note: String? = null,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long? = null
-)
+) : DateRangePlannerItemEntity

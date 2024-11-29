@@ -6,4 +6,4 @@ data class TaskResponseDto(
     val dueDate: String,
     val note: String?,
     val id: Long?
-)
+) : PlannerItemResponseDto

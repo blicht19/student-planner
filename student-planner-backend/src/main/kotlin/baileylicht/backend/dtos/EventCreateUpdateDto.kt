@@ -8,4 +8,4 @@ data class EventCreateUpdateDto(
     val location: String?,
     val note: String?,
     val id: Long?
-)
+) : PlannerItemCreateUpdateDto
