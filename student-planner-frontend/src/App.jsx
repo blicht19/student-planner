@@ -12,6 +12,7 @@ import {
   Root,
   Agenda,
   CalendarPage,
+  NotFound,
 } from './components';
 
 const queryClient = new QueryClient();
@@ -45,6 +46,7 @@ const router = createBrowserRouter([
       },
       { path: 'login', element: <Login /> },
       { path: 'register', element: <CreateAccount /> },
+      { path: '*', element: <NotFound /> },
     ],
   },
 ]);

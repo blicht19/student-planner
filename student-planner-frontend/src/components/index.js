@@ -7,6 +7,7 @@ export * from './error-text';
 export * from './home-page';
 export * from './link';
 export * from './login';
+export * from './not-found';
 export * from './root';
 export * from './sidebar';
 export * from './text-input';
