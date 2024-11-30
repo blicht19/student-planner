@@ -1,14 +1,25 @@
 import { useAuthContext } from '../../hooks';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useLogout } from '../../hooks';
+import { Outlet, useNavigate } from 'react-router-dom';
 import styles from './home-page.module.css';
-import { Button } from '../button';
+import { Sidebar } from '../sidebar/index.js';
+
+const sidebarItems = [
+  {
+    title: 'Agenda',
+    path: '/home/agenda',
+    id: 'sidebar-agenda',
+  },
+  {
+    title: 'Calendar',
+    path: '/home/calendar',
+    id: 'sidebar-calendar',
+  },
+];
 
 export const HomePage = () => {
   const { username, userId } = useAuthContext();
   const navigate = useNavigate();
-  const logoutMutation = useLogout();
 
   useEffect(() => {
     if (!username || username.trim() === '' || userId == null) {
@@ -18,13 +29,10 @@ export const HomePage = () => {
 
   return (
     <div className={styles.homePage}>
-      <h1>Welcome, {username}</h1>
-      <p>Your user ID is {userId}</p>
-      <Button
-        onClick={logoutMutation.mutate}
-        text='Log Out'
-        isLoading={logoutMutation.isPending}
-      />
+      <Sidebar sidebarItems={sidebarItems} />
+      <main className={styles.main}>
+        <Outlet />
+      </main>
     </div>
   );
 };

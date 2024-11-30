@@ -10,6 +10,8 @@ import {
   CreateAccount,
   HomePage,
   Root,
+  Agenda,
+  CalendarPage,
 } from './components';
 
 const queryClient = new QueryClient();
@@ -21,11 +23,25 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate replace to='/home' />,
+        element: <Navigate replace to='/home/agenda' />,
       },
       {
         path: '/home',
         element: <HomePage />,
+        children: [
+          {
+            index: true,
+            element: <Navigate replace to='/home/agenda' />,
+          },
+          {
+            path: '/home/agenda',
+            element: <Agenda />,
+          },
+          {
+            path: '/home/calendar',
+            element: <CalendarPage />,
+          },
+        ],
       },
       { path: 'login', element: <Login /> },
       { path: 'register', element: <CreateAccount /> },
