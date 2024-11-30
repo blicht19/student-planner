@@ -1,8 +1,10 @@
-import { useAuthContext } from '../../hooks';
+import { useAuthContext, useToggle } from '../../hooks';
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import styles from './home-page.module.css';
-import { Sidebar } from '../sidebar/index.js';
+import { Sidebar } from '../sidebar';
+import { AddButton } from '../add-button';
+import { Modal } from '../modal';
 
 const sidebarItems = [
   {
@@ -20,6 +22,7 @@ const sidebarItems = [
 export const HomePage = () => {
   const { username, userId } = useAuthContext();
   const navigate = useNavigate();
+  const [showAddModal, toggleShowAddModal] = useToggle(false);
 
   useEffect(() => {
     if (!username || username.trim() === '' || userId == null) {
@@ -30,9 +33,15 @@ export const HomePage = () => {
   return (
     <div className={styles.homePage}>
       <Sidebar sidebarItems={sidebarItems} />
-      <main className={styles.main}>
-        <Outlet />
-      </main>
+      <div className={styles.homePageContent}>
+        <main className={styles.main}>
+          <Outlet />
+        </main>
+        <AddButton onClick={toggleShowAddModal} className={styles.add} />
+        {showAddModal && (
+          <Modal onClose={toggleShowAddModal}>Modal content</Modal>
+        )}
+      </div>
     </div>
   );
 };

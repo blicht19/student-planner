@@ -61,7 +61,6 @@
     display: flex;
     align-items: center;
     padding: 0 1rem;
-    border-radius: 4px;
 }
 
 .sidebar-text a:hover {
@@ -80,4 +79,8 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+}
+
+.sidebar-wrapper {
+    width: 100%;
 }

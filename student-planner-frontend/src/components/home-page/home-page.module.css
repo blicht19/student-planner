@@ -3,10 +3,27 @@
     overflow: scroll;
     display: flex;
     flex-direction: column;
+    align-items: center;
+}
+
+.home-page-content {
+    width: 100%;
+    height: 100%;
+    max-width: 900px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 .main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
+}
+
+.add {
+    align-self: flex-end;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
 }

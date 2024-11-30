@@ -1,0 +1,45 @@
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 450ms;
+
+}
+
+.modal {
+    background-color: var(--dark-color);
+    border-radius: 3px;
+    height: 90%;
+    width: 90%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content {
+    height: 100%;
+    width: 100%;
+    padding: 1rem;
+}
+
+.close-button-container {
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    color: black;
+}
+
+.close-button-container svg {
+    cursor: pointer;
+}
+
+.close-button-container svg:hover {
+    color: var(--error-color);
+}

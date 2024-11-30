@@ -11,7 +11,7 @@ export const Sidebar = props => {
   const [showSidebar, toggleSidebar] = useToggle(false);
 
   return (
-    <div>
+    <div className={styles.sidebarWrapper}>
       <div className={styles.topBar}>
         <Link to='#' className={styles.barsIcon}>
           <FaBars onClick={toggleSidebar} />

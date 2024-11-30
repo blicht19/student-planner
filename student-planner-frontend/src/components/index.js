@@ -1,3 +1,4 @@
+export * from './add-button';
 export * from './agenda';
 export * from './auth';
 export * from './button';
@@ -7,6 +8,7 @@ export * from './error-text';
 export * from './home-page';
 export * from './link';
 export * from './login';
+export * from './modal';
 export * from './not-found';
 export * from './root';
 export * from './sidebar';
