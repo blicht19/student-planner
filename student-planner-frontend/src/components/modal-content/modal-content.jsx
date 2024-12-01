@@ -3,14 +3,14 @@ import { ModalMenu } from './modal-menu';
 import { ModalForm } from './modal-form/modal-form.jsx';
 
 export const ModalContent = props => {
-  const { edit = false, itemType = '' } = props;
+  const { edit = false, itemType = '', onClose } = props;
   const [selectedItemType, setSelectedItemType] = useState(itemType);
 
   return (
     <>
       {selectedItemType === '' && <ModalMenu onClick={setSelectedItemType} />}
       {selectedItemType !== '' && (
-        <ModalForm edit={edit} itemType={selectedItemType} />
+        <ModalForm edit={edit} itemType={selectedItemType} onClose={onClose} />
       )}
     </>
   );

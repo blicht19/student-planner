@@ -1,13 +1,9 @@
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from './date-input.module.css';
-import { useMemo } from 'react';
 
 export const DateInput = props => {
-  const { label, value, onChange, className, required = false } = props;
-  const isError = useMemo(() => {
-    return required && (value == null || value === '');
-  }, [required, value]);
+  const { label, value, onChange, className, isError = false } = props;
   return (
     <div
       className={`${styles.dateInput} ${isError && styles.inputError} ${className}`}

@@ -41,7 +41,7 @@ export const HomePage = () => {
         <AddButton onClick={toggleShowAddModal} className={styles.add} />
         {showAddModal && (
           <Modal onClose={toggleShowAddModal}>
-            <ModalContent />
+            <ModalContent onClose={toggleShowAddModal} />
           </Modal>
         )}
       </div>

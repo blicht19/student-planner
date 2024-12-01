@@ -1,14 +1,25 @@
 import { DateInput } from '../../date-input';
 import { Checkbox } from '../../checkbox';
-import { useCallback } from 'react';
-import { TextInput } from '../../text-input/index.js';
+import { useCallback, useEffect, useState } from 'react';
 import { TextArea } from '../../text-area/index.js';
+import { SubjectInput } from './subject-input.jsx';
 
 export const AssignmentInputs = props => {
-  const { setAssignment, assignment } = props;
-  const { dueDate, complete, subject = '', note = '' } = assignment;
+  const { setAssignment, assignment, setError } = props;
+  const { dueDate, complete, subject, note } = assignment;
+  const [dueDateIsError, setDueDateIsError] = useState(false);
+
+  useEffect(() => {
+    setError(!(dueDate instanceof Date));
+  }, [dueDate, setError]);
+
   const setDueDate = useCallback(
     dueDate => {
+      if (!(dueDate instanceof Date)) {
+        setDueDateIsError(true);
+      } else {
+        setDueDateIsError(false);
+      }
       setAssignment(previousAssignment => {
         return {
           ...previousAssignment,
@@ -58,12 +69,9 @@ export const AssignmentInputs = props => {
         value={dueDate}
         onChange={setDueDate}
         required
+        isError={dueDateIsError}
       />
-      <TextInput
-        label='Subject Placeholder'
-        value={subject}
-        onChange={setSubject}
-      />
+      <SubjectInput subject={subject} setSubject={setSubject} />
       <Checkbox
         label='Completed'
         checked={complete}

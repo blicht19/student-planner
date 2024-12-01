@@ -1,15 +1,27 @@
 import { Button } from '../../button';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { NameInput } from './name-input.jsx';
 import styles from './modal-form.module.css';
 import { modalMenuOptions } from '../modal-menu-options.js';
 import { AssignmentInputs } from './assignment-inputs.jsx';
+import { useCreate } from '../../../hooks';
 
 export const ModalForm = props => {
-  const { edit = false, itemType } = props;
+  const { edit = false, itemType, onClose } = props;
   const [name, setName] = useState('');
   const [nameIsError, setNameIsError] = useState(false);
   const [item, setItem] = useState({});
+  const [inputsHaveError, setInputsHaveError] = useState(true);
+  const valid = useMemo(() => {
+    return name && !nameIsError && !inputsHaveError;
+  }, [name, nameIsError, inputsHaveError]);
+  const createMutation = useCreate(itemType, onClose);
+  const submit = useCallback(() => {
+    if (edit) {
+    } else {
+      createMutation.mutate({ ...item, name });
+    }
+  }, [createMutation, edit, item, name]);
 
   return (
     <div className={styles.modalForm}>
@@ -27,7 +39,11 @@ export const ModalForm = props => {
           switch (itemType) {
             case modalMenuOptions.assignment:
               return (
-                <AssignmentInputs assignment={item} setAssignment={setItem} />
+                <AssignmentInputs
+                  assignment={item}
+                  setAssignment={setItem}
+                  setError={setInputsHaveError}
+                />
               );
             default:
               return null;
@@ -36,7 +52,12 @@ export const ModalForm = props => {
       </div>
       <div className={styles.buttons}>
         {edit && <Button text='Delete' />}
-        <Button text={edit ? 'Save' : 'Add'} />
+        <Button
+          text={edit ? 'Save' : 'Add'}
+          disabled={!valid}
+          onClick={submit}
+          isLoading={createMutation.isLoading}
+        />
       </div>
     </div>
   );

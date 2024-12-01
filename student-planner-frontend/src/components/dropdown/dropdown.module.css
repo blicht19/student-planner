@@ -1,0 +1,18 @@
+.dropdown {
+    height: 75px;
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+}
+
+.dropdown-select {
+    appearance: none;
+    background-color: var(--medium-dark-color);
+    color: var(--text-color);
+    border: 1px solid var(--text-color);
+    border-radius: 3px;
+    outline: none;
+}
+
+.dropdown-select:focus {
+    border-color: var(--light-color);
+}
