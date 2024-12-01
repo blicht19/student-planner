@@ -1,0 +1,36 @@
+.date-input {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    min-width: 200px;
+    height: 75px;
+
+    :focus-visible {
+        outline: none;
+    }
+}
+
+.date-input-label {
+    font-size: 16px;
+}
+
+.error-label {
+    font-size: 12px;
+    text-align: center;
+    color: var(--error-color);
+}
+
+.date-input input {
+    color: var(--text-color);
+    background-color: var(--medium-dark-color);
+    border: 1px solid var(--text-color);
+    border-radius: 3px;
+    width: 100%;
+}
+
+.date-input input:focus-visible {
+    border-color: var(--light-color);
+}
+
+.input-error input {
+    border-color: var(--error-color) !important;
+}

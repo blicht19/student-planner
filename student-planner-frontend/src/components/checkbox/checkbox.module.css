@@ -1,0 +1,38 @@
+.checkboxWrapper {
+    height: 25px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 25px;
+}
+
+.checkbox {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -o-appearance: none;
+    height: 1rem;
+    width: 1rem;
+    border: 1px solid var(--text-color);
+    border-radius: 3px;
+    background-color: var(--medium-dark-color);
+    cursor: pointer;
+    display: grid;
+    place-content: center;
+}
+
+.checkbox:hover {
+    background-color: var(--medium-light-color);
+}
+
+.checkbox::before {
+    content: "";
+    width: 0.75rem;
+    height: 0.75rem;
+    box-shadow: inset 1rem 1rem var(--text-color);
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    visibility: hidden;
+}
+
+.checkbox:checked::before {
+    visibility: unset;
+}

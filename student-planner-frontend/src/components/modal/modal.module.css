@@ -23,9 +23,12 @@
 }
 
 .modal-content {
-    height: 100%;
+    height: calc(100% - 1.5rem);
     width: 100%;
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .close-button-container {

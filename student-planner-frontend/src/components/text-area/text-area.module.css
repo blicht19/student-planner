@@ -1,0 +1,21 @@
+.text-area {
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    min-height: 300px;
+}
+
+.text-area-input {
+    height: 100%;
+    width: 100%;
+    resize: none;
+    background-color: var(--medium-dark-color);
+    outline: none;
+    border: 1px solid var(--text-color);
+    border-radius: 3px;
+    color: var(--text-color);
+}
+
+.text-area-input:focus-visible {
+    border-color: var(--light-color);;
+}

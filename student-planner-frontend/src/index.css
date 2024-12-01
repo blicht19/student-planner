@@ -54,3 +54,7 @@ body, html, #root {
     height: 100%;
     overflow: hidden;
 }
+
+.react-datepicker__month-container {
+    font-family: var(--font-family), sans-serif;
+}

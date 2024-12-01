@@ -5,6 +5,7 @@ import styles from './home-page.module.css';
 import { Sidebar } from '../sidebar';
 import { AddButton } from '../add-button';
 import { Modal } from '../modal';
+import { ModalContent } from '../modal-content';
 
 const sidebarItems = [
   {
@@ -39,7 +40,9 @@ export const HomePage = () => {
         </main>
         <AddButton onClick={toggleShowAddModal} className={styles.add} />
         {showAddModal && (
-          <Modal onClose={toggleShowAddModal}>Modal content</Modal>
+          <Modal onClose={toggleShowAddModal}>
+            <ModalContent />
+          </Modal>
         )}
       </div>
     </div>
