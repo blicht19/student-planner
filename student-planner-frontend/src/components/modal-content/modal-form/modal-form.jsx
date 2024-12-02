@@ -5,6 +5,7 @@ import styles from './modal-form.module.css';
 import { modalMenuOptions } from '../modal-menu-options.js';
 import { AssignmentInputs } from './assignment-inputs.jsx';
 import { useCreate } from '../../../hooks';
+import { TaskInputs } from './task-inputs.jsx';
 
 export const ModalForm = props => {
   const { edit = false, itemType, onClose } = props;
@@ -42,6 +43,14 @@ export const ModalForm = props => {
                 <AssignmentInputs
                   assignment={item}
                   setAssignment={setItem}
+                  setError={setInputsHaveError}
+                />
+              );
+            case modalMenuOptions.task:
+              return (
+                <TaskInputs
+                  task={item}
+                  setTask={setItem}
                   setError={setInputsHaveError}
                 />
               );

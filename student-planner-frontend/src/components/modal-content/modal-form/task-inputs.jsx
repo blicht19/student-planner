@@ -1,12 +1,11 @@
-import { DateInput } from '../../date-input';
-import { Checkbox } from '../../checkbox';
 import { useCallback, useEffect, useState } from 'react';
+import { DateInput } from '../../date-input/index.js';
+import { Checkbox } from '../../checkbox/index.js';
 import { TextArea } from '../../text-area/index.js';
-import { SubjectInput } from './subject-input.jsx';
 
-export const AssignmentInputs = props => {
-  const { setAssignment, assignment, setError } = props;
-  const { dueDate, complete, subject, note } = assignment;
+export const TaskInputs = props => {
+  const { setTask, task, setError } = props;
+  const { dueDate, complete, note } = task;
   const [dueDateIsError, setDueDateIsError] = useState(false);
 
   useEffect(() => {
@@ -20,46 +19,35 @@ export const AssignmentInputs = props => {
       } else {
         setDueDateIsError(false);
       }
-      setAssignment(previousAssignment => {
+      setTask(previousTask => {
         return {
-          ...previousAssignment,
+          ...previousTask,
           dueDate,
         };
       });
     },
-    [setAssignment],
+    [setTask],
   );
+
   const toggleCheckbox = useCallback(() => {
-    setAssignment(previousAssignment => {
+    setTask(previousTask => {
       return {
-        ...previousAssignment,
-        complete: !previousAssignment.complete,
+        ...previousTask,
+        complete: !previousTask.complete,
       };
     });
-  }, [setAssignment]);
-
-  const setSubject = useCallback(
-    subject => {
-      setAssignment(previousAssignment => {
-        return {
-          ...previousAssignment,
-          subject,
-        };
-      });
-    },
-    [setAssignment],
-  );
+  }, [setTask]);
 
   const setNote = useCallback(
     note => {
-      setAssignment(previousAssignment => {
+      setTask(previousTask => {
         return {
-          ...previousAssignment,
+          ...previousTask,
           note,
         };
       });
     },
-    [setAssignment],
+    [setTask],
   );
 
   return (
@@ -70,7 +58,6 @@ export const AssignmentInputs = props => {
         onChange={setDueDate}
         isError={dueDateIsError}
       />
-      <SubjectInput subject={subject} setSubject={setSubject} />
       <Checkbox
         label='Completed'
         checked={complete}
