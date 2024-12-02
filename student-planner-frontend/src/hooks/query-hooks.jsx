@@ -1,5 +1,6 @@
 import { useCreateAssignment } from './assignments';
 import { useCreateTask } from './tasks/task-hooks.jsx';
+import { useCreateEvent } from './events';
 
 const hooksMap = {
   Assignment: {
@@ -7,6 +8,9 @@ const hooksMap = {
   },
   Task: {
     create: useCreateTask,
+  },
+  Event: {
+    create: useCreateEvent,
   },
 };
 

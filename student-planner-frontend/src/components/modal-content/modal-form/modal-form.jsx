@@ -6,6 +6,7 @@ import { modalMenuOptions } from '../modal-menu-options.js';
 import { AssignmentInputs } from './assignment-inputs.jsx';
 import { useCreate } from '../../../hooks';
 import { TaskInputs } from './task-inputs.jsx';
+import { EventInputs } from './event-inputs.jsx';
 
 export const ModalForm = props => {
   const { edit = false, itemType, onClose } = props;
@@ -19,6 +20,7 @@ export const ModalForm = props => {
   const createMutation = useCreate(itemType, onClose);
   const submit = useCallback(() => {
     if (edit) {
+      // Todo: Add editing hook
     } else {
       createMutation.mutate({ ...item, name });
     }
@@ -51,6 +53,14 @@ export const ModalForm = props => {
                 <TaskInputs
                   task={item}
                   setTask={setItem}
+                  setError={setInputsHaveError}
+                />
+              );
+            case modalMenuOptions.event:
+              return (
+                <EventInputs
+                  event={item}
+                  setEvent={setItem}
                   setError={setInputsHaveError}
                 />
               );

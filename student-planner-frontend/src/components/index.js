@@ -17,3 +17,4 @@ export * from './root';
 export * from './sidebar';
 export * from './text-area';
 export * from './text-input';
+export * from './time-input';

@@ -8,7 +8,7 @@ import { useToggle } from '../../hooks';
 export const TextInput = props => {
   const {
     label,
-    value,
+    value = '',
     onChange,
     isError = false,
     errorText,

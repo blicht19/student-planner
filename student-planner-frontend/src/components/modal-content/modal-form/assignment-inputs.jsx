@@ -1,7 +1,7 @@
 import { DateInput } from '../../date-input';
 import { Checkbox } from '../../checkbox';
 import { useCallback, useEffect, useState } from 'react';
-import { TextArea } from '../../text-area/index.js';
+import { TextArea } from '../../text-area';
 import { SubjectInput } from './subject-input.jsx';
 
 export const AssignmentInputs = props => {

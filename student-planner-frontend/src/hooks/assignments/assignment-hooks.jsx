@@ -5,10 +5,6 @@ import { useMutation } from '@tanstack/react-query';
 const BASE_URL = '/backend/assignments';
 
 const create = async assignment => {
-  if (!(assignment.dueDate instanceof Date)) {
-    throw new Error('Due date is required');
-  }
-
   const body = {
     name: assignment.name,
     complete: Boolean(assignment.complete),
