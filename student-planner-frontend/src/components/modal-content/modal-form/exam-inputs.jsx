@@ -1,17 +1,18 @@
 import { useCallback, useEffect, useState } from 'react';
-import { TimeInput } from '../../time-input';
-import { DateInput } from '../../date-input';
-import { TextInput } from '../../text-input';
-import { TextArea } from '../../text-area';
+import { DateInput } from '../../date-input/index.js';
 import {
   BAD_TIMES_ERROR_TEXT,
   END_TIME_REQUIRED_ERROR_TEXT,
   START_TIME_REQUIRED_ERROR_TEXT,
 } from './constants.js';
+import { TimeInput } from '../../time-input/index.js';
+import { SubjectInput } from './subject-input.jsx';
+import { TextInput } from '../../text-input/index.js';
+import { TextArea } from '../../text-area/index.js';
 
-export const EventInputs = props => {
-  const { setEvent, event, setError } = props;
-  const { date, startTime, endTime, location, note } = event;
+export const ExamInputs = props => {
+  const { setExam, exam, setError } = props;
+  const { date, startTime, endTime, subject, location, note } = exam;
   const [dateIsError, setDateIsError] = useState(false);
   const [startTimeIsError, setStartTimeIsError] = useState(false);
   const [startTimeErrorText, setStartTimeErrorText] = useState('');
@@ -35,14 +36,14 @@ export const EventInputs = props => {
       } else {
         setDateIsError(false);
       }
-      setEvent(previousEvent => {
+      setExam(previousExam => {
         return {
-          ...previousEvent,
+          ...previousExam,
           date,
         };
       });
     },
-    [setEvent],
+    [setExam],
   );
 
   const verifyStartTimeIsBeforeEndTime = useCallback((startTime, endTime) => {
@@ -71,14 +72,14 @@ export const EventInputs = props => {
         setStartTimeIsError(false);
         setStartTimeErrorText('');
       }
-      setEvent(previousEvent => {
+      setExam(previousEvent => {
         return {
           ...previousEvent,
           startTime,
         };
       });
     },
-    [endTime, setEvent, verifyStartTimeIsBeforeEndTime],
+    [endTime, setExam, verifyStartTimeIsBeforeEndTime],
   );
 
   const setEndTime = useCallback(
@@ -92,38 +93,50 @@ export const EventInputs = props => {
         setEndTimeIsError(false);
         setEndTimeErrorText('');
       }
-      setEvent(previousEvent => {
+      setExam(previousEvent => {
         return {
           ...previousEvent,
           endTime,
         };
       });
     },
-    [setEvent, startTime, verifyStartTimeIsBeforeEndTime],
+    [setExam, startTime, verifyStartTimeIsBeforeEndTime],
   );
 
   const setLocation = useCallback(
     location => {
-      setEvent(previousEvent => {
+      setExam(previousExam => {
         return {
-          ...previousEvent,
+          ...previousExam,
           location,
         };
       });
     },
-    [setEvent],
+    [setExam],
+  );
+
+  const setSubject = useCallback(
+    subject => {
+      setExam(previousExam => {
+        return {
+          ...previousExam,
+          subject,
+        };
+      });
+    },
+    [setExam],
   );
 
   const setNote = useCallback(
     note => {
-      setEvent(previousEvent => {
+      setExam(previousExam => {
         return {
-          ...previousEvent,
+          ...previousExam,
           note,
         };
       });
     },
-    [setEvent],
+    [setExam],
   );
 
   return (
@@ -148,6 +161,7 @@ export const EventInputs = props => {
         isError={endTimeIsError}
         errorText={endTimeErrorText}
       />
+      <SubjectInput subject={subject} setSubject={setSubject} />
       <TextInput
         label='Location'
         value={location}

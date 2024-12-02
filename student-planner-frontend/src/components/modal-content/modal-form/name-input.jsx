@@ -10,15 +10,10 @@ export const NameInput = props => {
       if (newName.length < 1) {
         setErrorText('Name is required');
         setIsError(true);
-        return;
+      } else {
+        setIsError(false);
+        setErrorText('');
       }
-      if (newName.length > 100) {
-        setErrorText('Name cannot be longer than 100 characters');
-        setIsError(true);
-        return;
-      }
-      setIsError(false);
-      setErrorText('');
     },
     [setName, setIsError],
   );
@@ -30,6 +25,7 @@ export const NameInput = props => {
       isError={isError}
       errorText={errorText}
       onChange={onChange}
+      maxLength={100}
     />
   );
 };
