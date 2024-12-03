@@ -1,0 +1,10 @@
+.days-of-week {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    height: 75px;
+}
+
+.day-buttons {
+    display: flex;
+    justify-content: space-between;
+}
