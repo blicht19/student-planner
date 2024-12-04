@@ -1,15 +1,16 @@
 import { modalMenuOptions } from '../modal-menu-options.js';
 import styles from './modal-menu.module.css';
+import { useModalContext } from '../../../hooks';
 
-export const ModalMenu = props => {
-  const { onClick } = props;
+export const ModalMenu = () => {
+  const { setItemType } = useModalContext();
   return (
     <div className={styles.modalMenu}>
       {Object.values(modalMenuOptions).map(menuOption => {
         return (
           <li
             onClick={() => {
-              onClick(menuOption);
+              setItemType(menuOption);
             }}
             key={menuOption}
             className={styles.modalMenuItem}

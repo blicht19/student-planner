@@ -1,17 +1,14 @@
-import { useState } from 'react';
 import { ModalMenu } from './modal-menu';
 import { ModalForm } from './modal-form/modal-form.jsx';
+import { useModalContext } from '../../hooks';
 
-export const ModalContent = props => {
-  const { edit = false, itemType = '', onClose } = props;
-  const [selectedItemType, setSelectedItemType] = useState(itemType);
+export const ModalContent = () => {
+  const { itemType } = useModalContext();
 
   return (
     <>
-      {selectedItemType === '' && <ModalMenu onClick={setSelectedItemType} />}
-      {selectedItemType !== '' && (
-        <ModalForm edit={edit} itemType={selectedItemType} onClose={onClose} />
-      )}
+      {itemType === '' && <ModalMenu />}
+      {itemType !== '' && <ModalForm />}
     </>
   );
 };

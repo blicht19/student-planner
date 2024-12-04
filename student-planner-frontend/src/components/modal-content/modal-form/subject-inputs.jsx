@@ -3,9 +3,11 @@ import { DaysOfWeekInput } from '../../days-of-week-input';
 import { BAD_TIMES_ERROR_TEXT } from './constants.js';
 import { TimeInput } from '../../time-input';
 import { TextInput } from '../../text-input';
+import { useModalContext } from '../../../hooks';
 
 export const SubjectInputs = props => {
-  const { setSubject, subject, setError } = props;
+  const { item, updateItemProperty, setItem } = useModalContext();
+  const { setError } = props;
   const {
     sunday,
     monday,
@@ -17,7 +19,7 @@ export const SubjectInputs = props => {
     startTime = null,
     endTime = null,
     location,
-  } = subject;
+  } = item;
   const [startTimeIsError, setStartTimeIsError] = useState(false);
   const [startTimeErrorText, setStartTimeErrorText] = useState('');
   const [endTimeIsError, setEndTimeIsError] = useState(false);
@@ -29,13 +31,13 @@ export const SubjectInputs = props => {
 
   const toggleDayOfWeek = useCallback(
     dayOfWeek => {
-      setSubject(previousSubject => {
+      setItem(previousSubject => {
         const newSubject = { ...previousSubject };
         newSubject[dayOfWeek] = !newSubject[dayOfWeek];
         return newSubject;
       });
     },
-    [setSubject],
+    [setItem],
   );
 
   const verifyStartTimeIsBeforeEndTime = useCallback((startTime, endTime) => {
@@ -56,50 +58,40 @@ export const SubjectInputs = props => {
   const setStartTime = useCallback(
     startTime => {
       if (!(startTime instanceof Date)) {
-        setSubject(previousSubject => {
-          return { ...previousSubject, startTime: null };
-        });
+        updateItemProperty('startTime', null);
         setStartTimeIsError(false);
         setStartTimeErrorText('');
       } else {
-        setSubject(previousSubject => {
-          return { ...previousSubject, startTime };
-        });
+        updateItemProperty('startTime', startTime);
         if (endTime instanceof Date) {
           verifyStartTimeIsBeforeEndTime(startTime, endTime);
         }
       }
     },
-    [endTime, setSubject, verifyStartTimeIsBeforeEndTime],
+    [endTime, updateItemProperty, verifyStartTimeIsBeforeEndTime],
   );
 
   const setEndTime = useCallback(
     endTime => {
       if (!(endTime instanceof Date)) {
-        setSubject(previousSubject => {
-          return { ...previousSubject, endTime: null };
-        });
+        updateItemProperty('endTime', null);
         setStartTimeIsError(false);
         setEndTimeErrorText('');
       } else {
-        setSubject(previousSubject => {
-          return { ...previousSubject, endTime };
-        });
+        updateItemProperty('endTime', endTime);
         if (startTime instanceof Date) {
           verifyStartTimeIsBeforeEndTime(startTime, endTime);
         }
       }
     },
-    [setSubject, startTime, verifyStartTimeIsBeforeEndTime],
+    [updateItemProperty, startTime, verifyStartTimeIsBeforeEndTime],
   );
 
   const setLocation = useCallback(
     location => {
-      setSubject(previousSubject => {
-        return { ...previousSubject, location };
-      });
+      updateItemProperty('location', location);
     },
-    [setSubject],
+    [updateItemProperty],
   );
 
   return (

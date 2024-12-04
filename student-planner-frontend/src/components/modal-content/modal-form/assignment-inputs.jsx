@@ -3,10 +3,12 @@ import { Checkbox } from '../../checkbox';
 import { useCallback, useEffect, useState } from 'react';
 import { TextArea } from '../../text-area';
 import { SubjectInput } from './subject-input.jsx';
+import { useModalContext } from '../../../hooks';
 
 export const AssignmentInputs = props => {
-  const { setAssignment, assignment, setError } = props;
-  const { dueDate, complete, subject, note } = assignment;
+  const { item, updateItemProperty, setItem } = useModalContext();
+  const { setError } = props;
+  const { dueDate, complete, subject, note } = item;
   const [dueDateIsError, setDueDateIsError] = useState(false);
 
   useEffect(() => {
@@ -20,46 +22,32 @@ export const AssignmentInputs = props => {
       } else {
         setDueDateIsError(false);
       }
-      setAssignment(previousAssignment => {
-        return {
-          ...previousAssignment,
-          dueDate,
-        };
-      });
+      updateItemProperty('dueDate', dueDate);
     },
-    [setAssignment],
+    [updateItemProperty],
   );
+
   const toggleCheckbox = useCallback(() => {
-    setAssignment(previousAssignment => {
+    setItem(previousItem => {
       return {
-        ...previousAssignment,
-        complete: !previousAssignment.complete,
+        ...previousItem,
+        complete: !previousItem.complete,
       };
     });
-  }, [setAssignment]);
+  }, [setItem]);
 
   const setSubject = useCallback(
     subject => {
-      setAssignment(previousAssignment => {
-        return {
-          ...previousAssignment,
-          subject,
-        };
-      });
+      updateItemProperty('subject', subject);
     },
-    [setAssignment],
+    [updateItemProperty],
   );
 
   const setNote = useCallback(
     note => {
-      setAssignment(previousAssignment => {
-        return {
-          ...previousAssignment,
-          note,
-        };
-      });
+      updateItemProperty('note', note);
     },
-    [setAssignment],
+    [updateItemProperty],
   );
 
   return (

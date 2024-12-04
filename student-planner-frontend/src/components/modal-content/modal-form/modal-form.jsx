@@ -4,93 +4,56 @@ import { NameInput } from './name-input.jsx';
 import styles from './modal-form.module.css';
 import { modalMenuOptions } from '../modal-menu-options.js';
 import { AssignmentInputs } from './assignment-inputs.jsx';
-import { useCreate } from '../../../hooks';
+import { useCreate, useModalContext } from '../../../hooks';
 import { TaskInputs } from './task-inputs.jsx';
 import { EventInputs } from './event-inputs.jsx';
 import { ExamInputs } from './exam-inputs.jsx';
 import { SubjectInputs } from './subject-inputs.jsx';
 
-export const ModalForm = props => {
-  const { edit = false, itemType, onClose } = props;
-  const [name, setName] = useState('');
+export const ModalForm = () => {
+  const { editMode, itemType, closeModal, item } = useModalContext();
   const [nameIsError, setNameIsError] = useState(false);
-  const [item, setItem] = useState({});
   const [inputsHaveError, setInputsHaveError] = useState(true);
   const valid = useMemo(() => {
-    return name && !nameIsError && !inputsHaveError;
-  }, [name, nameIsError, inputsHaveError]);
-  const createMutation = useCreate(itemType, onClose);
+    return Boolean(item.name) && !nameIsError && !inputsHaveError;
+  }, [item.name, nameIsError, inputsHaveError]);
+  const createMutation = useCreate(itemType, closeModal);
   const submit = useCallback(() => {
-    if (edit) {
+    if (editMode) {
       // Todo: Add editing hook
     } else {
-      createMutation.mutate({ ...item, name });
+      createMutation.mutate(item);
     }
-  }, [createMutation, edit, item, name]);
+  }, [createMutation, editMode, item]);
 
   return (
     <div className={styles.modalForm}>
       <h2
         className={styles.heading}
-      >{`${edit ? 'Edit' : 'Add'} ${itemType}`}</h2>
+      >{`${editMode ? 'Edit' : 'Add'} ${itemType}`}</h2>
       <div className={styles.inputs}>
-        <NameInput
-          name={name}
-          setName={setName}
-          isError={nameIsError}
-          setIsError={setNameIsError}
-        />
+        <NameInput isError={nameIsError} setIsError={setNameIsError} />
         {(() => {
           switch (itemType) {
             case modalMenuOptions.assignment:
-              return (
-                <AssignmentInputs
-                  assignment={item}
-                  setAssignment={setItem}
-                  setError={setInputsHaveError}
-                />
-              );
+              return <AssignmentInputs setError={setInputsHaveError} />;
             case modalMenuOptions.task:
-              return (
-                <TaskInputs
-                  task={item}
-                  setTask={setItem}
-                  setError={setInputsHaveError}
-                />
-              );
+              return <TaskInputs setError={setInputsHaveError} />;
             case modalMenuOptions.event:
-              return (
-                <EventInputs
-                  event={item}
-                  setEvent={setItem}
-                  setError={setInputsHaveError}
-                />
-              );
+              return <EventInputs setError={setInputsHaveError} />;
             case modalMenuOptions.exam:
-              return (
-                <ExamInputs
-                  exam={item}
-                  setExam={setItem}
-                  setError={setInputsHaveError}
-                />
-              );
+              return <ExamInputs setError={setInputsHaveError} />;
             case modalMenuOptions.class:
-              return (
-                <SubjectInputs
-                  subject={item}
-                  setSubject={setItem}
-                  setError={setInputsHaveError}
-                />
-              );
+              return <SubjectInputs setError={setInputsHaveError} />;
             default:
               return null;
           }
         })()}
       </div>
       <div className={styles.buttons}>
-        {edit && <Button text='Delete' />}
+        {editMode && <Button text='Delete' />}
         <Button
-          text={edit ? 'Save' : 'Add'}
+          text={editMode ? 'Save' : 'Add'}
           disabled={!valid}
           onClick={submit}
           isLoading={createMutation.isLoading}

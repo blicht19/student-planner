@@ -1,18 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
-import { DateInput } from '../../date-input/index.js';
+import { DateInput } from '../../date-input';
 import {
   BAD_TIMES_ERROR_TEXT,
   END_TIME_REQUIRED_ERROR_TEXT,
   START_TIME_REQUIRED_ERROR_TEXT,
 } from './constants.js';
-import { TimeInput } from '../../time-input/index.js';
+import { TimeInput } from '../../time-input';
 import { SubjectInput } from './subject-input.jsx';
-import { TextInput } from '../../text-input/index.js';
-import { TextArea } from '../../text-area/index.js';
+import { TextInput } from '../../text-input';
+import { TextArea } from '../../text-area';
+import { useModalContext } from '../../../hooks';
 
 export const ExamInputs = props => {
-  const { setExam, exam, setError } = props;
-  const { date, startTime, endTime, subject, location, note } = exam;
+  const { item, updateItemProperty } = useModalContext();
+  const { setError } = props;
+  const { date, startTime, endTime, subject, location, note } = item;
   const [dateIsError, setDateIsError] = useState(false);
   const [startTimeIsError, setStartTimeIsError] = useState(false);
   const [startTimeErrorText, setStartTimeErrorText] = useState('');
@@ -36,14 +38,9 @@ export const ExamInputs = props => {
       } else {
         setDateIsError(false);
       }
-      setExam(previousExam => {
-        return {
-          ...previousExam,
-          date,
-        };
-      });
+      updateItemProperty('date', date);
     },
-    [setExam],
+    [updateItemProperty],
   );
 
   const verifyStartTimeIsBeforeEndTime = useCallback((startTime, endTime) => {
@@ -72,14 +69,9 @@ export const ExamInputs = props => {
         setStartTimeIsError(false);
         setStartTimeErrorText('');
       }
-      setExam(previousEvent => {
-        return {
-          ...previousEvent,
-          startTime,
-        };
-      });
+      updateItemProperty('startTime', startTime);
     },
-    [endTime, setExam, verifyStartTimeIsBeforeEndTime],
+    [endTime, updateItemProperty, verifyStartTimeIsBeforeEndTime],
   );
 
   const setEndTime = useCallback(
@@ -93,50 +85,30 @@ export const ExamInputs = props => {
         setEndTimeIsError(false);
         setEndTimeErrorText('');
       }
-      setExam(previousEvent => {
-        return {
-          ...previousEvent,
-          endTime,
-        };
-      });
+      updateItemProperty('endTime', endTime);
     },
-    [setExam, startTime, verifyStartTimeIsBeforeEndTime],
+    [updateItemProperty, startTime, verifyStartTimeIsBeforeEndTime],
   );
 
   const setLocation = useCallback(
     location => {
-      setExam(previousExam => {
-        return {
-          ...previousExam,
-          location,
-        };
-      });
+      updateItemProperty('location', location);
     },
-    [setExam],
+    [updateItemProperty],
   );
 
   const setSubject = useCallback(
     subject => {
-      setExam(previousExam => {
-        return {
-          ...previousExam,
-          subject,
-        };
-      });
+      updateItemProperty('subject', subject);
     },
-    [setExam],
+    [updateItemProperty],
   );
 
   const setNote = useCallback(
     note => {
-      setExam(previousExam => {
-        return {
-          ...previousExam,
-          note,
-        };
-      });
+      updateItemProperty('note', note);
     },
-    [setExam],
+    [updateItemProperty],
   );
 
   return (

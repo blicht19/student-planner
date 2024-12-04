@@ -8,10 +8,12 @@ import {
   END_TIME_REQUIRED_ERROR_TEXT,
   START_TIME_REQUIRED_ERROR_TEXT,
 } from './constants.js';
+import { useModalContext } from '../../../hooks';
 
 export const EventInputs = props => {
-  const { setEvent, event, setError } = props;
-  const { date, startTime, endTime, location, note } = event;
+  const { item, updateItemProperty } = useModalContext();
+  const { setError } = props;
+  const { date, startTime, endTime, location, note } = item;
   const [dateIsError, setDateIsError] = useState(false);
   const [startTimeIsError, setStartTimeIsError] = useState(false);
   const [startTimeErrorText, setStartTimeErrorText] = useState('');
@@ -35,14 +37,9 @@ export const EventInputs = props => {
       } else {
         setDateIsError(false);
       }
-      setEvent(previousEvent => {
-        return {
-          ...previousEvent,
-          date,
-        };
-      });
+      updateItemProperty('date', date);
     },
-    [setEvent],
+    [updateItemProperty],
   );
 
   const verifyStartTimeIsBeforeEndTime = useCallback((startTime, endTime) => {
@@ -71,14 +68,9 @@ export const EventInputs = props => {
         setStartTimeIsError(false);
         setStartTimeErrorText('');
       }
-      setEvent(previousEvent => {
-        return {
-          ...previousEvent,
-          startTime,
-        };
-      });
+      updateItemProperty('startTime', startTime);
     },
-    [endTime, setEvent, verifyStartTimeIsBeforeEndTime],
+    [endTime, updateItemProperty, verifyStartTimeIsBeforeEndTime],
   );
 
   const setEndTime = useCallback(
@@ -92,38 +84,23 @@ export const EventInputs = props => {
         setEndTimeIsError(false);
         setEndTimeErrorText('');
       }
-      setEvent(previousEvent => {
-        return {
-          ...previousEvent,
-          endTime,
-        };
-      });
+      updateItemProperty('endTime', endTime);
     },
-    [setEvent, startTime, verifyStartTimeIsBeforeEndTime],
+    [updateItemProperty, startTime, verifyStartTimeIsBeforeEndTime],
   );
 
   const setLocation = useCallback(
     location => {
-      setEvent(previousEvent => {
-        return {
-          ...previousEvent,
-          location,
-        };
-      });
+      updateItemProperty('location', location);
     },
-    [setEvent],
+    [updateItemProperty],
   );
 
   const setNote = useCallback(
     note => {
-      setEvent(previousEvent => {
-        return {
-          ...previousEvent,
-          note,
-        };
-      });
+      updateItemProperty('note', note);
     },
-    [setEvent],
+    [updateItemProperty],
   );
 
   return (

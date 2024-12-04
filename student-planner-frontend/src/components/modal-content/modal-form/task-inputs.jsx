@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useState } from 'react';
-import { DateInput } from '../../date-input/index.js';
-import { Checkbox } from '../../checkbox/index.js';
-import { TextArea } from '../../text-area/index.js';
+import { DateInput } from '../../date-input';
+import { Checkbox } from '../../checkbox';
+import { TextArea } from '../../text-area';
+import { useModalContext } from '../../../hooks';
 
 export const TaskInputs = props => {
-  const { setTask, task, setError } = props;
-  const { dueDate, complete, note } = task;
+  const { item, updateItemProperty, setItem } = useModalContext();
+  const { setError } = props;
+  const { dueDate, complete, note } = item;
   const [dueDateIsError, setDueDateIsError] = useState(false);
 
   useEffect(() => {
@@ -19,35 +21,25 @@ export const TaskInputs = props => {
       } else {
         setDueDateIsError(false);
       }
-      setTask(previousTask => {
-        return {
-          ...previousTask,
-          dueDate,
-        };
-      });
+      updateItemProperty('dueDate', dueDate);
     },
-    [setTask],
+    [updateItemProperty],
   );
 
   const toggleCheckbox = useCallback(() => {
-    setTask(previousTask => {
+    setItem(previousTask => {
       return {
         ...previousTask,
         complete: !previousTask.complete,
       };
     });
-  }, [setTask]);
+  }, [setItem]);
 
   const setNote = useCallback(
     note => {
-      setTask(previousTask => {
-        return {
-          ...previousTask,
-          note,
-        };
-      });
+      updateItemProperty('note', note);
     },
-    [setTask],
+    [updateItemProperty],
   );
 
   return (

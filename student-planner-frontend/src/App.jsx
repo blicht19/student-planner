@@ -13,6 +13,7 @@ import {
   Agenda,
   CalendarPage,
   NotFound,
+  ModalContextProvider,
 } from './components';
 
 const queryClient = new QueryClient();
@@ -55,7 +56,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthContextProvider>
-        <RouterProvider router={router} />
+        <ModalContextProvider>
+          <RouterProvider router={router} />
+        </ModalContextProvider>
       </AuthContextProvider>
     </QueryClientProvider>
   );
