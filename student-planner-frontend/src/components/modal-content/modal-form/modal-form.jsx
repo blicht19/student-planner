@@ -8,6 +8,7 @@ import { useCreate } from '../../../hooks';
 import { TaskInputs } from './task-inputs.jsx';
 import { EventInputs } from './event-inputs.jsx';
 import { ExamInputs } from './exam-inputs.jsx';
+import { SubjectInputs } from './subject-inputs.jsx';
 
 export const ModalForm = props => {
   const { edit = false, itemType, onClose } = props;
@@ -70,6 +71,14 @@ export const ModalForm = props => {
                 <ExamInputs
                   exam={item}
                   setExam={setItem}
+                  setError={setInputsHaveError}
+                />
+              );
+            case modalMenuOptions.class:
+              return (
+                <SubjectInputs
+                  subject={item}
+                  setSubject={setItem}
                   setError={setInputsHaveError}
                 />
               );

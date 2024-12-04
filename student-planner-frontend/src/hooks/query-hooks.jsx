@@ -2,6 +2,7 @@ import { useCreateAssignment } from './assignments';
 import { useCreateTask } from './tasks/task-hooks.jsx';
 import { useCreateEvent } from './events';
 import { useCreateExam } from './exams';
+import { useCreateSubject } from './subjects';
 
 const hooksMap = {
   Assignment: {
@@ -15,6 +16,9 @@ const hooksMap = {
   },
   Exam: {
     create: useCreateExam,
+  },
+  Class: {
+    create: useCreateSubject,
   },
 };
 
