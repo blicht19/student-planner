@@ -1,5 +1,5 @@
 import { Filters } from '../to-do-list/filters.jsx';
-import { ToDoList } from '../to-do-list/index.js';
+import { ToDoList } from '../to-do-list';
 
 export const Agenda = () => {
   return (
