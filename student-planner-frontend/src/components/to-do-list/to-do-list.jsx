@@ -1,5 +1,6 @@
 import { useGetAssignmentsAndTasksFiltered } from '../../hooks';
 import { MoonLoader } from 'react-spinners';
+import { ToDoItem } from './to-do-item.jsx';
 
 export const ToDoList = props => {
   const { startDate, endDate, showCompleted } = props;
@@ -15,7 +16,16 @@ export const ToDoList = props => {
       {!(isLoading || isError) &&
         data.map(item => {
           return (
-            <div key={`${item.type}-${item.id}`}>{JSON.stringify(item)}</div>
+            <ToDoItem
+              name={item.name}
+              complete={item.complete}
+              dueDate={item.dueDate}
+              note={item.note}
+              subject={item.subject}
+              id={item.id}
+              type={item.type}
+              key={`${item.type}-${item.id}`}
+            />
           );
         })}
     </div>
