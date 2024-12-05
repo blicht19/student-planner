@@ -1,6 +1,7 @@
-import { dateFormatter } from '../../utils/index.js';
+import { dateFormatter } from '../../utils';
 import axios from 'axios';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getFilterFromQueryKey } from '../utils.js';
 
 const BASE_URL = '/backend/tasks';
 
@@ -20,13 +21,30 @@ const create = async task => {
   return response.data;
 };
 
+const getFiltered = async ({ queryKey }) => {
+  const body = getFilterFromQueryKey(queryKey);
+
+  const response = await axios.post(`${BASE_URL}/filter`, body);
+  return response.data;
+};
+
 export const useCreateTask = success => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: task => {
       return create(task);
     },
     onSuccess: () => {
-      success();
+      queryClient.invalidateQueries({ queryKey: ['tasks'] }).then(() => {
+        success();
+      });
     },
+  });
+};
+
+export const useGetTasksFiltered = filter => {
+  return useQuery({
+    queryKey: ['tasks', filter],
+    queryFn: getFiltered,
   });
 };

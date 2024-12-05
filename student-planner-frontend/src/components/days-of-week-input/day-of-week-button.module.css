@@ -5,6 +5,7 @@
     border-radius: 15px;
     background-color: var(--dark-color);
     color: var(--light-color);
+    cursor: pointer;
 }
 
 .day-of-week-button:hover {

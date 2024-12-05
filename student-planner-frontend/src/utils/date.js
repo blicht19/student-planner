@@ -9,3 +9,7 @@ export const timeFormatter = new Intl.DateTimeFormat('en-US', {
   minute: '2-digit',
   hour12: true,
 });
+
+export const compareDateStrings = (a, b) => {
+  return Date.parse(a) - Date.parse(b);
+};

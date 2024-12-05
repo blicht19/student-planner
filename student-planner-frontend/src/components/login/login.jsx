@@ -4,7 +4,7 @@ import { TextInput } from '../text-input';
 import styles from './login.module.css';
 import { Button } from '../button';
 import { Link } from '../link';
-import { ErrorText } from '../error-text/index.js';
+import { ErrorText } from '../error-text';
 
 export const Login = () => {
   const loginMutation = useLogin();
