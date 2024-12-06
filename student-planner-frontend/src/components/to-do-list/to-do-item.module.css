@@ -13,14 +13,22 @@
     -moz-appearance: none;
     -webkit-appearance: none;
     -o-appearance: none;
-    height: 1rem;
-    width: 1rem;
-    border: 1px solid var(--text-color);
-    border-radius: 3px;
-    background-color: var(--medium-dark-color);
     cursor: pointer;
     display: grid;
     place-content: center;
+}
+
+.agenda-item-checkbox, .loading {
+    height: 1rem !important;
+    width: 1rem !important;
+    background-color: var(--medium-dark-color) !important;
+    border: 1px solid var(--text-color);
+    border-radius: 3px;
+}
+
+.loading-wrapper {
+    display: flex;
+    align-items: center;
 }
 
 .agenda-item-checkbox:hover {
