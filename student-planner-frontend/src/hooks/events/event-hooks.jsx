@@ -30,6 +30,13 @@ const update = async event => {
   return response.data;
 };
 
+const deleteEvent = async id => {
+  const url = `${BASE_URL}?id=${id}`;
+
+  const response = await axios.delete(url);
+  return response.data;
+};
+
 export const useCreateEvent = success => {
   return useMutation({
     mutationFn: assignment => {
@@ -45,6 +52,17 @@ export const useUpdateEvent = success => {
   return useMutation({
     mutationFn: event => {
       return update(event);
+    },
+    onSuccess: () => {
+      success();
+    },
+  });
+};
+
+export const useDeleteEvent = success => {
+  return useMutation({
+    mutationFn: id => {
+      return deleteEvent(id);
     },
     onSuccess: () => {
       success();

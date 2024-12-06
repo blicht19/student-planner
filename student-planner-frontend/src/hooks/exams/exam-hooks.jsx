@@ -36,6 +36,13 @@ const update = async exam => {
   return response.data;
 };
 
+const deleteExam = async id => {
+  const url = `${BASE_URL}?id=${id}`;
+
+  const response = await axios.delete(url);
+  return response.data;
+};
+
 export const useCreateExam = success => {
   return useMutation({
     mutationFn: assignment => {
@@ -51,6 +58,17 @@ export const useUpdateExam = success => {
   return useMutation({
     mutationFn: exam => {
       return update(exam);
+    },
+    onSuccess: () => {
+      success();
+    },
+  });
+};
+
+export const useDeleteExam = success => {
+  return useMutation({
+    mutationFn: id => {
+      return deleteExam(id);
     },
     onSuccess: () => {
       success();

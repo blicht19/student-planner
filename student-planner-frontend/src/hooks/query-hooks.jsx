@@ -1,12 +1,22 @@
 import {
   useCreateAssignment,
+  useDeleteAssignment,
   useGetAssignmentsFiltered,
   useUpdateAssignment,
 } from './assignments';
-import { useCreateTask, useGetTasksFiltered, useUpdateTask } from './tasks';
-import { useCreateEvent, useUpdateEvent } from './events';
-import { useCreateExam, useUpdateExam } from './exams';
-import { useCreateSubject, useUpdateSubject } from './subjects';
+import {
+  useCreateTask,
+  useDeleteTask,
+  useGetTasksFiltered,
+  useUpdateTask,
+} from './tasks';
+import { useCreateEvent, useDeleteEvent, useUpdateEvent } from './events';
+import { useCreateExam, useDeleteExam, useUpdateExam } from './exams';
+import {
+  useCreateSubject,
+  useDeleteSubject,
+  useUpdateSubject,
+} from './subjects';
 import { useMemo } from 'react';
 import { compareDateStrings } from '../utils';
 import { modalMenuOptions } from '../components/modal-content/modal-menu-options.js';
@@ -15,22 +25,27 @@ const hooksMap = {
   Assignment: {
     create: useCreateAssignment,
     update: useUpdateAssignment,
+    delete: useDeleteAssignment,
   },
   Task: {
     create: useCreateTask,
     update: useUpdateTask,
+    delete: useDeleteTask,
   },
   Event: {
     create: useCreateEvent,
     update: useUpdateEvent,
+    delete: useDeleteEvent,
   },
   Exam: {
     create: useCreateExam,
     update: useUpdateExam,
+    delete: useDeleteExam,
   },
   Class: {
     create: useCreateSubject,
     update: useUpdateSubject,
+    delete: useDeleteSubject,
   },
 };
 
@@ -40,6 +55,10 @@ export const useCreate = (type, onSuccess) => {
 
 export const useUpdate = (type, onSuccess) => {
   return hooksMap[type].update(onSuccess);
+};
+
+export const useDelete = (type, onSuccess) => {
+  return hooksMap[type].delete(onSuccess);
 };
 
 export const useGetAssignmentsAndTasksFiltered = filter => {

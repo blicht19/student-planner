@@ -45,6 +45,7 @@ h1, h2, h3, h4, h5, h6 {
     --medium-light-color: #3b8e92;
     --light-color: #63c5b6;
     --error-color: #D12E42;
+    --error-dark-color: #9f2331;
 
     --font-family: Roboto;
     --text-color: white;

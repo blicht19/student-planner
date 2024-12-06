@@ -4,7 +4,12 @@ import { NameInput } from './name-input.jsx';
 import styles from './modal-form.module.css';
 import { modalMenuOptions } from '../modal-menu-options.js';
 import { AssignmentInputs } from './assignment-inputs.jsx';
-import { useCreate, useModalContext, useUpdate } from '../../../hooks';
+import {
+  useCreate,
+  useDelete,
+  useModalContext,
+  useUpdate,
+} from '../../../hooks';
 import { TaskInputs } from './task-inputs.jsx';
 import { EventInputs } from './event-inputs.jsx';
 import { ExamInputs } from './exam-inputs.jsx';
@@ -14,11 +19,15 @@ export const ModalForm = () => {
   const { editMode, itemType, closeModal, item } = useModalContext();
   const [nameIsError, setNameIsError] = useState(false);
   const [inputsHaveError, setInputsHaveError] = useState(true);
+
   const valid = useMemo(() => {
     return Boolean(item.name) && !nameIsError && !inputsHaveError;
   }, [item.name, nameIsError, inputsHaveError]);
+
   const createMutation = useCreate(itemType, closeModal);
   const updateMutation = useUpdate(itemType, closeModal);
+  const deleteMutation = useDelete(itemType, closeModal);
+
   const submit = useCallback(() => {
     if (editMode) {
       updateMutation.mutate(item);
@@ -52,12 +61,21 @@ export const ModalForm = () => {
         })()}
       </div>
       <div className={styles.buttons}>
-        {editMode && <Button text='Delete' />}
+        {editMode && (
+          <Button
+            text='Delete'
+            isLoading={deleteMutation.isLoading}
+            onClick={() => deleteMutation.mutate(item.id)}
+            className={styles.deleteButton}
+          />
+        )}
         <Button
           text={editMode ? 'Save' : 'Add'}
           disabled={!valid}
           onClick={submit}
-          isLoading={createMutation.isLoading}
+          isLoading={
+            editMode ? updateMutation.isLoading : createMutation.isLoading
+          }
         />
       </div>
     </div>

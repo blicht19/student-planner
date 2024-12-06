@@ -33,6 +33,13 @@ const update = async assignment => {
   return response.data;
 };
 
+const deleteAssignment = async id => {
+  const url = `${BASE_URL}?id=${id}`;
+
+  const response = await axios.delete(url);
+  return response.data;
+};
+
 const getFiltered = async ({ queryKey }) => {
   const body = getFilterFromQueryKey(queryKey);
 
@@ -59,6 +66,20 @@ export const useUpdateAssignment = success => {
   return useMutation({
     mutationFn: assignment => {
       return update(assignment);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['assignments'] }).then(() => {
+        success();
+      });
+    },
+  });
+};
+
+export const useDeleteAssignment = success => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: id => {
+      return deleteAssignment(id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['assignments'] }).then(() => {

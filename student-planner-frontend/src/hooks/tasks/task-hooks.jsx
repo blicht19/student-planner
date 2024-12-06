@@ -29,6 +29,13 @@ const update = async task => {
   return response.data;
 };
 
+const deleteTask = async id => {
+  const url = `${BASE_URL}?id=${id}`;
+
+  const response = await axios.delete(url);
+  return response.data;
+};
+
 const getFiltered = async ({ queryKey }) => {
   const body = getFilterFromQueryKey(queryKey);
 
@@ -55,6 +62,20 @@ export const useUpdateTask = success => {
   return useMutation({
     mutationFn: task => {
       return update(task);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tasks'] }).then(() => {
+        success();
+      });
+    },
+  });
+};
+
+export const useDeleteTask = success => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: id => {
+      return deleteTask(id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] }).then(() => {

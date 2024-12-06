@@ -24,3 +24,11 @@
     justify-content: flex-end;
     gap: 1rem;
 }
+
+.delete-button {
+    background-color: var(--error-color);
+}
+
+.delete-button:hover {
+    background-color: var(--error-dark-color) !important;
+}

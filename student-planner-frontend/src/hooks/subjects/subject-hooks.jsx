@@ -54,6 +54,13 @@ const update = async subject => {
   return response.data;
 };
 
+const deleteSubject = id => {
+  const url = `${BASE_URL}?id=${id}`;
+
+  const response = axios.delete(url);
+  return response.data;
+};
+
 export const useGetSubjects = () => {
   return useQuery({
     queryKey: ['subjects'],
@@ -80,6 +87,20 @@ export const useUpdateSubject = success => {
   return useMutation({
     mutationFn: assignment => {
       return update(assignment);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['subjects'] }).then(() => {
+        success();
+      });
+    },
+  });
+};
+
+export const useDeleteSubject = success => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: id => {
+      return deleteSubject(id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['subjects'] }).then(() => {
