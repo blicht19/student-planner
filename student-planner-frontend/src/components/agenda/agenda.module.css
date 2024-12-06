@@ -1,0 +1,18 @@
+.agenda {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.agenda-items {
+    width: 375px;
+
+}
+
+.to-do-list-section {
+    max-height: 50%;
+}
+
+.agenda-heading {
+    text-align: center;
+}

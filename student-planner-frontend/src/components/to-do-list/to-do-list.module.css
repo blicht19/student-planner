@@ -1,0 +1,25 @@
+.to-do-list {
+    display: flex;
+    flex-direction: column;
+    max-height: 30vh;
+    overflow: scroll;
+    width: 375px;
+    gap: 0.25rem;
+    padding: 0 0.2rem;
+}
+
+.loading {
+    height: 120px;
+    justify-content: center;
+    align-items: center;
+}
+
+.error {
+    height: 80px;
+    justify-content: center;
+    align-items: center;
+}
+
+.error-text {
+    color: var(--error-color);
+}

@@ -1,6 +1,7 @@
 import { useGetAssignmentsAndTasksFiltered } from '../../hooks';
 import { MoonLoader } from 'react-spinners';
 import { ToDoItem } from './to-do-item.jsx';
+import styles from './to-do-list.module.css';
 
 export const ToDoList = props => {
   const { startDate, endDate, showCompleted } = props;
@@ -10,9 +11,13 @@ export const ToDoList = props => {
     showCompleted,
   });
   return (
-    <div>
+    <div
+      className={`${styles.toDoList} ${isLoading && styles.loading} ${isError && styles.error}`}
+    >
       {isLoading && <MoonLoader />}
-      {isError && <p>Failed to retrieve agenda items</p>}
+      {isError && (
+        <p className={styles.errorText}>Failed to retrieve agenda items</p>
+      )}
       {!(isLoading || isError) &&
         data.map(item => {
           return (

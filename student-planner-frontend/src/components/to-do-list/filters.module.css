@@ -1,0 +1,44 @@
+.filters {
+    display: flex;
+    height: 1.2rem;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: .2rem;
+    padding-bottom: .2rem;
+
+    svg {
+        color: var(--text-color);
+        cursor: pointer;
+    }
+
+    svg:hover {
+        color: var(--light-color);
+    }
+}
+
+.filters-menu {
+    position: relative;
+    top: 75px;
+    right: .5rem;
+    background-color: var(--medium-dark-color);
+    border: 1px solid var(--text-color);
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    height: 175px;
+    justify-content: space-between;
+    padding: 0.25rem;
+}
+
+.filters-checkbox {
+    margin-bottom: unset;
+}
+
+.filters-menu-item {
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+.filters-menu-item:hover {
+    color: var(--light-color);
+}
