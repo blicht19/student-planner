@@ -1,14 +1,36 @@
 import { FaFilter } from 'react-icons/fa';
-import { useState } from 'react';
+import { useToggle } from '../../hooks';
+import { DATE_RANGES } from './date-range-map.jsx';
+import { Checkbox } from '../checkbox';
 
-const TODAY = new Date();
-
-export const Filters = () => {
-  const [showFilterInputs, setShowFilterInputs] = useState(false);
+export const Filters = props => {
+  const { setDateRange, showCompleted, toggleShowCompleted } = props;
+  const [showFilterInputs, toggleShowFilterInputs] = useToggle(false);
   return (
     <div>
-      <FaFilter />
-      {showFilterInputs && <div>Filters</div>}
+      <FaFilter onClick={toggleShowFilterInputs} />
+      {showFilterInputs && (
+        <div>
+          {Object.keys(DATE_RANGES).map(rangeKey => {
+            return (
+              <div
+                key={rangeKey}
+                onClick={() => {
+                  setDateRange(rangeKey);
+                  toggleShowFilterInputs();
+                }}
+              >
+                {rangeKey}
+              </div>
+            );
+          })}
+          <Checkbox
+            label='Show Completed'
+            checked={showCompleted}
+            toggleChecked={toggleShowCompleted}
+          />
+        </div>
+      )}
     </div>
   );
 };
