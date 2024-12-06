@@ -8,6 +8,7 @@ import {
   useCreate,
   useDelete,
   useModalContext,
+  useToggle,
   useUpdate,
 } from '../../../hooks';
 import { TaskInputs } from './task-inputs.jsx';
@@ -19,6 +20,8 @@ export const ModalForm = () => {
   const { editMode, itemType, closeModal, item } = useModalContext();
   const [nameIsError, setNameIsError] = useState(false);
   const [inputsHaveError, setInputsHaveError] = useState(true);
+  const [showDeleteConfirmation, toggleShowDeleteConfirmation] =
+    useToggle(false);
 
   const valid = useMemo(() => {
     return Boolean(item.name) && !nameIsError && !inputsHaveError;
@@ -60,24 +63,41 @@ export const ModalForm = () => {
           }
         })()}
       </div>
-      <div className={styles.buttons}>
-        {editMode && (
+      {!showDeleteConfirmation && (
+        <div className={styles.buttons}>
+          {editMode && (
+            <Button
+              text='Delete'
+              onClick={toggleShowDeleteConfirmation}
+              className={styles.deleteButton}
+            />
+          )}
           <Button
-            text='Delete'
-            isLoading={deleteMutation.isLoading}
-            onClick={() => deleteMutation.mutate(item.id)}
-            className={styles.deleteButton}
+            text={editMode ? 'Save' : 'Add'}
+            disabled={!valid}
+            onClick={submit}
+            isLoading={
+              editMode ? updateMutation.isLoading : createMutation.isLoading
+            }
           />
-        )}
-        <Button
-          text={editMode ? 'Save' : 'Add'}
-          disabled={!valid}
-          onClick={submit}
-          isLoading={
-            editMode ? updateMutation.isLoading : createMutation.isLoading
-          }
-        />
-      </div>
+        </div>
+      )}
+      {showDeleteConfirmation && (
+        <div className={styles.confirmation}>
+          <h4 className={styles.confirmationText}>
+            Are you sure you want to delete this assignment?
+          </h4>
+          <div className={styles.buttons}>
+            <Button text='Cancel' onClick={toggleShowDeleteConfirmation} />
+            <Button
+              text='Confirm'
+              onClick={() => deleteMutation.mutate(item.id)}
+              isLoading={deleteMutation.isLoading}
+              className={styles.deleteButton}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
