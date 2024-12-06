@@ -5,7 +5,7 @@ import { Checkbox } from '../checkbox';
 import styles from './filters.module.css';
 
 export const Filters = props => {
-  const { setDateRange, showCompleted, toggleShowCompleted } = props;
+  const { dateRange, setDateRange, showCompleted, toggleShowCompleted } = props;
   const [showFilterInputs, toggleShowFilterInputs] = useToggle(false);
   return (
     <div className={styles.filters}>
@@ -19,7 +19,7 @@ export const Filters = props => {
                   setDateRange(rangeKey);
                   toggleShowFilterInputs();
                 }}
-                className={styles.filtersMenuItem}
+                className={`${styles.filtersMenuItem} ${dateRange === rangeKey && styles.selected}`}
               >
                 {rangeKey}
               </div>

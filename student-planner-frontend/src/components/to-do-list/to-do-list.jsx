@@ -20,18 +20,7 @@ export const ToDoList = props => {
       )}
       {!(isLoading || isError) &&
         data.map(item => {
-          return (
-            <ToDoItem
-              name={item.name}
-              complete={item.complete}
-              dueDate={item.dueDate}
-              note={item.note}
-              subject={item.subject}
-              id={item.id}
-              type={item.type}
-              key={`${item.type}-${item.id}`}
-            />
-          );
+          return <ToDoItem key={`${item.type}-${item.id}`} item={item} />;
         })}
     </div>
   );

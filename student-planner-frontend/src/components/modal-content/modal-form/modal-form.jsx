@@ -4,7 +4,7 @@ import { NameInput } from './name-input.jsx';
 import styles from './modal-form.module.css';
 import { modalMenuOptions } from '../modal-menu-options.js';
 import { AssignmentInputs } from './assignment-inputs.jsx';
-import { useCreate, useModalContext } from '../../../hooks';
+import { useCreate, useModalContext, useUpdate } from '../../../hooks';
 import { TaskInputs } from './task-inputs.jsx';
 import { EventInputs } from './event-inputs.jsx';
 import { ExamInputs } from './exam-inputs.jsx';
@@ -18,13 +18,14 @@ export const ModalForm = () => {
     return Boolean(item.name) && !nameIsError && !inputsHaveError;
   }, [item.name, nameIsError, inputsHaveError]);
   const createMutation = useCreate(itemType, closeModal);
+  const updateMutation = useUpdate(itemType, closeModal);
   const submit = useCallback(() => {
     if (editMode) {
-      // Todo: Add editing hook
+      updateMutation.mutate(item);
     } else {
       createMutation.mutate(item);
     }
-  }, [createMutation, editMode, item]);
+  }, [createMutation, editMode, item, updateMutation]);
 
   return (
     <div className={styles.modalForm}>

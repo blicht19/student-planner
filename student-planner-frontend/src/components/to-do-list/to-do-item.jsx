@@ -1,8 +1,18 @@
 import { CiEdit } from 'react-icons/ci';
 import styles from './to-do-item.module.css';
+import { useModalContext } from '../../hooks';
+import { useCallback } from 'react';
 
-export const ToDoItem = props => {
-  const { name, complete, dueDate, note, subject, id, type } = props;
+export const ToDoItem = ({ item }) => {
+  const { name, complete, dueDate } = item;
+  const { openEditModal } = useModalContext();
+  const onClickEdit = useCallback(() => {
+    const subject = item.subject?.id;
+    const dueDate = new Date(Date.parse(item.dueDate));
+    const itemToEdit = { ...item, subject, dueDate };
+    openEditModal(item.type, itemToEdit);
+  }, [item, openEditModal]);
+
   return (
     <div className={styles.agendaItem}>
       <input
@@ -13,7 +23,7 @@ export const ToDoItem = props => {
       <h4>{name}</h4>
       <h4>{dueDate}</h4>
       <div className={styles.editButtonWrapper}>
-        <CiEdit className={styles.editButton} />
+        <CiEdit className={styles.editButton} onClick={onClickEdit} />
       </div>
     </div>
   );

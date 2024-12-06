@@ -39,6 +39,10 @@
     cursor: pointer;
 }
 
+.selected {
+    color: var(--light-color);
+}
+
 .filters-menu-item:hover {
     color: var(--light-color);
 }
