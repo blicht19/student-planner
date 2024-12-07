@@ -2,10 +2,11 @@ import {
   useAuthContext,
   useDeleteUser,
   useGetUsers,
+  useNavigateToLogin,
   useToggle,
   useUnlockUser,
 } from '../../hooks';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Table from 'rc-table';
 import { FaUnlockKeyhole } from 'react-icons/fa6';
 import { FaRegTrashCan } from 'react-icons/fa6';
@@ -13,6 +14,7 @@ import { Button } from '../button';
 import styles from './admin.module.css';
 import { Modal } from '../modal';
 import { GridLoader } from 'react-spinners';
+import { handleQueryError } from '../../utils';
 
 const columns = [
   {
@@ -61,10 +63,17 @@ const columns = [
 ];
 
 export const Admin = () => {
-  const { isLoading, isError, data } = useGetUsers();
+  const { isLoading, isError, data, error } = useGetUsers();
+  const navigateToLogin = useNavigateToLogin();
   const { username } = useAuthContext();
   const unlockUserMutation = useUnlockUser();
   const deleteUserMutation = useDeleteUser();
+
+  useEffect(() => {
+    if (isError && error) {
+      handleQueryError(error, navigateToLogin, 'Failed to retrieve users');
+    }
+  }, [error, isError, navigateToLogin]);
 
   const [showDeleteConfirmation, toggleShowDeleteConfirmation] =
     useToggle(false);

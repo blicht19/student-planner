@@ -1,25 +1,48 @@
-import { useGetSubjects } from '../../../hooks';
-import { useMemo } from 'react';
+import { useGetSubjects, useNavigateToLogin } from '../../../hooks';
+import { useEffect, useMemo } from 'react';
 import { Dropdown } from '../../dropdown';
+import { handleQueryError } from '../../../utils';
+import { BarLoader } from 'react-spinners';
+import styles from './subject-input.module.css';
 
 export const SubjectInput = props => {
   const { subject, setSubject } = props;
-  const subjectQuery = useGetSubjects();
+  const { data, error, isLoading, isError } = useGetSubjects();
+  const navigateToLogin = useNavigateToLogin();
+
+  useEffect(() => {
+    if (isError && error) {
+      handleQueryError(error, navigateToLogin, 'Failed to retrieve subjects');
+    }
+  }, [error, isError, navigateToLogin]);
+
   const options = useMemo(() => {
-    return subjectQuery?.data?.map(retrievedSubject => {
+    if (isLoading || isError) {
+      return [];
+    }
+    return data.map(retrievedSubject => {
       return {
         value: retrievedSubject.id,
         label: retrievedSubject.name,
       };
     });
-  }, [subjectQuery]);
+  }, [data, isError, isLoading]);
 
   return (
-    <Dropdown
-      label='Subject'
-      selectedItem={subject}
-      options={options}
-      onChange={setSubject}
-    />
+    <>
+      {!isLoading && (
+        <Dropdown
+          label='Subject'
+          selectedItem={subject}
+          options={options}
+          onChange={setSubject}
+        />
+      )}
+      {isLoading && (
+        <div className={styles.subjectInputLoader}>
+          <BarLoader color='var(--medium-light-color)' />
+        </div>
+      )}
+    </>
   );
 };

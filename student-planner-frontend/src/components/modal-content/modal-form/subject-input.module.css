@@ -1,0 +1,9 @@
+.subject-input-loader {
+    height: 75px;
+    display: flex;
+    align-items: center;
+}
+
+.subject-input-loader span {
+    width: 100% !important;
+}

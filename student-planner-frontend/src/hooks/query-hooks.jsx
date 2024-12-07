@@ -66,11 +66,13 @@ export const useGetAssignmentsAndTasksFiltered = filter => {
     isLoading: assignmentsAreLoading,
     isError: assignmentsAreError,
     data: assignments,
+    error: assignmentsError,
   } = useGetAssignmentsFiltered(filter);
   const {
     isLoading: tasksAreLoading,
     isError: tasksAreError,
     data: tasks,
+    error: tasksError,
   } = useGetTasksFiltered(filter);
 
   const isLoading = useMemo(() => {
@@ -100,5 +102,13 @@ export const useGetAssignmentsAndTasksFiltered = filter => {
     return combinedArray;
   }, [assignments, isError, isLoading, tasks]);
 
-  return { isLoading, isError, data };
+  const isUnauthorized = useMemo(() => {
+    return (
+      (assignmentsAreError || tasksAreError) &&
+      (assignmentsError?.response?.status === 401 ||
+        tasksError?.response?.status === 401)
+    );
+  }, [assignmentsAreError, assignmentsError, tasksAreError, tasksError]);
+
+  return { isLoading, isError, data, isUnauthorized };
 };
