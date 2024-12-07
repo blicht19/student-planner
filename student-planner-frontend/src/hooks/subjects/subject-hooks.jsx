@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { timeFormatter } from '../../utils';
+import { handleQueryError, timeFormatter } from '../../utils';
+import { useNavigateToLogin } from '../navigate';
 
 const BASE_URL = '/backend/subjects';
 
@@ -69,6 +70,7 @@ export const useGetSubjects = () => {
 };
 
 export const useCreateSubject = success => {
+  const navigateToLogin = useNavigateToLogin();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: assignment => {
@@ -79,10 +81,14 @@ export const useCreateSubject = success => {
         success();
       });
     },
+    onError: error => {
+      handleQueryError(error, navigateToLogin, 'Failed to create subject');
+    },
   });
 };
 
 export const useUpdateSubject = success => {
+  const navigateToLogin = useNavigateToLogin();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: assignment => {
@@ -93,10 +99,14 @@ export const useUpdateSubject = success => {
         success();
       });
     },
+    onError: error => {
+      handleQueryError(error, navigateToLogin, 'Failed to update subject');
+    },
   });
 };
 
 export const useDeleteSubject = success => {
+  const navigateToLogin = useNavigateToLogin();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: id => {
@@ -106,6 +116,9 @@ export const useDeleteSubject = success => {
       queryClient.invalidateQueries({ queryKey: ['subjects'] }).then(() => {
         success();
       });
+    },
+    onError: error => {
+      handleQueryError(error, navigateToLogin, 'Failed to delete subject');
     },
   });
 };

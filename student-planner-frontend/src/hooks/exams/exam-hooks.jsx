@@ -1,6 +1,7 @@
-import { dateFormatter, timeFormatter } from '../../utils';
+import { dateFormatter, handleQueryError, timeFormatter } from '../../utils';
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
+import { useNavigateToLogin } from '../navigate';
 
 const BASE_URL = '/backend/exams';
 
@@ -44,6 +45,7 @@ const deleteExam = async id => {
 };
 
 export const useCreateExam = success => {
+  const navigateToLogin = useNavigateToLogin();
   return useMutation({
     mutationFn: assignment => {
       return create(assignment);
@@ -51,10 +53,14 @@ export const useCreateExam = success => {
     onSuccess: () => {
       success();
     },
+    onError: error => {
+      handleQueryError(error, navigateToLogin, 'Failed to create exam');
+    },
   });
 };
 
 export const useUpdateExam = success => {
+  const navigateToLogin = useNavigateToLogin();
   return useMutation({
     mutationFn: exam => {
       return update(exam);
@@ -62,16 +68,23 @@ export const useUpdateExam = success => {
     onSuccess: () => {
       success();
     },
+    onError: error => {
+      handleQueryError(error, navigateToLogin, 'Failed to update exam');
+    },
   });
 };
 
 export const useDeleteExam = success => {
+  const navigateToLogin = useNavigateToLogin();
   return useMutation({
     mutationFn: id => {
       return deleteExam(id);
     },
     onSuccess: () => {
       success();
+    },
+    onError: error => {
+      handleQueryError(error, navigateToLogin, 'Failed to delete exam');
     },
   });
 };

@@ -1,6 +1,7 @@
-import { dateFormatter, timeFormatter } from '../../utils';
+import { dateFormatter, handleQueryError, timeFormatter } from '../../utils';
 import axios from 'axios';
 import { useMutation } from '@tanstack/react-query';
+import { useNavigateToLogin } from '../navigate';
 
 const BASE_URL = '/backend/events';
 
@@ -38,6 +39,7 @@ const deleteEvent = async id => {
 };
 
 export const useCreateEvent = success => {
+  const navigateToLogin = useNavigateToLogin();
   return useMutation({
     mutationFn: assignment => {
       return create(assignment);
@@ -45,10 +47,14 @@ export const useCreateEvent = success => {
     onSuccess: () => {
       success();
     },
+    onError: error => {
+      handleQueryError(error, navigateToLogin, 'Failed to create event');
+    },
   });
 };
 
 export const useUpdateEvent = success => {
+  const navigateToLogin = useNavigateToLogin();
   return useMutation({
     mutationFn: event => {
       return update(event);
@@ -56,16 +62,23 @@ export const useUpdateEvent = success => {
     onSuccess: () => {
       success();
     },
+    onError: error => {
+      handleQueryError(error, navigateToLogin, 'Failed to update event');
+    },
   });
 };
 
 export const useDeleteEvent = success => {
+  const navigateToLogin = useNavigateToLogin();
   return useMutation({
     mutationFn: id => {
       return deleteEvent(id);
     },
     onSuccess: () => {
       success();
+    },
+    onError: error => {
+      handleQueryError(error, navigateToLogin, 'Failed to delete event');
     },
   });
 };

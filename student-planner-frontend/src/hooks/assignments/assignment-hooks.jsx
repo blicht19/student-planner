@@ -1,7 +1,8 @@
-import { dateFormatter } from '../../utils';
+import { dateFormatter, handleQueryError } from '../../utils';
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getFilterFromQueryKey } from '../utils.js';
+import { useNavigateToLogin } from '../navigate';
 
 const BASE_URL = '/backend/assignments';
 
@@ -49,6 +50,7 @@ const getFiltered = async ({ queryKey }) => {
 
 export const useCreateAssignment = success => {
   const queryClient = useQueryClient();
+  const navigateToLogin = useNavigateToLogin();
   return useMutation({
     mutationFn: assignment => {
       return create(assignment);
@@ -58,11 +60,15 @@ export const useCreateAssignment = success => {
         success();
       });
     },
+    onError: error => {
+      handleQueryError(error, navigateToLogin, 'Failed to create assignment');
+    },
   });
 };
 
 export const useUpdateAssignment = success => {
   const queryClient = useQueryClient();
+  const navigateToLogin = useNavigateToLogin();
   return useMutation({
     mutationFn: assignment => {
       return update(assignment);
@@ -72,11 +78,15 @@ export const useUpdateAssignment = success => {
         success();
       });
     },
+    onError: error => {
+      handleQueryError(error, navigateToLogin, 'Failed to update assignment');
+    },
   });
 };
 
 export const useDeleteAssignment = success => {
   const queryClient = useQueryClient();
+  const navigateToLogin = useNavigateToLogin();
   return useMutation({
     mutationFn: id => {
       return deleteAssignment(id);
@@ -85,6 +95,9 @@ export const useDeleteAssignment = success => {
       queryClient.invalidateQueries({ queryKey: ['assignments'] }).then(() => {
         success();
       });
+    },
+    onError: error => {
+      handleQueryError(error, navigateToLogin, 'Failed to delete assignment');
     },
   });
 };

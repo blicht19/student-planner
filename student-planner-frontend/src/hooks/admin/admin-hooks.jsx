@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { handleQueryError } from '../../utils';
+import { useNavigateToLogin } from '../navigate';
 
 const BASE_URL = '/backend/admin/users';
 
@@ -31,6 +33,7 @@ export const useGetUsers = () => {
 
 export const useUnlockUser = () => {
   const queryClient = useQueryClient();
+  const navigateToLogin = useNavigateToLogin();
   return useMutation({
     mutationFn: userId => {
       return unlockUser(userId);
@@ -38,17 +41,25 @@ export const useUnlockUser = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
     },
+    onError: error => {
+      handleQueryError(error, navigateToLogin, 'Failed to unlock user account');
+    },
   });
 };
 
 export const useDeleteUser = () => {
   const queryClient = useQueryClient();
+  const navigateToLogin = useNavigateToLogin();
+
   return useMutation({
     mutationFn: userId => {
       return deleteUser(userId);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
+    },
+    onError: error => {
+      handleQueryError(error, navigateToLogin, 'Failed to delete user');
     },
   });
 };

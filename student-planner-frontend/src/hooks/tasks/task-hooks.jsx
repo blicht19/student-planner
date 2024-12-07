@@ -1,7 +1,8 @@
-import { dateFormatter } from '../../utils';
+import { dateFormatter, handleQueryError } from '../../utils';
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getFilterFromQueryKey } from '../utils.js';
+import { useNavigateToLogin } from '../navigate';
 
 const BASE_URL = '/backend/tasks';
 
@@ -44,6 +45,7 @@ const getFiltered = async ({ queryKey }) => {
 };
 
 export const useCreateTask = success => {
+  const navigateToLogin = useNavigateToLogin();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: task => {
@@ -54,10 +56,14 @@ export const useCreateTask = success => {
         success();
       });
     },
+    onError: error => {
+      handleQueryError(error, navigateToLogin, 'Failed to create task');
+    },
   });
 };
 
 export const useUpdateTask = success => {
+  const navigateToLogin = useNavigateToLogin();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: task => {
@@ -68,10 +74,14 @@ export const useUpdateTask = success => {
         success();
       });
     },
+    onError: error => {
+      handleQueryError(error, navigateToLogin, 'Failed to update task');
+    },
   });
 };
 
 export const useDeleteTask = success => {
+  const navigateToLogin = useNavigateToLogin();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: id => {
@@ -81,6 +91,9 @@ export const useDeleteTask = success => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] }).then(() => {
         success();
       });
+    },
+    onError: error => {
+      handleQueryError(error, navigateToLogin, 'Failed to delete task');
     },
   });
 };

@@ -5,6 +5,7 @@ export * from './exams';
 export * from './events';
 export * from './exams';
 export * from './modal';
+export * from './navigate';
 export * from './query-hooks.jsx';
 export * from './subjects';
 export * from './tasks';
