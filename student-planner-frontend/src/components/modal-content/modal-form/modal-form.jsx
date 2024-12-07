@@ -69,7 +69,7 @@ export const ModalForm = () => {
             <Button
               text='Delete'
               onClick={toggleShowDeleteConfirmation}
-              className={styles.deleteButton}
+              type='destructive'
             />
           )}
           <Button
@@ -93,7 +93,7 @@ export const ModalForm = () => {
               text='Confirm'
               onClick={() => deleteMutation.mutate(item.id)}
               isLoading={deleteMutation.isLoading}
-              className={styles.deleteButton}
+              type='destructive'
             />
           </div>
         </div>

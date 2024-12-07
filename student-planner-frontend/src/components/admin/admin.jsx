@@ -1,4 +1,5 @@
 import {
+  useAuthContext,
   useDeleteUser,
   useGetUsers,
   useToggle,
@@ -9,6 +10,9 @@ import Table from 'rc-table';
 import { FaUnlockKeyhole } from 'react-icons/fa6';
 import { FaRegTrashCan } from 'react-icons/fa6';
 import { Button } from '../button';
+import styles from './admin.module.css';
+import { Modal } from '../modal';
+import { GridLoader } from 'react-spinners';
 
 const columns = [
   {
@@ -39,7 +43,7 @@ const columns = [
     title: 'Failed Login Attempts',
     dataIndex: 'failedLoginAttempts',
     key: 'failedLoginAttempts',
-    width: 100,
+    width: 125,
   },
   {
     title: 'Lock Time',
@@ -51,13 +55,14 @@ const columns = [
     title: 'Unlock',
     dataIndex: 'unlock',
     key: 'unlock',
-    width: 50,
+    width: 75,
   },
-  { title: 'Delete', dataIndex: 'delete', key: 'delete', width: 50 },
+  { title: 'Delete', dataIndex: 'delete', key: 'delete', width: 75 },
 ];
 
 export const Admin = () => {
   const { isLoading, isError, data } = useGetUsers();
+  const { username } = useAuthContext();
   const unlockUserMutation = useUnlockUser();
   const deleteUserMutation = useDeleteUser();
 
@@ -93,26 +98,53 @@ export const Admin = () => {
         lockTime: user.lockTime ?? 'Unlocked',
         key: user.id,
         unlock: (
-          <FaUnlockKeyhole onClick={() => unlockUserMutation.mutate(user.id)} />
+          <FaUnlockKeyhole
+            onClick={() => unlockUserMutation.mutate(user.id)}
+            className={styles.adminTableIcon}
+          />
         ),
-        delete: <FaRegTrashCan onClick={() => onClickDelete(user.id)} />,
+        delete: (
+          <FaRegTrashCan
+            onClick={() => onClickDelete(user.id)}
+            className={`${styles.adminTableIcon} ${styles.deleteIcon} ${user.username === username && styles.disabled}`}
+          />
+        ),
       };
     });
-  }, [data, onClickDelete, unlockUserMutation]);
+  }, [data, onClickDelete, unlockUserMutation, username]);
 
   return (
-    <div>
-      {isLoading && <h3>Loading...</h3>}
-      {isError && <h3>Error</h3>}
-      {!(isLoading || isError) && <Table columns={columns} data={tableData} />}
+    <div className={styles.admin}>
+      <h2>Admin</h2>
+      {isLoading && <GridLoader color='var(--light-color)' />}
+      {isError && (
+        <h3 className={styles.errorText}>Failed to load user data</h3>
+      )}
+      {!(isLoading || isError) && (
+        <Table
+          columns={columns}
+          data={tableData}
+          tableLayout='fixed'
+          className={styles.adminTable}
+        />
+      )}
       {showDeleteConfirmation && (
-        <div>
-          <h4>Are you sure you want to delete this user account?</h4>
-          <div>
-            <Button text='Cancel' onClick={onCancelDelete} />
-            <Button text='Confirm' onClick={onConfirmDelete} />
+        <Modal closeModal={toggleShowDeleteConfirmation}>
+          <div className={styles.confirmationContainer}>
+            <h2 className={styles.confirmationHeader}>
+              Are you sure you want to delete the account for User ID{' '}
+              {userToDelete}?
+            </h2>
+            <div className={styles.buttons}>
+              <Button text='Cancel' onClick={onCancelDelete} />
+              <Button
+                text='Confirm'
+                onClick={onConfirmDelete}
+                type='destructive'
+              />
+            </div>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   );

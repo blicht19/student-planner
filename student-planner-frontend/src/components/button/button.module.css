@@ -1,5 +1,4 @@
 .button {
-    background-color: var(--medium-color);
     border: none;
     border-radius: 3px;
     color: var(--text-color);
@@ -9,13 +8,28 @@
     align-items: center;
 }
 
+.standard-button {
+    background-color: var(--medium-color);
+}
+
+.delete-button {
+    background-color: var(--error-color);
+}
+
 .button:hover:enabled {
-    background-color: var(--medium-dark-color);
     cursor: pointer;
 }
 
-.button:active:enabled {
+.standard-button:hover:enabled {
+    background-color: var(--medium-dark-color);
+}
+
+.standard-button:active:enabled {
     background-color: var(--medium-color);
+}
+
+.delete-button:hover {
+    background-color: var(--error-dark-color) !important;
 }
 
 .disabled {

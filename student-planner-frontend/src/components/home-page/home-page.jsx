@@ -27,7 +27,7 @@ const adminSidebarItems = [
 ];
 
 export const HomePage = () => {
-  const { modalVisible, openNewItemModal } = useModalContext();
+  const { modalVisible, openNewItemModal, closeModal } = useModalContext();
   const { role } = useAuthContext();
 
   const sidebarOptions = useMemo(() => {
@@ -43,7 +43,7 @@ export const HomePage = () => {
         </main>
         <AddButton className={styles.add} onClick={openNewItemModal} />
         {modalVisible && (
-          <Modal>
+          <Modal closeModal={closeModal}>
             <ModalContent />
           </Modal>
         )}

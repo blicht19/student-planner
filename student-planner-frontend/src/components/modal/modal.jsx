@@ -1,9 +1,7 @@
 import styles from './modal.module.css';
 import { IoClose } from 'react-icons/io5';
-import { useModalContext } from '../../hooks/index.js';
 
-export const Modal = ({ children }) => {
-  const { closeModal } = useModalContext();
+export const Modal = ({ children, closeModal }) => {
   return (
     <div className={styles.backdrop}>
       <div className={styles.modal}>
