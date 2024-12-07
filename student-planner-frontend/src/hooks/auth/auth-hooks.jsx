@@ -42,7 +42,7 @@ export const useRegister = () => {
 };
 
 export const useLogin = () => {
-  const { setUsername, setUserId } = useAuthContext();
+  const { setUsername, setRole } = useAuthContext();
   const navigate = useNavigate();
   return useMutation({
     mutationFn: async ({ username, password }) => {
@@ -50,14 +50,14 @@ export const useLogin = () => {
     },
     onSuccess(data) {
       setUsername(data.username);
-      setUserId(data.id);
+      setRole(data.role);
       navigate('/home');
     },
   });
 };
 
 export const useLogout = () => {
-  const { setUsername } = useAuthContext();
+  const { setUsername, setRole } = useAuthContext();
   const navigate = useNavigate();
   return useMutation({
     mutationFn: async () => {
@@ -65,6 +65,7 @@ export const useLogout = () => {
     },
     onSettled() {
       setUsername('');
+      setRole('');
       navigate('/login');
     },
   });

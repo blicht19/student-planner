@@ -1,6 +1,5 @@
 import { useAuthContext, useModalContext } from '../../hooks';
-import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import styles from './home-page.module.css';
 import { Sidebar } from '../sidebar';
 import { AddButton } from '../add-button';
@@ -21,15 +20,7 @@ const sidebarItems = [
 ];
 
 export const HomePage = () => {
-  const { username, userId } = useAuthContext();
-  const navigate = useNavigate();
   const { modalVisible, openNewItemModal } = useModalContext();
-
-  useEffect(() => {
-    if (!username || username.trim() === '' || userId == null) {
-      navigate('/login');
-    }
-  }, [username, navigate, userId]);
 
   return (
     <div className={styles.homePage}>

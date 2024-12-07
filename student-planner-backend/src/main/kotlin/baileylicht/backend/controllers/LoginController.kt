@@ -115,7 +115,7 @@ class LoginController(
             }
 
             return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie)
-                .body(AuthResponseDto(userDetails.username, userDetails.user.id!!, warning))
+                .body(AuthResponseDto(userDetails.username, userDetails.user.role.name, warning))
         } catch (exception: AuthenticationException) {
             when (exception) {
                 is BadCredentialsException -> {

@@ -2,6 +2,7 @@ package baileylicht.backend.configuration
 
 import baileylicht.backend.security.JwtAuthEntryPoint
 import baileylicht.backend.security.JwtAuthFilter
+import baileylicht.backend.security.Role
 import baileylicht.backend.services.PlannerUserDetailsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
@@ -35,6 +36,7 @@ class SecurityConfig(
                 httpRequests.requestMatchers("/auth/**").permitAll()
                 httpRequests.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 httpRequests.requestMatchers("/actuator/**").permitAll()
+                httpRequests.requestMatchers("/admin/**").hasAuthority(Role.ADMIN.name)
                 httpRequests.anyRequest().authenticated()
             }.authenticationProvider(authenticationProvider())
             .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter::class.java)

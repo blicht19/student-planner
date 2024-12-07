@@ -1,5 +1,6 @@
 package baileylicht.backend.utilities
 
+import java.sql.Timestamp
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -7,6 +8,7 @@ import java.time.format.DateTimeParseException
 
 private val dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
 private val timeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
+private val dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm a")
 
 /**
  * Formats a LocalTime as a String in the format HH:MM AM|PM
@@ -74,4 +76,15 @@ fun stringToLocalDate(value: String): LocalDate? {
     } catch (e: DateTimeParseException) {
         null
     }
+}
+
+/**
+ * Formats a Timestamp as a String in the format MM/DD/YYYY HH:MM AM|PM
+ */
+fun timestampToString(timestamp: Timestamp?): String? {
+    if (timestamp == null) {
+        return null
+    }
+    val localDateTime = timestamp.toLocalDateTime()
+    return dateTimeFormatter.format(localDateTime)
 }
