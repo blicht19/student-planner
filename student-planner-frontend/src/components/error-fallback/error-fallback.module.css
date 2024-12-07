@@ -1,0 +1,19 @@
+.error-fallback {
+    background-color: var(--dark-color);
+    color: var(--text-color);
+    font-family: var(--font-family), 'sans-serif';
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+    gap: 0.5rem;
+}
+
+.error-fallback-link {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.error-fallback-link:hover {
+    color: var(--light-color);
+}

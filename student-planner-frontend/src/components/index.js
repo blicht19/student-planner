@@ -8,6 +8,7 @@ export * from './checkbox';
 export * from './create-account';
 export * from './date-input';
 export * from './days-of-week-input';
+export * from './error-fallback';
 export * from './error-text';
 export * from './home-page';
 export * from './link';

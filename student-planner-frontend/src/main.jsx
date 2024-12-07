@@ -4,10 +4,14 @@ import './index.css';
 import App from './App.jsx';
 import '@fontsource/roboto';
 import { Toaster } from 'react-hot-toast';
+import { ErrorBoundary } from './error-boundary.jsx';
+import { ErrorFallback } from './components/index.js';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Toaster position='top-right' reverseOrder={true} />
-    <App />
+    <ErrorBoundary fallback={<ErrorFallback />}>
+      <Toaster position='top-right' reverseOrder={true} />
+      <App />
+    </ErrorBoundary>
   </StrictMode>,
 );
