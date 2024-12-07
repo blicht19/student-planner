@@ -5,6 +5,8 @@ import { Sidebar } from '../sidebar';
 import { AddButton } from '../add-button';
 import { Modal } from '../modal';
 import { ModalContent } from '../modal-content';
+import { useMemo } from 'react';
+import { roles } from '../../constants.js';
 
 const sidebarItems = [
   {
@@ -19,12 +21,22 @@ const sidebarItems = [
   },
 ];
 
+const adminSidebarItems = [
+  ...sidebarItems,
+  { title: 'Admin', path: '/home/admin', id: 'sidebar-admin' },
+];
+
 export const HomePage = () => {
   const { modalVisible, openNewItemModal } = useModalContext();
+  const { role } = useAuthContext();
+
+  const sidebarOptions = useMemo(() => {
+    return role === roles.admin ? adminSidebarItems : sidebarItems;
+  }, [role]);
 
   return (
     <div className={styles.homePage}>
-      <Sidebar sidebarItems={sidebarItems} />
+      <Sidebar sidebarItems={sidebarOptions} />
       <div className={styles.homePageContent}>
         <main className={styles.main}>
           <Outlet />

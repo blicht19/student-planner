@@ -1,4 +1,5 @@
 export * from './add-button';
+export * from './admin';
 export * from './agenda';
 export * from './auth';
 export * from './button';
