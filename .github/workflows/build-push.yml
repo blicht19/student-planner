@@ -20,7 +20,10 @@ jobs:
         run:
           docker build --build-arg POSTGRES_USER=${{ secrets.POSTGRES_USER }} --build-arg POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} --build-arg ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }} --build-arg ADMIN_PASSWORD=${{ secrets.ADMIN_PASSWORD }} -t lichtb/student-planner:latest .
 
-      - name: Push image
+      - name: Login
         run:
           docker login -u lichtb -p ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Push image
+        run:
           docker push lichtb/student-planner:latest
