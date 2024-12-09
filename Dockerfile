@@ -26,4 +26,5 @@ COPY entrypoint.sh /root/student-planner
 ADD student-planner-backend /root/student-planner/student-planner-backend
 ADD student-planner-frontend /root/student-planner/student-planner-frontend
 WORKDIR /root/student-planner
+EXPOSE 8080
 CMD ["./entrypoint.sh"]
