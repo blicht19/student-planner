@@ -27,4 +27,5 @@ ADD student-planner-backend /root/student-planner/student-planner-backend
 ADD student-planner-frontend /root/student-planner/student-planner-frontend
 WORKDIR /root/student-planner
 EXPOSE 8080
+RUN chmod +x ./entrypoint.sh
 CMD ["./entrypoint.sh"]
