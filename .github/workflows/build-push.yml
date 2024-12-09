@@ -2,8 +2,8 @@ name: Build and upload image
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - '*'
 
 env:
   REGION: us-central1
@@ -40,7 +40,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.IMAGE_TAG }}
+          tags: ${{ env.IMAGE_TAG }}:${{ github.ref_name }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args:
