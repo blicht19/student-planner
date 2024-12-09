@@ -2,8 +2,12 @@ name: Build and upload image
 
 on:
   push:
-    tags:
-      - '*'
+    branches:
+      - "main"
+
+env:
+  REGISTRY: docker.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build-push:
@@ -27,7 +31,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: lichtb/student-planner
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
 
       - name: Build and push
@@ -35,7 +39,8 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ github.ref_name }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           build-args:
             POSTGRES_USER=${{ secrets.POSTGRES_USER }}
             POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
