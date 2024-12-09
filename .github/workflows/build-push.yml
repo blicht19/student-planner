@@ -44,7 +44,7 @@ jobs:
             ${{ env.IMAGE_TAG }}:${{ github.ref_name }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          build-args:
+          build-args: |
             POSTGRES_USER=${{ secrets.POSTGRES_USER }}
             POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
             ADMIN_USERNAME=${{ secrets.ADMIN_USERNAME }}
