@@ -2,15 +2,18 @@ import { Filters } from '../to-do-list/filters.jsx';
 import { ToDoList } from '../to-do-list';
 import { useMemo, useState } from 'react';
 import { useToggle } from '../../hooks';
-import { DATE_RANGES } from '../to-do-list/date-range-map.jsx';
+import { getDateRangeMap } from '../to-do-list/date-range-map.jsx';
 import styles from './agenda.module.css';
 
 export const Agenda = () => {
   const [dateRange, setDateRange] = useState('Next 7 Days');
   const [showCompleted, toggleShowCompleted] = useToggle(false);
+  const dateRangeMap = useMemo(() => {
+    return getDateRangeMap();
+  }, []);
   const [startDate, endDate] = useMemo(() => {
-    return DATE_RANGES[dateRange];
-  }, [dateRange]);
+    return dateRangeMap[dateRange];
+  }, [dateRange, dateRangeMap]);
 
   return (
     <div className={styles.agenda}>
