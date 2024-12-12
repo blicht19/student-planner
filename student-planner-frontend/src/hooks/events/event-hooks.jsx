@@ -1,6 +1,6 @@
 import { dateFormatter, handleQueryError, timeFormatter } from '../../utils';
 import axios from 'axios';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigateToLogin } from '../navigate';
 
 const BASE_URL = '/backend/events';
@@ -38,14 +38,28 @@ const deleteEvent = async id => {
   return response.data;
 };
 
+const getEventsInRange = async ({ queryKey }) => {
+  const [, range] = queryKey;
+  const body = {
+    startDate: range.startDate,
+    endDate: range.endDate,
+  };
+
+  const response = await axios.post(`${BASE_URL}/range`, body);
+  return response.data;
+};
+
 export const useCreateEvent = success => {
   const navigateToLogin = useNavigateToLogin();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: assignment => {
       return create(assignment);
     },
     onSuccess: () => {
-      success();
+      queryClient.invalidateQueries({ queryKey: ['events'] }).then(() => {
+        success();
+      });
     },
     onError: error => {
       handleQueryError(error, navigateToLogin, 'Failed to create event');
@@ -55,12 +69,15 @@ export const useCreateEvent = success => {
 
 export const useUpdateEvent = success => {
   const navigateToLogin = useNavigateToLogin();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: event => {
       return update(event);
     },
     onSuccess: () => {
-      success();
+      queryClient.invalidateQueries({ queryKey: ['events'] }).then(() => {
+        success();
+      });
     },
     onError: error => {
       handleQueryError(error, navigateToLogin, 'Failed to update event');
@@ -70,15 +87,25 @@ export const useUpdateEvent = success => {
 
 export const useDeleteEvent = success => {
   const navigateToLogin = useNavigateToLogin();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: id => {
       return deleteEvent(id);
     },
     onSuccess: () => {
-      success();
+      queryClient.invalidateQueries({ queryKey: ['events'] }).then(() => {
+        success();
+      });
     },
     onError: error => {
       handleQueryError(error, navigateToLogin, 'Failed to delete event');
     },
+  });
+};
+
+export const useGetEventsInRange = range => {
+  return useQuery({
+    queryKey: ['events', range],
+    queryFn: getEventsInRange,
   });
 };

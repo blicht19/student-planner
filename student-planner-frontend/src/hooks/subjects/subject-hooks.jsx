@@ -10,6 +10,14 @@ const getSubjects = async () => {
   return response.data;
 };
 
+const getSubjectsOnDay = async ({ queryKey }) => {
+  const [, day] = queryKey;
+  const dayOfWeek = new Date(Date.parse(day)).getDay();
+  const url = `${BASE_URL}/day?day=${dayOfWeek}`;
+  const response = await axios.get(url);
+  return response.data;
+};
+
 const create = async subject => {
   const body = {
     name: subject.name,
@@ -66,6 +74,13 @@ export const useGetSubjects = () => {
   return useQuery({
     queryKey: ['subjects'],
     queryFn: getSubjects,
+  });
+};
+
+export const useGetSubjectsOnDay = day => {
+  return useQuery({
+    queryKey: ['subjects', day],
+    queryFn: getSubjectsOnDay,
   });
 };
 

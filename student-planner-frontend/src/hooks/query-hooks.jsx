@@ -10,11 +10,22 @@ import {
   useGetTasksFiltered,
   useUpdateTask,
 } from './tasks';
-import { useCreateEvent, useDeleteEvent, useUpdateEvent } from './events';
-import { useCreateExam, useDeleteExam, useUpdateExam } from './exams';
+import {
+  useCreateEvent,
+  useDeleteEvent,
+  useGetEventsInRange,
+  useUpdateEvent,
+} from './events';
+import {
+  useCreateExam,
+  useDeleteExam,
+  useGetExamsInRange,
+  useUpdateExam,
+} from './exams';
 import {
   useCreateSubject,
   useDeleteSubject,
+  useGetSubjectsOnDay,
   useUpdateSubject,
 } from './subjects';
 import { useMemo } from 'react';
@@ -109,6 +120,74 @@ export const useGetAssignmentsAndTasksFiltered = filter => {
         tasksError?.response?.status === 401)
     );
   }, [assignmentsAreError, assignmentsError, tasksAreError, tasksError]);
+
+  return { isLoading, isError, data, isUnauthorized };
+};
+
+export const useGetScheduleOnDay = day => {
+  const range = {
+    startDate: day,
+    endDate: day,
+  };
+  const {
+    isLoading: subjectsAreLoading,
+    isError: subjectsAreError,
+    data: subjects,
+    error: subjectsError,
+  } = useGetSubjectsOnDay(day);
+  const {
+    isLoading: examsAreLoading,
+    isError: examsAreError,
+    data: exams,
+    error: examsError,
+  } = useGetExamsInRange(range);
+  const {
+    isLoading: eventsAreLoading,
+    isError: eventsAreError,
+    data: events,
+    error: eventsError,
+  } = useGetEventsInRange(range);
+
+  const isLoading = useMemo(() => {
+    return subjectsAreLoading || examsAreLoading || eventsAreLoading;
+  }, [eventsAreLoading, examsAreLoading, subjectsAreLoading]);
+  const isError = useMemo(() => {
+    return subjectsAreError || examsAreError || eventsAreError;
+  }, [eventsAreError, examsAreError, subjectsAreError]);
+  const isUnauthorized = useMemo(() => {
+    return (
+      isError &&
+      (subjectsError?.response?.status === 401 ||
+        examsError?.response?.status === 401 ||
+        eventsError?.response?.status === 401)
+    );
+  }, [eventsError, examsError, isError, subjectsError]);
+
+  const data = useMemo(() => {
+    if (isLoading || isError) {
+      return undefined;
+    }
+
+    const subjectsData = [...subjects];
+    subjectsData.forEach(subject => {
+      subject.type = modalMenuOptions.class;
+    });
+    const examsData = [...exams];
+    examsData.forEach(exam => {
+      exam.type = modalMenuOptions.exam;
+    });
+    const eventsData = [...events];
+    eventsData.forEach(event => {
+      event.type = modalMenuOptions.event;
+    });
+
+    return subjectsData
+      .concat(examsData)
+      .concat(eventsData)
+      .filter(item => {
+        return Boolean(item.startTime.trim()) && Boolean(item.endTime.trim());
+      });
+  }, [events, exams, isError, isLoading, subjects]);
 
   return { isLoading, isError, data, isUnauthorized };
 };

@@ -13,3 +13,5 @@ export const timeFormatter = new Intl.DateTimeFormat('en-US', {
 export const compareDateStrings = (a, b) => {
   return Date.parse(a) - Date.parse(b);
 };
+
+export const compareTimeStrings = (a, b) => {};

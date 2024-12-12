@@ -1,6 +1,6 @@
 import { dateFormatter, handleQueryError, timeFormatter } from '../../utils';
 import axios from 'axios';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigateToLogin } from '../navigate';
 
 const BASE_URL = '/backend/exams';
@@ -44,14 +44,27 @@ const deleteExam = async id => {
   return response.data;
 };
 
+const getExamsInRange = async ({ queryKey }) => {
+  const [, range] = queryKey;
+  const body = {
+    startDate: range.startDate,
+    endDate: range.endDate,
+  };
+  const response = await axios.post(`${BASE_URL}/range`, body);
+  return response.data;
+};
+
 export const useCreateExam = success => {
   const navigateToLogin = useNavigateToLogin();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: assignment => {
       return create(assignment);
     },
     onSuccess: () => {
-      success();
+      queryClient.invalidateQueries({ queryKey: ['exams'] }).then(() => {
+        success();
+      });
     },
     onError: error => {
       handleQueryError(error, navigateToLogin, 'Failed to create exam');
@@ -61,12 +74,15 @@ export const useCreateExam = success => {
 
 export const useUpdateExam = success => {
   const navigateToLogin = useNavigateToLogin();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: exam => {
       return update(exam);
     },
     onSuccess: () => {
-      success();
+      queryClient.invalidateQueries({ queryKey: ['exams'] }).then(() => {
+        success();
+      });
     },
     onError: error => {
       handleQueryError(error, navigateToLogin, 'Failed to update exam');
@@ -76,15 +92,25 @@ export const useUpdateExam = success => {
 
 export const useDeleteExam = success => {
   const navigateToLogin = useNavigateToLogin();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: id => {
       return deleteExam(id);
     },
     onSuccess: () => {
-      success();
+      queryClient.invalidateQueries({ queryKey: ['exams'] }).then(() => {
+        success();
+      });
     },
     onError: error => {
       handleQueryError(error, navigateToLogin, 'Failed to delete exam');
     },
+  });
+};
+
+export const useGetExamsInRange = range => {
+  return useQuery({
+    queryKey: ['exams', range],
+    queryFn: getExamsInRange,
   });
 };
