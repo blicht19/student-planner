@@ -53,6 +53,11 @@ class ExamController(
             "Invalid end time: ${dto.endTime}",
             HttpStatus.BAD_REQUEST
         )
+
+        if (startTime.isAfter(endTime)) {
+            return ResponseEntity("Start time must be before the end time", HttpStatus.BAD_REQUEST)
+        }
+
         val examEntity = Exam(name, date, startTime, endTime, user, location = dto.location, note = dto.note)
 
         dto.subjectId?.let {
@@ -115,6 +120,10 @@ class ExamController(
             } else {
                 examEntity.note = it
             }
+        }
+
+        if (examEntity.startTime.isAfter(examEntity.endTime)) {
+            return ResponseEntity("Start time must be before the end time", HttpStatus.BAD_REQUEST)
         }
 
         examService.saveItem(examEntity)

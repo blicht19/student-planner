@@ -25,7 +25,9 @@ class StartupEventListener(
     @EventListener
     fun appReady(event: ApplicationReadyEvent) {
         val encodedPassword = passwordEncoder.encode(adminPassword)
-        val user = UserEntity(username = adminUsername, password = encodedPassword, role = Role.ADMIN)
-        userRepository.save(user)
+        if (userRepository.findByUsername(adminUsername) == null) {
+            val user = UserEntity(username = adminUsername, password = encodedPassword, role = Role.ADMIN)
+            userRepository.save(user)
+        }
     }
 }

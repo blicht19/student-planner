@@ -28,7 +28,7 @@ export const ToDoItem = ({ item }) => {
 
   return (
     <div className={styles.agendaItem}>
-      {updateMutation.isLoading ? (
+      {updateMutation.isPending ? (
         <div className={styles.loadingWrapper}>
           <SquareLoader className={styles.loading} />
         </div>

@@ -49,6 +49,15 @@ fun updateSubjectEntityFromDto(entity: Subject, dto: SubjectDto): String? {
                 stringToLocalTime(it) ?: return "Invalid end time $it End time must be of format HH:MM AM|PM"
         }
     }
+
+    if ((entity.startTime != null).xor(entity.endTime != null)) {
+        return "Both start and end time must be set together"
+    }
+
+    if (entity.startTime != null && entity.endTime != null && entity.startTime!!.isAfter(entity.endTime)) {
+        return "Start time must be before end time"
+    }
+
     dto.location?.let {
         if (it.isBlank()) {
             entity.location = null

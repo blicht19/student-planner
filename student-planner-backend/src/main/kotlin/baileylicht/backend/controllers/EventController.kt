@@ -51,6 +51,11 @@ class EventController(
             "Invalid end time: ${dto.endTime}",
             HttpStatus.BAD_REQUEST
         )
+
+        if (startTime.isAfter(endTime)) {
+            return ResponseEntity("Start time must be before end time", HttpStatus.BAD_REQUEST)
+        }
+
         val eventEntity = Event(name, date, startTime, endTime, user, dto.location, dto.note)
 
         eventService.saveItem(eventEntity)
@@ -96,6 +101,10 @@ class EventController(
             } else {
                 eventEntity.note = it
             }
+        }
+
+        if (eventEntity.startTime.isAfter(eventEntity.endTime)) {
+            return ResponseEntity("Start time must be before end time", HttpStatus.BAD_REQUEST)
         }
 
         eventService.saveItem(eventEntity)

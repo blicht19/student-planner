@@ -77,7 +77,7 @@ export const ModalForm = () => {
             disabled={!valid}
             onClick={submit}
             isLoading={
-              editMode ? updateMutation.isLoading : createMutation.isLoading
+              editMode ? updateMutation.isPending : createMutation.isPending
             }
           />
         </div>
@@ -92,7 +92,7 @@ export const ModalForm = () => {
             <Button
               text='Confirm'
               onClick={() => deleteMutation.mutate(item.id)}
-              isLoading={deleteMutation.isLoading}
+              isLoading={deleteMutation.isPending}
               type='destructive'
             />
           </div>

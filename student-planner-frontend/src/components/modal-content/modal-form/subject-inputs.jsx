@@ -42,7 +42,6 @@ export const SubjectInputs = props => {
 
   const verifyStartTimeIsBeforeEndTime = useCallback((startTime, endTime) => {
     if (startTime >= endTime) {
-      // Todo: Backend is not currently validating this.
       setStartTimeIsError(true);
       setStartTimeErrorText(BAD_TIMES_ERROR_TEXT);
       setEndTimeIsError(true);
