@@ -29,7 +29,7 @@ import {
   useUpdateSubject,
 } from './subjects';
 import { useMemo } from 'react';
-import { compareDateStrings } from '../utils';
+import { compareDateStrings, dateFormatter, setDateTime } from '../utils';
 import { modalMenuOptions } from '../components/modal-content/modal-menu-options.js';
 
 const hooksMap = {
@@ -200,6 +200,94 @@ export const useGetScheduleOnDay = day => {
     });
     return scheduleItemMap;
   }, [events, exams, isError, isLoading, subjects]);
+
+  return { isLoading, isError, data, isUnauthorized };
+};
+
+const getStartAndEndOfMonth = date => {
+  const start = new Date(date.getFullYear(), date.getMonth(), 1);
+  const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  return [start, end];
+};
+
+export const useGetEventsInMonth = date => {
+  const [monthStart, monthEnd] = useMemo(() => {
+    return getStartAndEndOfMonth(date);
+  }, [date]);
+  const range = useMemo(() => {
+    return {
+      startDate: dateFormatter.format(monthStart),
+      endDate: dateFormatter.format(monthEnd),
+    };
+  }, [monthEnd, monthStart]);
+
+  const {
+    isLoading: examsAreLoading,
+    isError: examsAreError,
+    data: exams,
+    error: examsError,
+  } = useGetExamsInRange(range);
+  const {
+    isLoading: eventsAreLoading,
+    isError: eventsAreError,
+    data: events,
+    error: eventsError,
+  } = useGetEventsInRange(range);
+
+  const isLoading = useMemo(() => {
+    return examsAreLoading || eventsAreLoading;
+  }, [eventsAreLoading, examsAreLoading]);
+  const isError = useMemo(() => {
+    return examsAreError || eventsAreError;
+  }, [eventsAreError, examsAreError]);
+  const isUnauthorized = useMemo(() => {
+    return (
+      isError &&
+      (examsError?.response?.status === 401 ||
+        eventsError?.response?.status === 401)
+    );
+  }, [eventsError, examsError, isError]);
+
+  const data = useMemo(() => {
+    if (isLoading || isError) {
+      return undefined;
+    }
+
+    const examsData = exams.map(exam => {
+      return {
+        ...exam,
+        type: modalMenuOptions.exam,
+      };
+    });
+    const eventsData = events.map(event => {
+      return {
+        ...event,
+        type: modalMenuOptions.event,
+      };
+    });
+
+    return examsData
+      .concat(eventsData)
+      .filter(item => {
+        return (
+          Boolean(item.date.trim()) &&
+          Boolean(item.startTime.trim()) &&
+          Boolean(item.endTime.trim())
+        );
+      })
+      .map(item => {
+        const date = new Date(item.date);
+        const start = setDateTime(date, item.startTime);
+        const end = setDateTime(date, item.endTime);
+
+        return {
+          id: `${item.type}-${item.id}`,
+          name: item.name,
+          start,
+          end,
+        };
+      });
+  }, [events, exams, isError, isLoading]);
 
   return { isLoading, isError, data, isUnauthorized };
 };

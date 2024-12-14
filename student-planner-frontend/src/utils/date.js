@@ -31,10 +31,11 @@ const parseTimeString = timeString => {
 };
 
 export const setDateTime = (date, timeString) => {
+  const existingDate = new Date(date);
   const [hours, minutes] = parseTimeString(timeString);
-  date.setHours(hours);
-  date.setMinutes(minutes);
-  return date;
+  existingDate.setHours(hours);
+  existingDate.setMinutes(minutes);
+  return existingDate;
 };
 
 export const calendarLocalizer = dayjsLocalizer(dayjs);

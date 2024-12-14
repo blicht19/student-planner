@@ -55,6 +55,10 @@
         background-color: var(--light-color);
         border: 1px solid var(--text-color);
     }
+
+    :global(.rbc-show-more) {
+        display: none;
+    }
 }
 
 .daily-section {
@@ -63,5 +67,3 @@
     width: 100%;
     align-items: center;
 }
-
-/*.rbc-today .rbc-day-slot*/

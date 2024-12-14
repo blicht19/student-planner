@@ -2,20 +2,9 @@ import styles from './calendar-page.module.css';
 import { useCallback, useMemo, useState } from 'react';
 import { Calendar, Views } from 'react-big-calendar';
 import { calendarLocalizer } from '../../utils';
-import { HourlySchedule } from '../hourly-schedule/index.js';
-import { Todos } from '../todos/index.js';
-
-const date = new Date(2024, 11, 14);
-const later = new Date(date);
-later.setHours(date.getHours() + 1);
-const events = [
-  {
-    id: 1,
-    name: 'An event',
-    start: date,
-    end: later,
-  },
-];
+import { HourlySchedule } from '../hourly-schedule';
+import { Todos } from '../todos';
+import { useGetEventsInMonth } from '../../hooks';
 
 export const CalendarPage = () => {
   const defaultDate = useMemo(() => {
@@ -29,21 +18,25 @@ export const CalendarPage = () => {
     setDate(slotInfo.start);
   }, []);
   const [showHourly, setShowHourly] = useState(true);
+  const { isLoading, isError, data, isUnauthorized } =
+    useGetEventsInMonth(date);
 
   return (
     <div className={styles.calendarPage}>
       <div className={styles.monthlyCalendar}>
         <h2 className={styles.calendarPageHeading}>Calendar</h2>
-        <Calendar
-          date={date}
-          onNavigate={onNavigate}
-          localizer={calendarLocalizer}
-          views={[Views.MONTH]}
-          defaultView={Views.MONTH}
-          onSelectSlot={onSelectSlot}
-          selectable
-          events={events}
-        />
+        {!(isLoading || isError) && (
+          <Calendar
+            date={date}
+            onNavigate={onNavigate}
+            localizer={calendarLocalizer}
+            views={[Views.MONTH]}
+            defaultView={Views.MONTH}
+            onSelectSlot={onSelectSlot}
+            selectable
+            events={data}
+          />
+        )}
       </div>
       <div className={styles.dailySection}>
         <div>
