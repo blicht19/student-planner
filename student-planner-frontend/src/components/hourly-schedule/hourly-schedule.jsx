@@ -1,8 +1,14 @@
-import { useCallback, useMemo } from 'react';
-import { dateFormatter, setDateTime } from '../../utils';
-import { useGetScheduleOnDay, useModalContext } from '../../hooks';
+import { useCallback, useEffect, useMemo } from 'react';
+import { dateFormatter, setDateTime, showErrorNotification } from '../../utils';
+import {
+  useGetScheduleOnDay,
+  useModalContext,
+  useNavigateToLogin,
+} from '../../hooks';
 import dayjs from 'dayjs';
 import { Calendar, dayjsLocalizer, Views } from 'react-big-calendar';
+import { MoonLoader } from 'react-spinners';
+import styles from './hourly-schedule.module.css';
 
 const localizer = dayjsLocalizer(dayjs);
 
@@ -13,6 +19,17 @@ export const HourlySchedule = props => {
     return dateFormatter.format(date);
   }, [date]);
   const { isLoading, isError, data, isUnauthorized } = useGetScheduleOnDay(day);
+  const navigateToLogin = useNavigateToLogin();
+  useEffect(() => {
+    if (isError) {
+      if (isUnauthorized) {
+        navigateToLogin();
+      } else {
+        showErrorNotification('Failed to retrieve schedule');
+      }
+    }
+  }, [isError, isUnauthorized, navigateToLogin]);
+
   const calendarData = useMemo(() => {
     if (isLoading || isError) {
       return [];
@@ -46,8 +63,16 @@ export const HourlySchedule = props => {
     [data, date, openEditModal],
   );
 
+  const scrollToTime = useMemo(() => {
+    const hours = new Date().getHours();
+    const scrollToTime = new Date(date.getTime());
+    scrollToTime.setHours(hours, 0, 0, 0);
+    return scrollToTime;
+  }, [date]);
+
   return (
-    <div>
+    <div className={styles.hourlySchedule}>
+      {isLoading && <MoonLoader />}
       {!isLoading && !isError && (
         <Calendar
           date={date}
@@ -57,6 +82,7 @@ export const HourlySchedule = props => {
           views={[Views.DAY]}
           defaultView={Views.DAY}
           onSelectEvent={onSelect}
+          scrollToTime={scrollToTime}
         />
       )}
     </div>

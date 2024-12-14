@@ -19,10 +19,11 @@ const parseTimeString = timeString => {
   const [minutes, period] = minutesAndPeriod.split(' ');
   let hoursNumber = Number(hours);
   const minutesNumber = Number(minutes);
-  if (period === 'PM') {
+  if (period === 'AM' && hoursNumber === 12) {
+    hoursNumber = 0;
+  } else if (period === 'PM' && hoursNumber >= 1 && hoursNumber < 12) {
     hoursNumber += 12;
   }
-
   return [hoursNumber, minutesNumber];
 };
 

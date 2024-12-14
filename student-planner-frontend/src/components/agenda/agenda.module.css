@@ -2,6 +2,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    gap: 1rem;
 }
 
 .agenda-items {
@@ -15,8 +16,12 @@
 
 .agenda-heading {
     text-align: center;
+    margin-bottom: 0.5rem;
 }
 
 .schedule {
-    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
 }

@@ -1,0 +1,29 @@
+.hourly-schedule {
+    width: 100%;
+
+    :global(.rbc-btn-group) {
+        display: none;
+    }
+
+    :global(.rbc-time-view) {
+        max-height: 31vh;
+    }
+
+    :global(.rbc-time-header-content) {
+        display: none;
+    }
+
+    :global(.rbc-event) {
+        background-color: var(--medium-light-color);
+        border-color: var(--medium-dark-color);
+    }
+
+    :global(.rbc-current-time-indicator) {
+        background-color: var(--dark-color);
+    }
+
+    :global(.rbc-event:focus) {
+        outline: none;
+        border: 1px solid var(--light-color) !important;
+    }
+}

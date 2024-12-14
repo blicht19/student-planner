@@ -1,7 +1,7 @@
 .to-do-list {
     display: flex;
     flex-direction: column;
-    max-height: 30vh;
+    max-height: 31vh;
     overflow: scroll;
     width: 375px;
     gap: 0.25rem;

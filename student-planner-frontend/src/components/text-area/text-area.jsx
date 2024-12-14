@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import styles from './text-area.module.css';
 
 export const TextArea = props => {
-  const { label, value, onChange, className, maxLength } = props;
+  const { label, value = '', onChange, className, maxLength } = props;
   const handleChange = useCallback(
     event => {
       onChange(event.target.value);
