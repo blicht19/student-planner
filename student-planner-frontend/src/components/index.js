@@ -11,6 +11,7 @@ export * from './days-of-week-input';
 export * from './error-fallback';
 export * from './error-text';
 export * from './home-page';
+export * from './hourly-schedule';
 export * from './link';
 export * from './login';
 export * from './modal';

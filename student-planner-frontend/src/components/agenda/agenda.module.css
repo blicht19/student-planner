@@ -16,3 +16,7 @@
 .agenda-heading {
     text-align: center;
 }
+
+.schedule {
+    flex: 1 0 auto;
+}

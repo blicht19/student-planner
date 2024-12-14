@@ -168,25 +168,37 @@ export const useGetScheduleOnDay = day => {
       return undefined;
     }
 
-    const subjectsData = [...subjects];
-    subjectsData.forEach(subject => {
-      subject.type = modalMenuOptions.class;
+    const subjectsData = subjects.map(subject => {
+      return {
+        ...subject,
+        type: modalMenuOptions.class,
+      };
     });
-    const examsData = [...exams];
-    examsData.forEach(exam => {
-      exam.type = modalMenuOptions.exam;
+    const examsData = exams.map(exam => {
+      return {
+        ...exam,
+        type: modalMenuOptions.exam,
+      };
     });
-    const eventsData = [...events];
-    eventsData.forEach(event => {
-      event.type = modalMenuOptions.event;
+    const eventsData = events.map(event => {
+      return {
+        ...event,
+        type: modalMenuOptions.event,
+      };
     });
 
-    return subjectsData
+    const scheduleItems = subjectsData
       .concat(examsData)
       .concat(eventsData)
       .filter(item => {
         return Boolean(item.startTime.trim()) && Boolean(item.endTime.trim());
       });
+    const scheduleItemMap = {};
+    scheduleItems.forEach(item => {
+      const key = `${item.type}-${item.id}`;
+      scheduleItemMap[key] = item;
+    });
+    return scheduleItemMap;
   }, [events, exams, isError, isLoading, subjects]);
 
   return { isLoading, isError, data, isUnauthorized };

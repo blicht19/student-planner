@@ -14,4 +14,21 @@ export const compareDateStrings = (a, b) => {
   return Date.parse(a) - Date.parse(b);
 };
 
-export const compareTimeStrings = (a, b) => {};
+const parseTimeString = timeString => {
+  const [hours, minutesAndPeriod] = timeString.split(':');
+  const [minutes, period] = minutesAndPeriod.split(' ');
+  let hoursNumber = Number(hours);
+  const minutesNumber = Number(minutes);
+  if (period === 'PM') {
+    hoursNumber += 12;
+  }
+
+  return [hoursNumber, minutesNumber];
+};
+
+export const setDateTime = (date, timeString) => {
+  const [hours, minutes] = parseTimeString(timeString);
+  date.setHours(hours);
+  date.setMinutes(minutes);
+  return date;
+};
