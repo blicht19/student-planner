@@ -5,15 +5,6 @@
     gap: 1rem;
 }
 
-.agenda-items {
-    width: 375px;
-
-}
-
-.to-do-list-section {
-    max-height: 50%;
-}
-
 .agenda-heading {
     text-align: center;
     margin-bottom: 0.5rem;

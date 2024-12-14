@@ -1,0 +1,67 @@
+.calendar-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 1rem;
+    width: 375px;
+}
+
+.calendar-page-heading {
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.monthly-calendar {
+    :global(.rbc-calendar) {
+        min-height: 31vh;
+        max-height: 31vh;
+    }
+
+    :global(.rbc-toolbar) {
+        button {
+            color: var(--text-color);
+            background-color: var(--medium-color);
+            cursor: pointer;
+            border: 1px solid var(--text-color);
+        }
+
+        button:hover {
+            color: var(--light-color);
+        }
+    }
+
+    :global(.rbc-day-bg) {
+        cursor: pointer;
+        background-color: var(--medium-dark-color);
+    }
+
+    :global(.rbc-today) {
+        background-color: var(--medium-light-color) !important;
+    }
+
+    :global(.rbc-off-range-bg) {
+        background-color: #e6e6e6 !important;
+    }
+
+    :global(.rbc-header) {
+        background-color: var(--medium-dark-color);
+    }
+
+    :global(.rbc-date-cell) {
+        cursor: pointer;
+    }
+
+    :global(.rbc-event) {
+        background-color: var(--light-color);
+        border: 1px solid var(--text-color);
+    }
+}
+
+.daily-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+/*.rbc-today .rbc-day-slot*/

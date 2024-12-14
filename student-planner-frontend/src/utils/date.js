@@ -1,3 +1,6 @@
+import dayjs from 'dayjs';
+import { dayjsLocalizer } from 'react-big-calendar';
+
 export const dateFormatter = new Intl.DateTimeFormat('en-US', {
   day: '2-digit',
   month: '2-digit',
@@ -33,3 +36,5 @@ export const setDateTime = (date, timeString) => {
   date.setMinutes(minutes);
   return date;
 };
+
+export const calendarLocalizer = dayjsLocalizer(dayjs);

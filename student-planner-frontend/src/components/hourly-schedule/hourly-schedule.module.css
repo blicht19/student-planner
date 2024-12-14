@@ -26,4 +26,12 @@
         outline: none;
         border: 1px solid var(--light-color) !important;
     }
+
+    :global(.rbc-day-slot) {
+        background-color: var(--text-color);
+    }
+
+    :global(.rbc-time-gutter) {
+        background-color: var(--medium-dark-color);
+    }
 }

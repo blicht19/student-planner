@@ -1,16 +1,18 @@
 import { useCallback, useEffect, useMemo } from 'react';
-import { dateFormatter, setDateTime, showErrorNotification } from '../../utils';
+import {
+  calendarLocalizer,
+  dateFormatter,
+  setDateTime,
+  showErrorNotification,
+} from '../../utils';
 import {
   useGetScheduleOnDay,
   useModalContext,
   useNavigateToLogin,
 } from '../../hooks';
-import dayjs from 'dayjs';
-import { Calendar, dayjsLocalizer, Views } from 'react-big-calendar';
+import { Calendar, Views } from 'react-big-calendar';
 import { MoonLoader } from 'react-spinners';
 import styles from './hourly-schedule.module.css';
-
-const localizer = dayjsLocalizer(dayjs);
 
 export const HourlySchedule = props => {
   const { date } = props;
@@ -78,7 +80,7 @@ export const HourlySchedule = props => {
           date={date}
           onNavigate={() => {}}
           events={calendarData}
-          localizer={localizer}
+          localizer={calendarLocalizer}
           views={[Views.DAY]}
           defaultView={Views.DAY}
           onSelectEvent={onSelect}
