@@ -27,7 +27,7 @@ export const HourlySchedule = props => {
       if (isUnauthorized) {
         navigateToLogin();
       } else {
-        showErrorNotification('Failed to retrieve schedule');
+        showErrorNotification('Failed to retrieve hourly schedule');
       }
     }
   }, [isError, isUnauthorized, navigateToLogin]);
@@ -42,13 +42,13 @@ export const HourlySchedule = props => {
       calendarData.push({
         id: key,
         title: value.name,
-        start: setDateTime(new Date(), value.startTime),
-        end: setDateTime(new Date(), value.endTime),
+        start: setDateTime(date, value.startTime),
+        end: setDateTime(date, value.endTime),
       });
     }
 
     return calendarData;
-  }, [data, isError, isLoading]);
+  }, [data, date, isError, isLoading]);
 
   const onSelect = useCallback(
     event => {
@@ -74,7 +74,14 @@ export const HourlySchedule = props => {
 
   return (
     <div className={styles.hourlySchedule}>
-      {isLoading && <MoonLoader />}
+      {isLoading && (
+        <div className={styles.loadingWrapper}>
+          <MoonLoader color='var(--light-color)' />
+        </div>
+      )}
+      {isError && (
+        <p className={styles.errorText}>Failed to retrieve hourly schedule</p>
+      )}
       {!isLoading && !isError && (
         <Calendar
           date={date}

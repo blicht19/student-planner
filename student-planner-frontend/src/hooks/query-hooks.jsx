@@ -25,11 +25,18 @@ import {
 import {
   useCreateSubject,
   useDeleteSubject,
+  useGetSubjects,
   useGetSubjectsOnDay,
   useUpdateSubject,
 } from './subjects';
 import { useMemo } from 'react';
-import { compareDateStrings, dateFormatter, setDateTime } from '../utils';
+import {
+  compareDateStrings,
+  dateFormatter,
+  getAllDaysOnDayOfWeekInMonth,
+  getStartAndEndOfMonth,
+  setDateTime,
+} from '../utils';
 import { modalMenuOptions } from '../components/modal-content/modal-menu-options.js';
 
 const hooksMap = {
@@ -204,10 +211,66 @@ export const useGetScheduleOnDay = day => {
   return { isLoading, isError, data, isUnauthorized };
 };
 
-const getStartAndEndOfMonth = date => {
-  const start = new Date(date.getFullYear(), date.getMonth(), 1);
-  const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-  return [start, end];
+const DAYS_OF_WEEK = [
+  'sunday',
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+];
+
+const getSubjectDataForDayOfWeek = (dateInMonth, sujects, dayOfWeek) => {
+  const subjectsOnDay = sujects.filter(
+    subject => subject[DAYS_OF_WEEK[dayOfWeek]],
+  );
+  if (subjectsOnDay.length === 0) {
+    return [];
+  }
+
+  const datesOnThisDayOfWeekInMonth = getAllDaysOnDayOfWeekInMonth(
+    dayOfWeek,
+    dateInMonth,
+  );
+
+  const subjectData = [];
+  for (const subject of subjectsOnDay) {
+    for (const date of datesOnThisDayOfWeekInMonth) {
+      subjectData.push({
+        id: `${modalMenuOptions.class}-${subject.id}`,
+        name: subject.name,
+        start: setDateTime(date, subject.startTime),
+        end: setDateTime(date, subject.endTime),
+      });
+    }
+  }
+
+  return subjectData;
+};
+
+const assembleSubjectsData = (date, subjects) => {
+  if (subjects.length === 0) {
+    return [];
+  }
+
+  const subjectsData = [];
+  for (let i = 0; i < 7; i++) {
+    subjectsData.push(...getSubjectDataForDayOfWeek(date, subjects, i));
+  }
+
+  return subjectsData;
+};
+
+const assembleTasksAndAssignmentsData = (tasks, assignments) => {
+  return tasks.concat(assignments).map(item => {
+    return {
+      id: `${item.type}-${item.id}`,
+      name: item.name,
+      start: setDateTime(new Date(item.dueDate), '12:00 AM'),
+      end: setDateTime(new Date(item.dueDate), '01:00 AM'),
+    };
+  });
 };
 
 export const useGetEventsInMonth = date => {
@@ -220,6 +283,12 @@ export const useGetEventsInMonth = date => {
       endDate: dateFormatter.format(monthEnd),
     };
   }, [monthEnd, monthStart]);
+  const filter = useMemo(() => {
+    return {
+      ...range,
+      showCompleted: false,
+    };
+  }, [range]);
 
   const {
     isLoading: examsAreLoading,
@@ -233,20 +302,72 @@ export const useGetEventsInMonth = date => {
     data: events,
     error: eventsError,
   } = useGetEventsInRange(range);
+  const {
+    isLoading: subjectsAreLoading,
+    isError: subjectsAreError,
+    data: subjects,
+    error: subjectsError,
+  } = useGetSubjects();
+  const {
+    isLoading: tasksAreLoading,
+    isError: tasksAreError,
+    data: tasks,
+    error: tasksError,
+  } = useGetTasksFiltered(filter);
+  const {
+    isLoading: assignmentsAreLoading,
+    isError: assignmentsAreError,
+    data: assignments,
+    error: assignmentsError,
+  } = useGetAssignmentsFiltered(filter);
 
   const isLoading = useMemo(() => {
-    return examsAreLoading || eventsAreLoading;
-  }, [eventsAreLoading, examsAreLoading]);
+    return (
+      subjectsAreLoading ||
+      examsAreLoading ||
+      eventsAreLoading ||
+      tasksAreLoading ||
+      assignmentsAreLoading
+    );
+  }, [
+    eventsAreLoading,
+    examsAreLoading,
+    subjectsAreLoading,
+    tasksAreLoading,
+    assignmentsAreLoading,
+  ]);
   const isError = useMemo(() => {
-    return examsAreError || eventsAreError;
-  }, [eventsAreError, examsAreError]);
+    return (
+      subjectsAreError ||
+      examsAreError ||
+      eventsAreError ||
+      tasksAreError ||
+      assignmentsAreError
+    );
+  }, [
+    eventsAreError,
+    examsAreError,
+    subjectsAreError,
+    tasksAreError,
+    assignmentsAreError,
+  ]);
   const isUnauthorized = useMemo(() => {
     return (
       isError &&
-      (examsError?.response?.status === 401 ||
-        eventsError?.response?.status === 401)
+      (subjectsError?.response?.status === 401 ||
+        examsError?.response?.status === 401 ||
+        eventsError?.response?.status === 401 ||
+        tasksError?.response?.status === 401 ||
+        assignmentsError?.response?.status === 401)
     );
-  }, [eventsError, examsError, isError]);
+  }, [
+    eventsError,
+    examsError,
+    isError,
+    subjectsError,
+    tasksError,
+    assignmentsError,
+  ]);
 
   const data = useMemo(() => {
     if (isLoading || isError) {
@@ -263,6 +384,18 @@ export const useGetEventsInMonth = date => {
       return {
         ...event,
         type: modalMenuOptions.event,
+      };
+    });
+    const assignmentsData = assignments.map(assignment => {
+      return {
+        ...assignment,
+        type: modalMenuOptions.assignment,
+      };
+    });
+    const tasksData = tasks.map(task => {
+      return {
+        ...task,
+        type: modalMenuOptions.task,
       };
     });
 
@@ -286,8 +419,10 @@ export const useGetEventsInMonth = date => {
           start,
           end,
         };
-      });
-  }, [events, exams, isError, isLoading]);
+      })
+      .concat(assembleSubjectsData(date, subjects))
+      .concat(assembleTasksAndAssignmentsData(tasksData, assignmentsData));
+  }, [assignments, date, events, exams, isError, isLoading, subjects, tasks]);
 
   return { isLoading, isError, data, isUnauthorized };
 };

@@ -59,11 +59,36 @@
     :global(.rbc-show-more) {
         display: none;
     }
+
+    text-align: center;
 }
 
 .daily-section {
     display: flex;
     flex-direction: column;
     width: 100%;
-    align-items: center;
+}
+
+.tabs {
+    width: 100%;
+    display: flex;
+    margin-bottom: .5rem;
+}
+
+.tab {
+    width: 50%;
+    text-align: center;
+    cursor: pointer;
+}
+
+.tab:hover {
+    color: var(--light-color);
+}
+
+.tab.active {
+    border-bottom: 2px solid var(--light-color);
+}
+
+.error-text {
+    color: var(--error-color);
 }

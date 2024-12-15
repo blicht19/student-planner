@@ -35,3 +35,13 @@
         background-color: var(--medium-dark-color);
     }
 }
+
+.loading-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.error-text {
+    text-align: center;
+    color: var(--error-color);
+}

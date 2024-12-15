@@ -32,7 +32,7 @@ export const ToDoList = props => {
     <div
       className={`${styles.toDoList} ${isLoading && styles.loading} ${isError && styles.error}`}
     >
-      {isLoading && <MoonLoader />}
+      {isLoading && <MoonLoader color='var(--light-color)' />}
       {isError && (
         <p className={styles.errorText}>Failed to retrieve agenda items</p>
       )}

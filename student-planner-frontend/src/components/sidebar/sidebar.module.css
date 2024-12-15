@@ -38,6 +38,7 @@
     top: 0;
     left: -100%;
     transition: 450ms;
+    z-index: 5;
 }
 
 .sidebar.active {
@@ -83,4 +84,15 @@
 
 .sidebar-wrapper {
     width: 100%;
+}
+
+.logout-text {
+    font-size: 18px;
+    padding: 0 1rem;
+    color: var(--error-dark-color);
+    cursor: pointer;
+}
+
+.logout-text:hover {
+    color: var(--error-color);
 }

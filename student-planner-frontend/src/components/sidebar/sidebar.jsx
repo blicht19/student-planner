@@ -1,4 +1,4 @@
-import { useToggle } from '../../hooks';
+import { useLogout, useToggle } from '../../hooks';
 import { Link } from 'react-router-dom';
 import { FaBars } from 'react-icons/fa6';
 import { IoClose } from 'react-icons/io5';
@@ -9,6 +9,7 @@ import styles from './sidebar.module.css';
 export const Sidebar = props => {
   const { sidebarItems } = props;
   const [showSidebar, toggleSidebar] = useToggle(false);
+  const logoutMutation = useLogout();
 
   return (
     <div className={styles.sidebarWrapper}>
@@ -24,19 +25,27 @@ export const Sidebar = props => {
             : `${styles.sidebar}`
         }
       >
-        <div onClick={toggleSidebar} className={styles.sidebarItems}>
-          <li className={styles.sidebarToggle}>
+        <div className={styles.sidebarItems}>
+          <li className={styles.sidebarToggle} onClick={toggleSidebar}>
             <Link to='#' className={styles.xIcon}>
               <IoClose />
             </Link>
           </li>
           {sidebarItems.map(item => {
             return (
-              <li key={item.id} className={styles.sidebarText} id={item.id}>
+              <li
+                onClick={toggleSidebar}
+                key={item.id}
+                className={styles.sidebarText}
+                id={item.id}
+              >
                 <Link to={item.path}>{item.title}</Link>
               </li>
             );
           })}
+          <li className={styles.logoutText} onClick={logoutMutation.mutate}>
+            Log Out
+          </li>
         </div>
       </nav>
     </div>

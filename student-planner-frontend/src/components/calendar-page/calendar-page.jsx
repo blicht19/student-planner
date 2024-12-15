@@ -1,10 +1,11 @@
 import styles from './calendar-page.module.css';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Calendar, Views } from 'react-big-calendar';
-import { calendarLocalizer } from '../../utils';
+import { calendarLocalizer, showErrorNotification } from '../../utils';
 import { HourlySchedule } from '../hourly-schedule';
 import { Todos } from '../todos';
-import { useGetEventsInMonth } from '../../hooks';
+import { useGetEventsInMonth, useNavigateToLogin } from '../../hooks';
+import { GridLoader } from 'react-spinners';
 
 export const CalendarPage = () => {
   const defaultDate = useMemo(() => {
@@ -20,11 +21,27 @@ export const CalendarPage = () => {
   const [showHourly, setShowHourly] = useState(true);
   const { isLoading, isError, data, isUnauthorized } =
     useGetEventsInMonth(date);
+  const navigateToLogin = useNavigateToLogin();
+  useEffect(() => {
+    if (isError) {
+      if (isUnauthorized) {
+        navigateToLogin();
+      } else {
+        showErrorNotification('Failed to retrieve monthly schedule');
+      }
+    }
+  }, [isError, isUnauthorized, navigateToLogin]);
 
   return (
     <div className={styles.calendarPage}>
       <div className={styles.monthlyCalendar}>
         <h2 className={styles.calendarPageHeading}>Calendar</h2>
+        {isLoading && <GridLoader color='var(--light-color)' />}
+        {isError && (
+          <p className={styles.errorText}>
+            Failed to retrieve monthly schedule
+          </p>
+        )}
         {!(isLoading || isError) && (
           <Calendar
             date={date}
@@ -39,12 +56,18 @@ export const CalendarPage = () => {
         )}
       </div>
       <div className={styles.dailySection}>
-        <div>
-          <label onClick={() => setShowHourly(true)}>Hourly Schedule</label>
+        <div className={styles.tabs}>
+          <label
+            onClick={() => setShowHourly(true)}
+            className={`${styles.tab} ${showHourly && styles.active}`}
+          >
+            Hourly Schedule
+          </label>
           <label
             onClick={() => {
               setShowHourly(false);
             }}
+            className={`${styles.tab} ${!showHourly && styles.active}`}
           >
             Agenda
           </label>

@@ -38,4 +38,31 @@ export const setDateTime = (date, timeString) => {
   return existingDate;
 };
 
+export const getStartAndEndOfMonth = date => {
+  const start = new Date(date.getFullYear(), date.getMonth(), 1);
+  const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  return [start, end];
+};
+
 export const calendarLocalizer = dayjsLocalizer(dayjs);
+
+export const getAllDaysOnDayOfWeekInMonth = (day, dateInMonth) => {
+  const [, end] = getStartAndEndOfMonth(dateInMonth);
+  const days = [];
+  let firstMatchIndex;
+  for (let i = 1; i <= end.getDate(); i++) {
+    const date = new Date(dateInMonth.getFullYear(), dateInMonth.getMonth(), i);
+    if (date.getDay() === day) {
+      days.push(date);
+      firstMatchIndex = i;
+      break;
+    }
+  }
+
+  for (let i = firstMatchIndex + 7; i <= end.getDate(); i += 7) {
+    const date = new Date(dateInMonth.getFullYear(), dateInMonth.getMonth(), i);
+    days.push(date);
+  }
+
+  return days;
+};
