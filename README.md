@@ -51,6 +51,17 @@ just 1.36.0
 
 ## Getting Started
 
+### Set Up Environment variables
+Add a file called .env to the project directory and set the following environment variables.
+```bash
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=changeit
+PGADMIN_DEFAULT_EMAIL=your@email.com
+PGADMIN_DEFAULT_PASSWORD=changeit
+ADMIN_USERNAME=adminuser
+ADMIN_PASSWORD=changeit
+```
+
 ### Starting in Development Mode
 
 ```bash
@@ -76,29 +87,36 @@ $ just start-prod
 $ docker compose -f prod.yml up --build -d
 ```
 
-Once started, the application will be deployed at http://localhost:3000. The application currently consists of a
-prototype of the authentication functionality.
+Once started, the application will be deployed at http://localhost:3000 in development mode or http://localhost:8080 for production mode. Log in with your admin account credentials at /login or create a new, non-admin account at /register.
 
-# License
+After logging in, you will be directed to the agenda page. You will see a list of agenda items and an hourly schedule for today.
 
-MIT License
+![agenda-page](./docs/images/agenda-page.png)
 
-Copyright (c) 2024 Bailey Licht
+Click the + icon in the bottom-right corner to add new classes, assignment, exams, tasks, or events. This button is accessible from any page of the application.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+![add-item](./docs/images/add-item.png)
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Select the checkbox on an item to mark it as completed. Click the pen icon to view more information about an agenda item and edit it. You can also view and edit an event, class, or exam by clicking on its block in the schedule.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+![edit-item](./docs/images/edit-item.png)
+
+Select the funnel icon above the agenda items to pick what range of due dates to display and toggle whether to display completed items.
+
+![filter-agenda](./docs/images/filter-agenda.png)
+
+Clicking on the icon in the upper-left corner will open the navigation bar, which has links to the other pages in the application and a button for logging out of the application.
+
+![nav-bar](./docs/images/nav-bar.png)
+
+The calendar page features a monthly calendar. Days with blocks visible have scheduled events, exams, classes, or task or assignment due dates. (These may be difficult to see when zoomed in or at lower resolutions). Clicking on a day brings up the hourly schedule for that day. You can navigate to future or past months or return to today's date with the buttons above the calendar.
+
+![month-calendar](./docs/images/calendar-page.png)
+
+Clicking agenda tab will replace the hourly schedule with a list of agenda items due on or near the date you have selected.
+
+![month-agenda](./docs/images/calendar-agenda.png)
+
+The admin page is only accessible if you have logged in with your admin account. It has a table with information about the status of user accounts and whether they have been locked due to failed login attempts. Clicking button in the "Unlock" column will unlock a user's account and allow them to attempt logging in again. Clicking the button in the "Delete" column will delete a user's account. The delete button is disabled for the account that is currently logged in.
+
+![admin-page](./docs/images/admin-page.png)

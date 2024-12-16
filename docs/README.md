@@ -6,9 +6,9 @@ As a **student**, I want to **create a list of agenda items**, so I can **keep t
 
 ### Acceptance Criteria
 
-- Users can create agenda items with a title and an optional description and class.
-- Users can view a list of agenda items.
-- Users can mark agenda items as completed.
+- A form for creating agenda items with a title and an optional description and class and saving them to the database exists in the UI.
+- The UI displays a list of upcoming agenda items with a checkbox to mark them completed.
+- Clicking the checkbox removes the agenda item from the page.
 
 ---
 
@@ -18,8 +18,8 @@ completed**.
 
 ### Acceptance Criteria
 
-- Users can set due dates on agenda items.
-- Users can view agenda items in the order that they are due.
+- The form for creating agenda items includes a field for setting a due date.
+- Agenda items are displayed in the order that they are due.
 
 ---
 
@@ -27,10 +27,10 @@ As a **student**, I want to **track the time and location of my classes**, so I 
 
 ### Acceptance Criteria
 
-- Users can create a list of their classes
-- Users can set days and times of day that their classes meet.
-- Users can note the location where their classes meet.
-- Users can view their hourly class schedule for each day of the week.
+- A form for creating classes and saving them to the database exists in the UI.
+- The form includes fields that indicate the days of the week and time of day that classes meet.
+- The form includes a field for the location where classes meet.
+- A view with an hour-by-hour schedule that displays classes that meet on a given day exists in the UI.
 
 ---
 
@@ -39,9 +39,9 @@ schedule**.
 
 ### Acceptance Criteria
 
-- Users can create events.
-- Users can set the time and location of events.
-- Users can view events on their hourly schedule for each day of the week.
+- A form for creating events and saving them to the database exists in the UI.
+- The form includes fields for the time and location of events.
+- The hourly schedule view displays events on a given day.
 
 --- 
 As a **student**, I want to **see what days on the calendar have classes, events, and due dates for agenda items**, so I
@@ -50,9 +50,9 @@ can
 
 ### Acceptance Criteria
 
-- Users can view a monthly calendar.
-- Icons displayed on days on the calendar indicate which days have classes, events, and due dates for agenda items.
-- Users can click on a day on the calendar to bring up their hourly schedule and a list of agenda items due on that day.
+- A view with a monthly calendar exists in the UI.
+- The calendar UI displays icons to indicate that classes, events, or due dates for agenda items will occur on that day.
+- Clicking on a day on the calendar brings up the hourly schedule and a list of agenda items due on that day.
 
 # Misuser Stories
 

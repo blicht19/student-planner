@@ -26,7 +26,6 @@ class JwtComponent {
 
     /**
      * The secret key to be used for generating JWT tokens
-     * TODO: This should probably be generated externally?
      */
     private val secretKey = Jwts.SIG.HS256.key().build()
 
