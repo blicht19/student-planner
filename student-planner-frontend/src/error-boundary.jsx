@@ -1,5 +1,8 @@
 import { Component } from 'react';
 
+/**
+ * Fallback component if an unhandled Error is thrown
+ */
 export class ErrorBoundary extends Component {
   constructor(props) {
     super(props);

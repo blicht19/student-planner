@@ -5,6 +5,11 @@ import { useNavigateToLogin } from '../navigate';
 
 const BASE_URL = '/backend/exams';
 
+/**
+ * Function for creating a new exam
+ * @param {Object} exam Object containing the values of the inputs of the exam creation modal
+ * @returns {Promise<any>} Response from the backend when attempting to create an exam
+ */
 const create = async exam => {
   const body = {
     name: exam.name,
@@ -21,6 +26,11 @@ const create = async exam => {
   return response.data;
 };
 
+/**
+ * Function for updating an exam
+ * @param {Object} exam Object containing the values of the inputs of the exam editing modal
+ * @returns {Promise<any>} Response from the backend when attempting to update an exam
+ */
 const update = async exam => {
   const body = {
     name: exam.name,
@@ -37,6 +47,11 @@ const update = async exam => {
   return response.data;
 };
 
+/**
+ * Function for deleting an exam
+ * @param {number} id The ID number of the exam
+ * @returns {Promise<any>} Response from the backend when attempting to delete an exam
+ */
 const deleteExam = async id => {
   const url = `${BASE_URL}?id=${id}`;
 
@@ -44,6 +59,11 @@ const deleteExam = async id => {
   return response.data;
 };
 
+/**
+ * Function for getting exams in a range of dates
+ * @param {any[]} queryKey The query key from the hook that should include an object with the start and end of the range of exams
+ * @returns {Promise<any>} The exams returned from the backend
+ */
 const getExamsInRange = async ({ queryKey }) => {
   const [, range] = queryKey;
   const body = {
@@ -54,6 +74,11 @@ const getExamsInRange = async ({ queryKey }) => {
   return response.data;
 };
 
+/**
+ * Hook for creating an exam
+ * @param {function} success Function called if the mutation is successful
+ * @returns {UseMutationResult<*, DefaultError, void, unknown>}
+ */
 export const useCreateExam = success => {
   const navigateToLogin = useNavigateToLogin();
   const queryClient = useQueryClient();
@@ -72,6 +97,11 @@ export const useCreateExam = success => {
   });
 };
 
+/**
+ * Hook for updating an exam
+ * @param {function} success Function called if the mutation is successful
+ * @returns {UseMutationResult<*, DefaultError, void, unknown>}
+ */
 export const useUpdateExam = success => {
   const navigateToLogin = useNavigateToLogin();
   const queryClient = useQueryClient();
@@ -90,6 +120,11 @@ export const useUpdateExam = success => {
   });
 };
 
+/**
+ * Hook for deleting an exam
+ * @param {function} success Function called if the mutation is successful
+ * @returns {UseMutationResult<*, DefaultError, void, unknown>}
+ */
 export const useDeleteExam = success => {
   const navigateToLogin = useNavigateToLogin();
   const queryClient = useQueryClient();
@@ -108,6 +143,13 @@ export const useDeleteExam = success => {
   });
 };
 
+/**
+ * Hook for getting all exams in a range of dates
+ * @param {Object} range The range of dates of exams to return
+ * @param {string} range.startDate The start of the range of dates of exams to return
+ * @param {string} range.endDate The end of the range of dates of exams to return
+ * @returns {UseQueryResult<any, DefaultError>}
+ */
 export const useGetExamsInRange = range => {
   return useQuery({
     queryKey: ['exams', range],

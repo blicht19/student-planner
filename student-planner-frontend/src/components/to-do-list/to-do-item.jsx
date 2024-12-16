@@ -4,6 +4,11 @@ import { useModalContext, useUpdate } from '../../hooks';
 import { useCallback } from 'react';
 import { SquareLoader } from 'react-spinners';
 
+/**
+ * A single item in the agenda
+ * @param {Object} item The agenda item
+ * @returns {JSX.Element}
+ */
 export const ToDoItem = ({ item }) => {
   const { name, complete, dueDate } = item;
   const { openEditModal } = useModalContext();

@@ -1,6 +1,13 @@
 import { DayOfWeekButton } from './day-of-week-button.jsx';
 import styles from './days-of-week-input.module.css';
 
+/**
+ * A set of buttons for selecting days of the week
+ * @param {Object} props props
+ * @param {Object} props.daysOfWeek An object that holds the state of each day of the week
+ * @param {function} props.toggleDayOfWeek Function for toggling the selected state of a day of the week
+ * @returns {JSX.Element}
+ */
 export const DaysOfWeekInput = props => {
   const { daysOfWeek, toggleDayOfWeek } = props;
 

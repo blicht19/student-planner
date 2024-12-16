@@ -1,6 +1,12 @@
 import { AxiosError } from 'axios';
 import { showErrorNotification } from './notify.js';
 
+/**
+ * Default error handling for queries. If the query response was 401 Unauthorized, calls the handler function. Otherwise, shows an error popup.
+ * @param error The query error
+ * @param {function} unauthorizedHandler Handler function for a 401 Unauthorized response
+ * @param {string} defaultNotificationText Default text to be displayed if the error does not have an error message
+ */
 export const handleQueryError = (
   error,
   unauthorizedHandler,

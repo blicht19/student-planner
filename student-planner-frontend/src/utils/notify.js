@@ -1,5 +1,9 @@
 import toast from 'react-hot-toast';
 
+/**
+ * Shows an error popup
+ * @param {string} text The text of the error popup
+ */
 export const showErrorNotification = text => {
   toast.error(text, {
     iconTheme: {

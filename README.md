@@ -4,14 +4,14 @@ Student Planner is a web application that helps students manage their schedules.
 Android application by Andrea Dal Cin, which can be found on
 the [Google Play Store](https://play.google.com/store/apps/details?id=daldev.android.gradehelper&pcampaignid=web_share).
 
-### Planned Features
+### Features
 
 - **Agenda Management**: Keep track of assignments and other tasks. Set due dates, see which assignments are coming due,
   and check tasks off once they are completed.
 - **Class Schedule**: Create a weekly class schedule. Keep track of the day, time, and location of recurring classes as
   well as one-off events or exams. View your hour-by-hour schedule for the day.
 - **Calendar**: See at a glance what days of the month have scheduled events or agenda items. Click on a day on the
-  calendar to see an hour-by-hour schedule or a list of assignments and tasks that are due on that day.
+  calendar to see an hour-by-hour schedule or a list of upcoming assignments on that day.
 
 ## Installation
 
@@ -93,11 +93,11 @@ After logging in, you will be directed to the agenda page. You will see a list o
 
 ![agenda-page](./docs/images/agenda-page.png)
 
-Click the + icon in the bottom-right corner to add new classes, assignment, exams, tasks, or events. This button is accessible from any page of the application.
+Click the + icon in the bottom-right corner to add new classes, assignments, exams, tasks, or events. This button is accessible from any page in the application.
 
 ![add-item](./docs/images/add-item.png)
 
-Select the checkbox on an item to mark it as completed. Click the pen icon to view more information about an agenda item and edit it. You can also view and edit an event, class, or exam by clicking on its block in the schedule.
+Select the checkbox on an item to mark it as complete. Click the pen icon to view more information about an agenda item and edit it. You can also view and edit an event, class, or exam by clicking on its block in the schedule.
 
 ![edit-item](./docs/images/edit-item.png)
 
@@ -105,7 +105,7 @@ Select the funnel icon above the agenda items to pick what range of due dates to
 
 ![filter-agenda](./docs/images/filter-agenda.png)
 
-Clicking on the icon in the upper-left corner will open the navigation bar, which has links to the other pages in the application and a button for logging out of the application.
+Clicking on the icon in the upper-left corner will open the navigation bar, which has links to the other pages in the application and a button for logging out.
 
 ![nav-bar](./docs/images/nav-bar.png)
 
@@ -117,6 +117,6 @@ Clicking agenda tab will replace the hourly schedule with a list of agenda items
 
 ![month-agenda](./docs/images/calendar-agenda.png)
 
-The admin page is only accessible if you have logged in with your admin account. It has a table with information about the status of user accounts and whether they have been locked due to failed login attempts. Clicking button in the "Unlock" column will unlock a user's account and allow them to attempt logging in again. Clicking the button in the "Delete" column will delete a user's account. The delete button is disabled for the account that is currently logged in.
+The admin page is only accessible if you have logged in with your admin account. It has a table with information about the status of user accounts and whether they have been locked due to failed login attempts. Clicking the button in the "Unlock" column will unlock a user's account and allow them to attempt logging in again. Clicking the button in the "Delete" column will delete a user's account. The delete button is disabled for the account that is currently logged in.
 
 ![admin-page](./docs/images/admin-page.png)

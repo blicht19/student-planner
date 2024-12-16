@@ -4,6 +4,10 @@ import styles from './agenda.module.css';
 import { HourlySchedule } from '../hourly-schedule';
 import { Todos } from '../todos';
 
+/**
+ * The Agenda page. Displays upcoming agenda items and today's hourly schedule.
+ * @returns {JSX.Element}
+ */
 export const Agenda = () => {
   const currentDate = useMemo(() => {
     return new Date();

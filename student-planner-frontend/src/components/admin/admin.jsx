@@ -62,6 +62,10 @@ const columns = [
   { title: 'Delete', dataIndex: 'delete', key: 'delete', width: 75 },
 ];
 
+/**
+ * The Admin page. Displays a table with information about users and the locked status of their accounts.
+ * @returns {JSX.Element}
+ */
 export const Admin = () => {
   const { isLoading, isError, data, error } = useGetUsers();
   const navigateToLogin = useNavigateToLogin();

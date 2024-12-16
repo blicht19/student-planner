@@ -5,6 +5,13 @@ import { handleQueryError } from '../../../utils';
 import { BarLoader } from 'react-spinners';
 import styles from './subject-input.module.css';
 
+/**
+ * Dropdown menu for selecting from the subjects that the user has created
+ * @param {Object} props props
+ * @param props.subject The currently selected subject
+ * @param {function} props.setSubject Function for setting the selected subject
+ * @returns {JSX.Element}
+ */
 export const SubjectInput = props => {
   const { subject, setSubject } = props;
   const { data, error, isLoading, isError } = useGetSubjects();

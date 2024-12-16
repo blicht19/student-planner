@@ -67,18 +67,44 @@ const hooksMap = {
   },
 };
 
+/**
+ * Generic hook for creating an agenda item
+ * @param {string} type The type of agenda item
+ * @param {function} onSuccess Function called if the mutation is successful
+ * @returns The creation hook
+ */
 export const useCreate = (type, onSuccess) => {
   return hooksMap[type].create(onSuccess);
 };
 
+/**
+ * Generic hook for updating an agenda item
+ * @param {string} type The type of agenda item
+ * @param {function} onSuccess Function called if the mutation is successful
+ * @returns The update hook
+ */
 export const useUpdate = (type, onSuccess) => {
   return hooksMap[type].update(onSuccess);
 };
 
+/**
+ * Generic hook for deleting an agenda item
+ * @param {string} type The type of agenda item
+ * @param {function} onSuccess Function called if the mutation is successful
+ * @returns The deletion hook
+ */
 export const useDelete = (type, onSuccess) => {
   return hooksMap[type].delete(onSuccess);
 };
 
+/**
+ * Hook for getting all assignments and tasks filtered by due date and completion status
+ * @param {Object} filter The filter
+ * @param {string} filter.startDate The start of the range of due dates
+ * @param {string} filter.endDate The end of the range of due dates
+ * @param {boolean} filter.showCompleted Indicates whether completed assignments and tasks should be returned
+ * @returns {{isLoading: unknown, isError: unknown, data: *[], isUnauthorized: unknown}}
+ */
 export const useGetAssignmentsAndTasksFiltered = filter => {
   const {
     isLoading: assignmentsAreLoading,
@@ -131,6 +157,11 @@ export const useGetAssignmentsAndTasksFiltered = filter => {
   return { isLoading, isError, data, isUnauthorized };
 };
 
+/**
+ * Retrieves all schedule items (classes, exams, events) on a given date
+ * @param {string} day String representing the date
+ * @returns {{isLoading: unknown, isError: unknown, data: {}, isUnauthorized: unknown}}
+ */
 export const useGetScheduleOnDay = day => {
   const range = {
     startDate: day,
@@ -221,6 +252,13 @@ const DAYS_OF_WEEK = [
   'saturday',
 ];
 
+/**
+ * Assembles a list of events to be passed to a react-big-calendar component representing classes that meet on a particular day of the week repeated throughout a month
+ * @param {Date} dateInMonth A date in the current month
+ * @param {Object[]} sujects A list of subjects
+ * @param {number} dayOfWeek A day of the week, 0 being Sunday, 6 being Saturday
+ * @returns {Object[]} A list of events for classes that meet on a particular day of the week repeated throughout a month
+ */
 const getSubjectDataForDayOfWeek = (dateInMonth, sujects, dayOfWeek) => {
   const subjectsOnDay = sujects.filter(
     subject => subject[DAYS_OF_WEEK[dayOfWeek]],
@@ -249,6 +287,12 @@ const getSubjectDataForDayOfWeek = (dateInMonth, sujects, dayOfWeek) => {
   return subjectData;
 };
 
+/**
+ * Assembles event data for all class meeting times in a month
+ * @param {Date} date The current date
+ * @param {Object[]} subjects All subjects returned from the backend
+ * @returns {Object[]} Event data for all class meeting times in a month
+ */
 const assembleSubjectsData = (date, subjects) => {
   if (subjects.length === 0) {
     return [];
@@ -262,6 +306,12 @@ const assembleSubjectsData = (date, subjects) => {
   return subjectsData;
 };
 
+/**
+ * Creates event data for react-big-calendar from the due dates of a list of tasks and a list of events
+ * @param {Object[]} tasks A list of tasks
+ * @param {Object[]} assignments A list of assignment
+ * @returns {Object[]} A list of events for the due dates of the tasks and events
+ */
 const assembleTasksAndAssignmentsData = (tasks, assignments) => {
   return tasks.concat(assignments).map(item => {
     return {
@@ -273,6 +323,11 @@ const assembleTasksAndAssignmentsData = (tasks, assignments) => {
   });
 };
 
+/**
+ * Hook for retrieving calendar events for all exams, events, class meetings, and assignment and tasks due dates in a month
+ * @param {Date} date The current date
+ * @returns {{isLoading: unknown, isError: unknown, data: *, isUnauthorized: unknown}}
+ */
 export const useGetEventsInMonth = date => {
   const [monthStart, monthEnd] = useMemo(() => {
     return getStartAndEndOfMonth(date);

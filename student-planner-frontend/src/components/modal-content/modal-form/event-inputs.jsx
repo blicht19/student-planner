@@ -10,6 +10,12 @@ import {
 } from './constants.js';
 import { useModalContext } from '../../../hooks';
 
+/**
+ * Input fields for an event
+ * @param {Object} props
+ * @param {function} props.setError Function for setting the error state of the inputs
+ * @returns {JSX.Element}
+ */
 export const EventInputs = props => {
   const { item, updateItemProperty } = useModalContext();
   const { setError } = props;

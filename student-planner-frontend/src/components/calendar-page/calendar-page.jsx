@@ -7,6 +7,10 @@ import { Todos } from '../todos';
 import { useGetEventsInMonth, useNavigateToLogin } from '../../hooks';
 import { GridLoader } from 'react-spinners';
 
+/**
+ * The monthly calendar page
+ * @returns {JSX.Element}
+ */
 export const CalendarPage = () => {
   const defaultDate = useMemo(() => {
     return new Date();

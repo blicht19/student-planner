@@ -4,6 +4,12 @@ import { Checkbox } from '../../checkbox';
 import { TextArea } from '../../text-area';
 import { useModalContext } from '../../../hooks';
 
+/**
+ * Input fields for a task
+ * @param {Object} props
+ * @param {function} props.setError Function for setting the error state of the inputs
+ * @returns {JSX.Element}
+ */
 export const TaskInputs = props => {
   const { item, updateItemProperty, setItem } = useModalContext();
   const { setError } = props;

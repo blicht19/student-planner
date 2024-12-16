@@ -6,6 +6,10 @@ import { Button } from '../button';
 import { Link } from '../link';
 import { ErrorText } from '../error-text';
 
+/**
+ * Login page for the application
+ * @returns {JSX.Element}
+ */
 export const Login = () => {
   const loginMutation = useLogin();
   const [username, setUsername] = useState('');

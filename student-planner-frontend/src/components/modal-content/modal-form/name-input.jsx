@@ -2,6 +2,13 @@ import { TextInput } from '../../text-input';
 import { useCallback, useState } from 'react';
 import { useModalContext } from '../../../hooks';
 
+/**
+ * Input field for the name of an agenda item
+ * @param {Object} props props
+ * @param {boolean} props.isError Indicates whether this input has an error
+ * @param {function} props.setIsError Function for updating the error state of this input
+ * @returns {JSX.Element}
+ */
 export const NameInput = props => {
   const { item, updateItemProperty } = useModalContext();
   const { isError, setIsError } = props;

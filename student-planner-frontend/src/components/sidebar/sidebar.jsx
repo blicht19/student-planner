@@ -4,8 +4,13 @@ import { FaBars } from 'react-icons/fa6';
 import { IoClose } from 'react-icons/io5';
 import styles from './sidebar.module.css';
 
-// Based on a tutorial by Dinithi Nethmini https://medium.com/@dinithinethmini01/how-to-build-a-sidebar-component-in-react-abcf471f449e
-
+/**
+ * Sidebar that allows users to navigate between the pages of the application. Based on a tutorial by Dinithi Nethmini https://medium.com/@dinithinethmini01/how-to-build-a-sidebar-component-in-react-abcf471f449e
+ * @param {Object} props props
+ * @param {Object[]} props.sidebarItems List of options to display in the sidebar
+ * @returns {JSX.Element}
+ * @constructor
+ */
 export const Sidebar = props => {
   const { sidebarItems } = props;
   const [showSidebar, toggleSidebar] = useToggle(false);

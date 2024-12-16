@@ -5,6 +5,12 @@ import { TimeInput } from '../../time-input';
 import { TextInput } from '../../text-input';
 import { useModalContext } from '../../../hooks';
 
+/**
+ * Input fields for a subject
+ * @param {Object} props
+ * @param {function} props.setError Function for setting the error state of the inputs
+ * @returns {JSX.Element}
+ */
 export const SubjectInputs = props => {
   const { item, updateItemProperty, setItem } = useModalContext();
   const { setError } = props;

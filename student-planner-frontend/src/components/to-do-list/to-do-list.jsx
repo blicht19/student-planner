@@ -8,6 +8,14 @@ import styles from './to-do-list.module.css';
 import { useEffect } from 'react';
 import { showErrorNotification } from '../../utils';
 
+/**
+ * A list of agenda items
+ * @param {Object} props props
+ * @param {string} props.startDate String representing the start of the range of agenda items to display
+ * @param {string} props.endDate String representing the end of the range of agenda items to display
+ * @param {boolean} props.showCompleted Indicates whether completed agenda items should be displayed
+ * @returns {JSX.Element}
+ */
 export const ToDoList = props => {
   const { startDate, endDate, showCompleted } = props;
   const { isLoading, isError, data, isUnauthorized } =

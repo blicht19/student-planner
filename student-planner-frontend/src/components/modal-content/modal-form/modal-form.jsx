@@ -16,6 +16,11 @@ import { EventInputs } from './event-inputs.jsx';
 import { ExamInputs } from './exam-inputs.jsx';
 import { SubjectInputs } from './subject-inputs.jsx';
 
+/**
+ * Form for creating or editing an agenda item, which is displayed in the modal
+ * @returns {JSX.Element}
+ * @constructor
+ */
 export const ModalForm = () => {
   const { editMode, itemType, closeModal, item } = useModalContext();
   const [nameIsError, setNameIsError] = useState(false);

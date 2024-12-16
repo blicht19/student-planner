@@ -1,5 +1,9 @@
 import styles from './error-fallback.module.css';
 
+/**
+ * Fallback component for React Router
+ * @returns {JSX.Element}
+ */
 export const ErrorFallback = () => {
   return (
     <div className={styles.errorFallback}>

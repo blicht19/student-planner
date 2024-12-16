@@ -4,8 +4,12 @@ import styles from './create-account.module.css';
 import { TextInput } from '../text-input';
 import { Button } from '../button';
 import { Link } from '../link';
-import { ErrorText } from '../error-text/index.js';
+import { ErrorText } from '../error-text';
 
+/**
+ * The account creation page
+ * @returns {JSX.Element}
+ */
 export const CreateAccount = () => {
   const registerMutation = useRegister();
   const [errorText, setErrorText] = useState('');

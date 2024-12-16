@@ -26,6 +26,11 @@ const adminSidebarItems = [
   { title: 'Admin', path: '/home/admin', id: 'sidebar-admin' },
 ];
 
+/**
+ * Wraps all the separate pages of the application
+ * @returns {JSX.Element}
+ * @constructor
+ */
 export const HomePage = () => {
   const { modalVisible, openNewItemModal, closeModal } = useModalContext();
   const { role } = useAuthContext();

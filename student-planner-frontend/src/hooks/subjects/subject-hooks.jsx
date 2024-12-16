@@ -5,11 +5,20 @@ import { useNavigateToLogin } from '../navigate';
 
 const BASE_URL = '/backend/subjects';
 
+/**
+ * Function for retrieving all subjects
+ * @returns {Promise<any>} The subjects returned from the backend
+ */
 const getSubjects = async () => {
   const response = await axios.get(BASE_URL);
   return response.data;
 };
 
+/**
+ * Function for retrieving all subjects on a specific day of the week
+ * @param {any[]} queryKey The query key from the hook that should include the day of the week
+ * @returns {Promise<any>}
+ */
 const getSubjectsOnDay = async ({ queryKey }) => {
   const [, day] = queryKey;
   const dayOfWeek = new Date(Date.parse(day)).getDay();
@@ -18,6 +27,11 @@ const getSubjectsOnDay = async ({ queryKey }) => {
   return response.data;
 };
 
+/**
+ * Function for creating a subject
+ * @param {Object} subject The values of the inputs of the subject creation modal
+ * @returns {Promise<any>} Response from the backend when attempting to create a subject
+ */
 const create = async subject => {
   const body = {
     name: subject.name,
@@ -41,6 +55,11 @@ const create = async subject => {
   return response.data;
 };
 
+/**
+ * Function for updating a subject
+ * @param {Object} subject The values of the inputs of the subject editing modal
+ * @returns {Promise<any>} The response from the backend when attempting to update the subject
+ */
 const update = async subject => {
   const body = {
     name: subject.name,
@@ -63,6 +82,11 @@ const update = async subject => {
   return response.data;
 };
 
+/**
+ * Function for deleting a subject
+ * @param {number} id The ID number of the subject
+ * @returns {Promise<any>} The response from the backend when attempting to delete the subject
+ */
 const deleteSubject = id => {
   const url = `${BASE_URL}?id=${id}`;
 
@@ -70,6 +94,10 @@ const deleteSubject = id => {
   return response.data;
 };
 
+/**
+ * Hook for getting all subjects
+ * @returns {UseQueryResult<any, DefaultError>}
+ */
 export const useGetSubjects = () => {
   return useQuery({
     queryKey: ['subjects'],
@@ -77,6 +105,11 @@ export const useGetSubjects = () => {
   });
 };
 
+/**
+ * Hook for getting all subjects on a day of the week
+ * @param {number} day Number representing the day of the week, 0 being Sunday, 6 being Saturday
+ * @returns {UseQueryResult<any, DefaultError>}
+ */
 export const useGetSubjectsOnDay = day => {
   return useQuery({
     queryKey: ['subjects', day],
@@ -84,6 +117,11 @@ export const useGetSubjectsOnDay = day => {
   });
 };
 
+/**
+ * Hook for creating a subject
+ * @param {function} success Function called if the mutation is successful
+ * @returns {UseMutationResult<*, DefaultError, void, unknown>}
+ */
 export const useCreateSubject = success => {
   const navigateToLogin = useNavigateToLogin();
   const queryClient = useQueryClient();
@@ -102,6 +140,11 @@ export const useCreateSubject = success => {
   });
 };
 
+/**
+ * Hook for updating a subject
+ * @param {function} success Function called if the mutation is successful
+ * @returns {UseMutationResult<*, DefaultError, void, unknown>}
+ */
 export const useUpdateSubject = success => {
   const navigateToLogin = useNavigateToLogin();
   const queryClient = useQueryClient();
@@ -120,6 +163,11 @@ export const useUpdateSubject = success => {
   });
 };
 
+/**
+ * Hook for deleting a subject
+ * @param {function} success Function called if the mutation is successful
+ * @returns {UseMutationResult<*, DefaultError, void, unknown>}
+ */
 export const useDeleteSubject = success => {
   const navigateToLogin = useNavigateToLogin();
   const queryClient = useQueryClient();

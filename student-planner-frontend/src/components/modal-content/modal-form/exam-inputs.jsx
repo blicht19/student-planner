@@ -11,6 +11,12 @@ import { TextInput } from '../../text-input';
 import { TextArea } from '../../text-area';
 import { useModalContext } from '../../../hooks';
 
+/**
+ * Input fields for an exam
+ * @param {Object} props props
+ * @param {function} props.setError Function for setting the error state of the inputs
+ * @returns {JSX.Element}
+ */
 export const ExamInputs = props => {
   const { item, updateItemProperty } = useModalContext();
   const { setError } = props;

@@ -14,6 +14,12 @@ import { Calendar, Views } from 'react-big-calendar';
 import { MoonLoader } from 'react-spinners';
 import styles from './hourly-schedule.module.css';
 
+/**
+ * An hour-by-hour schedule of classes, events, and exams.
+ * @param {Object} props props
+ * @param {Date} props.date The date for which to display an hourly schedule
+ * @returns {JSX.Element}
+ */
 export const HourlySchedule = props => {
   const { date } = props;
   const { openEditModal } = useModalContext();

@@ -6,7 +6,7 @@ import App from './App.jsx';
 import '@fontsource/roboto';
 import { Toaster } from 'react-hot-toast';
 import { ErrorBoundary } from './error-boundary.jsx';
-import { ErrorFallback } from './components/index.js';
+import { ErrorFallback } from './components';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

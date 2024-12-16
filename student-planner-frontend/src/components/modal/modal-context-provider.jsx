@@ -1,6 +1,11 @@
 import { useCallback, useState } from 'react';
 import { modalContext } from '../../hooks';
 
+/**
+ * Context provider component that provides the state of the Modal and functions for opening and closing different types of modals
+ * @param children The child components of this component
+ * @returns {JSX.Element}
+ */
 export const ModalContextProvider = ({ children }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [editMode, setEditMode] = useState(false);
